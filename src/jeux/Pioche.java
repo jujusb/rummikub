@@ -9,7 +9,8 @@ public class Pioche {
     public Pioche() {
         pions=new ArrayList<>();
         for(Couleur c : Couleur.values()) {
-            for(int i =0;i<13;i++){
+            for(int i =1;i<=13;i++){
+                pions.add(new Pion(i,c));
                 pions.add(new Pion(i,c));
             }
         }
@@ -17,8 +18,9 @@ public class Pioche {
 
     @Override
     public String toString() {
-        return "Pioche{" +
+        return "Pioche["+pions.size()+"] {" +
                 "pions=" + pions +
                 '}';
+
     }
 }
