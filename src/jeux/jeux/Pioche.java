@@ -10,8 +10,9 @@ public class Pioche {
     public Pioche() {
         pions=new ArrayList<>();
         for(Couleur c : Couleur.values()) {
-            for(int i =0;i<13;i++){
+            for(int i=1; i<14; i++){
                 pions.add(new Pion(i,c));
+                pions.add(new Pion(i,c)); //chaque pièce est en double dans le jeu
             }
         }
     }
@@ -28,11 +29,11 @@ public class Pioche {
     }
     
     public Pion retirer() {
-    	int random = new Random().nextInt(106);
+    	int random = new Random().nextInt(pions.size()); 
     	return pions.remove(random);
     }
     
-    public static void main() {
+    public static void main (String[] args) {
         Pioche p = new Pioche();
         System.out.println(p);
     }
