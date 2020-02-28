@@ -32,6 +32,7 @@ public class Pioche {
     	int random = new Random().nextInt(pions.size()); 
     	return pions.remove(random);
     }
+
     
     public static void main (String[] args) {
         Pioche p = new Pioche();
