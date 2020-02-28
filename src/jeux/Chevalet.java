@@ -6,8 +6,11 @@ public class Chevalet {
 	private List<Pion> tab;
 	private int nbPions;
 	
-	public Chevalet() {
+	public Chevalet(Pioche pioche) {
 		tab = new ArrayList<Pion>();
+		for(int i=0; i<15; i++) {
+			tab.add(pioche.retirer());
+		}
 		nbPions = 14;
 	}
 	
@@ -29,6 +32,10 @@ public class Chevalet {
 		}
 	}
 	
-	
+	public String toString() {
+		String s = "";
+		//à finir
+		return s;
+	}
 	
 }
