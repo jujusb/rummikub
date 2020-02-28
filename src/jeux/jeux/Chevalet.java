@@ -32,6 +32,10 @@ public class Chevalet {
 		}
 	}
 	
-	
+	public String toString() {
+		String s = "";
+		//à finir
+		return s;
+	}
 	
 }
