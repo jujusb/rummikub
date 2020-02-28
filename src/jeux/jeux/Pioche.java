@@ -27,6 +27,11 @@ public class Pioche {
         return pions;
     }
     
+    public Pion retirer() {
+    	int random = new Random().nextInt(106);
+    	return pions.remove(random);
+    }
+    
     public static void main() {
         Pioche p = new Pioche();
         System.out.println(p);
