@@ -1,4 +1,4 @@
-package jeux;
+package jeux.jeux;
 
 public class Pion {
     private int num ;

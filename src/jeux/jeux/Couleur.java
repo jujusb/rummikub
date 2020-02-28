@@ -1,4 +1,4 @@
-package jeux;
+package jeux.jeux;
 
 public enum Couleur {
     BLEU,

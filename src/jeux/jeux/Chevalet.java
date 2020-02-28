@@ -1,4 +1,4 @@
-package jeux;
+package jeux.jeux;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -34,7 +34,7 @@ public class Chevalet {
 	
 	public String toString() {
 		String s = "";
-		//à finir
+		//ï¿½ finir
 		return s;
 	}
 	
