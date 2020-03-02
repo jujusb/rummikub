@@ -1,6 +1,5 @@
-package jeux;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -10,16 +9,18 @@ public class Pioche {
     public Pioche() {
         pions=new ArrayList<>();
         for(Couleur c : Couleur.values()) {
-            for(int i=1; i<14; i++){
-                pions.add(new Pion(i,c));
-                pions.add(new Pion(i,c)); //chaque pièce est en double dans le jeu
+            for(int i=0; i<26; i++){
+                pions.add(new Pion(i%13+1,c)); //chaque piÃ¨ce est en double dans le jeu
             }
         }
+        pions.add(new Joker(Couleur.NOIR));
+        pions.add(new Joker(Couleur.ROUGE));
+        Collections.shuffle(pions);
     }
 
     @Override
     public String toString() {
-        return "Pioche{" +
+        return "Pions dans la pioche : "+pions.size()+"\n Pioche : {" +
                 "pions=" + pions +
                 '}';
     }

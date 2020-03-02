@@ -1,4 +1,3 @@
-package jeux;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -33,7 +32,7 @@ public class Chevalet {
 	}
 	
 	public String toString() {
-		String s = "Votre chevalet contient : ";
+		String s = "Votre chevalet contient " + tab.size() + " pions : ";
 		for(Pion p : tab) {
 			s+=p.toString()+" ";
 		}
