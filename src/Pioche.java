@@ -39,4 +39,8 @@ public class Pioche {
         Pioche p = new Pioche();
         System.out.println(p);
     }
+
+    public int size() {
+        return pions.size();
+    }
 }

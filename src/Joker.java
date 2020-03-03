@@ -5,8 +5,8 @@ public class Joker extends Pion {
     }
 
     public void changeValue(int n, Couleur c) {
-        super.setNum(n);
-        super.setCouleur(c);
+        num=n;
+        couleur=c;
         use=true;
     }
 

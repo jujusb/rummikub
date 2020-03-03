@@ -1,6 +1,6 @@
 public class Pion implements  Comparable<Pion> {
-    private int num ;
-    private Couleur couleur;
+    int num ;
+    Couleur couleur;
     private Boolean select = false;
 
     public Pion(int n, String c) throws Exception {
@@ -23,14 +23,6 @@ public class Pion implements  Comparable<Pion> {
 
     public int getNum() {
         return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
-
-    public void setCouleur(Couleur couleur) {
-        this.couleur = couleur;
     }
 
     @Override
