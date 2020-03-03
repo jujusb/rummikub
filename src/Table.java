@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
 public class Table extends ArrayList<Combinaison> {
-    Pioche p ;
+    Pioche pioche;
     public Table() {
         super();
-        p = new Pioche();
+        pioche = new Pioche();
     }
 
     public Combinaison nouvelleCombinaison(Pion p) {
@@ -33,7 +33,7 @@ public class Table extends ArrayList<Combinaison> {
     }
 
     public Pion piocherPion() {
-        return p.retirer();
+        return pioche.retirer();
     }
 
     public int pionsSurTable() {
@@ -44,11 +44,12 @@ public class Table extends ArrayList<Combinaison> {
     }
 
     public int pionsDansPioche() {
-        return p.size();
+        return pioche.size();
     }
 
     public String toString() {
         String str = new String("Pions dans la pioche : "+pionsDansPioche()+ "\n");
+        str+="Pions sur la table : "+pionsSurTable()+ "\n";
         for(Combinaison c : this)
             str+= c.toString() + "\n";
         return str;

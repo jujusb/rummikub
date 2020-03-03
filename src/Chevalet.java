@@ -5,12 +5,9 @@ public class Chevalet {
 	private List<Pion> tab;
 	private int nbPions;
 	
-	public Chevalet(Pioche pioche) {
+	public Chevalet() {
 		tab = new ArrayList<Pion>();
-		for(int i=0; i<14; i++) {
-			tab.add(pioche.retirer());
-		}
-		nbPions = 14;
+		nbPions=0;
 	}
 	
 	public boolean contient(Pion p) {
@@ -41,7 +38,12 @@ public class Chevalet {
 	
 	public static void main (String[] args) throws Exception {
 		Pioche p1 = new Pioche();
-		Chevalet c1 = new Chevalet(p1);
+		Chevalet c1 = new Chevalet();
+		System.out.println(c1);
+		c1.ajouter(new Pion(1,Couleur.BLEU));
+		c1.ajouter(new Pion(12,Couleur.ROUGE));
+		System.out.println(c1);
+		c1.ajouter(new Joker(Couleur.ROUGE));
 		System.out.println(c1);
 		Pion pion1 = c1.tab.get(0);
 		c1.retirer(pion1);

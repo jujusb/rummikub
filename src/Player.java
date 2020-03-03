@@ -6,9 +6,9 @@ public class Player {
     private String name;
     private Chevalet chevalet;
 
-    public Player(String name, Chevalet chevalet){
+    public Player(String name){
         this.name = name;
-        this.chevalet=chevalet;
+        this.chevalet=new Chevalet();
     }
 
     public String getName(){
