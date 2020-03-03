@@ -25,7 +25,7 @@ public class Pioche {
                 '}';
     }
 
-    public List<Pion> getPions() {
+    public List<Pion> getPioche() {
         return pions;
     }
     

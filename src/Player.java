@@ -21,7 +21,6 @@ public class Player {
 
     @Override
     public String toString(){
-        return name +"\n" +"chevalet:"+chevalet;
-
+        return name +"\n" +chevalet;
     }
 }

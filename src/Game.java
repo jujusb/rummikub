@@ -14,9 +14,9 @@ public class Game {
     }
 
     public String toString() {
-        String str = new String("Joueur humain :" + playerHumain.toString()+"\n");
-        str+="ia :" + ia.toString()+"\n";
-        str+="table :"+ table.toString();
+        String str = new String("Joueur humain : " + playerHumain.toString()+"\n");
+        str+="ia : " + ia.toString()+"\n";
+        str+="table :\n"+ table.toString();
         return str;
     }
 
