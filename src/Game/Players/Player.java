@@ -60,27 +60,32 @@ public class Player {
     public Pion selectPion() {
         Scanner sc = new Scanner(System.in);
         System.out.println(chevalet.toString());
-        System.out.println("Selectionez le numéro du pion à jouer :");
+        System.out.println("Selectionez le pion du chevalet à jouer :");
         String num = sc.nextLine();
         int n = Integer.parseInt(num);
-        while(n<0 || n > 14) {
-            System.out.println("Numéro pas bon. Il doit être compris entre 1 et 13. \n Selectionez le numéro du pion à jouer :");
+        while(n<0 || n > chevalet.size()) {
+            System.out.println("Ce numéro n'est pas valable. Il doit être compris entre 0 et "+ chevalet.size() + " pour être contenu dans ton chevalet. \n Selectionez le  pion du chevalet à jouer :");
             num = sc.nextLine();
             n = Integer.parseInt(num);
         }
-        System.out.println("Selectionez la couleur du pion à jouer :");
+        /*System.out.println("Selectionez la couleur du pion à jouer :");
         String couleur = sc.nextLine();
         Couleur c = Couleur.getValueOf(couleur);
         while(c == null) {
             System.out.println("Couleur doit être comprise dans l'ensemble {rouge, jaune, bleu, noir}. \n Selectionez la couleur du pion à jouer :");
             couleur = sc.nextLine();
             c = Couleur.getValueOf(couleur);
-        }
-        Pion p = new Pion(n,c);
+        }*/
+        Pion p = chevalet.get(n);
         if(chevalet.contient(p)) {
-            chevalet.retirer(p);
+            try {
+                chevalet.retirer(p);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
             return p;
         }
+        return null;
     }
 
     public boolean isEndOfCombinaison() {

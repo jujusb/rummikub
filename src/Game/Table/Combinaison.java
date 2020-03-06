@@ -45,8 +45,9 @@ public class Combinaison extends ArrayList<Pion> {
 
     public String toString() {
         String str= new String();
+        int i = 0;
         for(Pion p : this)
-            str +=p.toString() + " ";
+            str += i++ + ":" + p.toString() + " ";
         return str;
     }
 }

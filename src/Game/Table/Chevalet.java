@@ -4,6 +4,7 @@ import Game.Pion.Couleur;
 import Game.Pion.Joker;
 import Game.Pion.Pion;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -26,8 +27,13 @@ public class Chevalet extends ArrayList<Pion> {
 	public void ajouter(Pion p) {
 		this.add(p);
 		nbPions++;
+		sort();
 	}
-	
+
+	public void sort() {
+		Collections.sort(this);
+	}
+
 	public Pion retirer(Pion p) throws Exception {
 		if(!this.contient(p)) {
 			throw new Exception("Votre chevalet ne contient pas ce pion.");
@@ -39,8 +45,9 @@ public class Chevalet extends ArrayList<Pion> {
 	
 	public String toString() {
 		String s = "Votre chevalet contient " + size() + " pions : ";
+		int i = 0;
 		for(Pion p : this) {
-			s+=p.toString()+" ";
+			s+= i++ +":"+ p.toString()+" ";
 		}
 		return s;
 	}

@@ -68,8 +68,9 @@ public class Table extends ArrayList<Combinaison> {
     public String toString() {
         String str = new String("Pions dans la pioche : "+pionsDansPioche()+ "\n");
         str+="Pions sur la table : "+pionsSurTable()+ "\n";
+        int i =0;
         for(Combinaison c : this)
-            str+= c.toString() + "\n";
+            str+= "Combinaison " + i++ + " : " + c.toString() + "\n";
         return str;
     }
 
