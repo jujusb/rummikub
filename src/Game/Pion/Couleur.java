@@ -1,3 +1,5 @@
+package Game.Pion;
+
 public enum Couleur {
     BLEU,
     ROUGE,

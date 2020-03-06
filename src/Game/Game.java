@@ -1,3 +1,10 @@
+package Game;
+
+
+import Game.Players.IA;
+import Game.Players.Player;
+import Game.Table.Table;
+
 public class Game {
     private Player playerHumain;
     private IA ia ;

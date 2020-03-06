@@ -1,3 +1,9 @@
+package Game.Table;
+
+import Game.Pion.Couleur;
+import Game.Pion.Joker;
+import Game.Pion.Pion;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +26,7 @@ public class Pioche {
 
     @Override
     public String toString() {
-        return "Pions dans la pioche : "+pions.size()+"\n Pioche : {" +
+        return "Pions dans la pioche : "+pions.size()+"\n Game.Table.Table.Pioche : {" +
                 "pions=" + pions +
                 '}';
     }

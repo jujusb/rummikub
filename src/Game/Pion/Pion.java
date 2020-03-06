@@ -1,3 +1,5 @@
+package Game.Pion;
+
 public class Pion implements  Comparable<Pion> {
     int num ;
     Couleur couleur;
@@ -9,7 +11,7 @@ public class Pion implements  Comparable<Pion> {
         } else {
             throw new Exception("Le chiffre doit être entre 1 et 13");
         }
-        couleur=Couleur.valueOf(c);
+        couleur= Couleur.valueOf(c);
     }
 
     public Pion(int n, Couleur c) {

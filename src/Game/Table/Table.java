@@ -1,3 +1,10 @@
+package Game.Table;
+
+import Game.Pion.Couleur;
+import Game.Pion.Pion;
+import Game.Table.Combinaison;
+import Game.Table.Pioche;
+
 import java.util.ArrayList;
 
 public class Table extends ArrayList<Combinaison> {
@@ -59,12 +66,12 @@ public class Table extends ArrayList<Combinaison> {
         Table t = new Table();
         t.pionsDansPioche();
         System.out.println(t);
-        Pion p = new Pion(1,Couleur.BLEU);
-        Pion p2 = new Pion(2,Couleur.BLEU);
-        Pion p3 = new Pion(3,Couleur.BLEU);
-        Pion p4 = new Pion(4,Couleur.ROUGE);
-        Pion p5 = new Pion(4,Couleur.NOIR);
-        Pion p6 = new Pion(4,Couleur.JAUNE);
+        Pion p = new Pion(1, Couleur.BLEU);
+        Pion p2 = new Pion(2, Couleur.BLEU);
+        Pion p3 = new Pion(3, Couleur.BLEU);
+        Pion p4 = new Pion(4, Couleur.ROUGE);
+        Pion p5 = new Pion(4, Couleur.NOIR);
+        Pion p6 = new Pion(4, Couleur.JAUNE);
         Combinaison c = t.nouvelleCombinaison(p);
         t.ajoutALaCombinaison(c,p2);
         System.out.println(t.estValide());

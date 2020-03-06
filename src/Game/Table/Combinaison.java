@@ -1,3 +1,8 @@
+package Game.Table;
+
+import Game.Pion.Couleur;
+import Game.Pion.Pion;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TreeSet;

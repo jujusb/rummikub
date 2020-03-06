@@ -1,5 +1,6 @@
-import java.util.Observable;
-import java.util.Observer;
+package Game.Players;
+
+import Game.Table.Chevalet;
 
 public class Player {
 

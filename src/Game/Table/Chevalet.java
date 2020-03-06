@@ -1,3 +1,9 @@
+package Game.Table;
+
+import Game.Pion.Couleur;
+import Game.Pion.Joker;
+import Game.Pion.Pion;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -40,8 +46,8 @@ public class Chevalet {
 		Pioche p1 = new Pioche();
 		Chevalet c1 = new Chevalet();
 		System.out.println(c1);
-		c1.ajouter(new Pion(1,Couleur.BLEU));
-		c1.ajouter(new Pion(12,Couleur.ROUGE));
+		c1.ajouter(new Pion(1, Couleur.BLEU));
+		c1.ajouter(new Pion(12, Couleur.ROUGE));
 		System.out.println(c1);
 		c1.ajouter(new Joker(Couleur.ROUGE));
 		System.out.println(c1);
