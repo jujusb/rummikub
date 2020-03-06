@@ -6,6 +6,7 @@ import Game.Table.Combinaison;
 import Game.Table.Pioche;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Table extends ArrayList<Combinaison> {
     Pioche pioche;
@@ -47,6 +48,16 @@ public class Table extends ArrayList<Combinaison> {
         int compte = 0;
         for(Combinaison c : this)
             compte+= c.size();
+        return compte;
+    }
+
+    public int comptePointsCombinaisons(List<Combinaison> combinaisons) {
+        int compte = 0;
+        for(Combinaison c : combinaisons) {
+            for (Pion p : c) {
+                compte += p.getNum();
+            }
+        }
         return compte;
     }
 

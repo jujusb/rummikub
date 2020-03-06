@@ -15,4 +15,15 @@ public enum Couleur {
             default		: return "Yel";
         }
     }
+
+
+    public static Couleur getValueOf(String name) {
+        switch(name){
+            case "noir"	: return NOIR;
+            case "bleu"	: return BLEU;
+            case "rouge": return ROUGE;
+            case "jaune": return JAUNE;
+            default		: return null;
+        }
+    }
 }

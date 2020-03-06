@@ -7,21 +7,24 @@ import Game.Pion.Pion;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Chevalet {
-	private List<Pion> tab;
+public class Chevalet extends ArrayList<Pion> {
+	public int getNbPions() {
+		return nbPions;
+	}
+
 	private int nbPions;
 	
 	public Chevalet() {
-		tab = new ArrayList<Pion>();
+		super();
 		nbPions=0;
 	}
 	
 	public boolean contient(Pion p) {
-		return tab.contains(p);
+		return this.contains(p);
 	}
 	
 	public void ajouter(Pion p) {
-		tab.add(p);
+		this.add(p);
 		nbPions++;
 	}
 	
@@ -29,14 +32,14 @@ public class Chevalet {
 		if(!this.contient(p)) {
 			throw new Exception("Votre chevalet ne contient pas ce pion.");
 		} else {
-			tab.remove(p);
+			this.remove(p);
 			return p;
 		}
 	}
 	
 	public String toString() {
-		String s = "Votre chevalet contient " + tab.size() + " pions : ";
-		for(Pion p : tab) {
+		String s = "Votre chevalet contient " + size() + " pions : ";
+		for(Pion p : this) {
 			s+=p.toString()+" ";
 		}
 		return s;
@@ -51,7 +54,7 @@ public class Chevalet {
 		System.out.println(c1);
 		c1.ajouter(new Joker(Couleur.ROUGE));
 		System.out.println(c1);
-		Pion pion1 = c1.tab.get(0);
+		Pion pion1 = c1.get(0);
 		c1.retirer(pion1);
 		System.out.println(c1);
 	}
