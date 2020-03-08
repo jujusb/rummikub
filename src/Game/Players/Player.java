@@ -68,14 +68,6 @@ public class Player {
             num = sc.nextLine();
             n = Integer.parseInt(num);
         }
-        /*System.out.println("Selectionez la couleur du pion à jouer :");
-        String couleur = sc.nextLine();
-        Couleur c = Couleur.getValueOf(couleur);
-        while(c == null) {
-            System.out.println("Couleur doit être comprise dans l'ensemble {rouge, jaune, bleu, noir}. \n Selectionez la couleur du pion à jouer :");
-            couleur = sc.nextLine();
-            c = Couleur.getValueOf(couleur);
-        }*/
         Pion p = chevalet.get(n);
         if(chevalet.contient(p)) {
             try {
