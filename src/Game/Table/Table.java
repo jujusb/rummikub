@@ -74,6 +74,15 @@ public class Table extends ArrayList<Combinaison> {
         return str;
     }
 
+    @Override
+    public Object clone() {
+        Table table = new Table();
+        for(Combinaison c : this)
+            table.add((Combinaison) c.clone());
+        table.pioche= (Pioche) pioche.clone();
+        return table;
+    }
+
     public static void main(String[] args) {
         Table t = new Table();
         t.pionsDansPioche();

@@ -65,5 +65,14 @@ public class Chevalet extends ArrayList<Pion> {
 		c1.retirer(pion1);
 		System.out.println(c1);
 	}
-	
+
+    @Override
+    public Object clone() {
+        Chevalet chevalet = new Chevalet();
+        chevalet.nbPions = nbPions;
+        for(Pion p : this) {
+            chevalet.ajouter((Pion)p.clone());
+        }
+        return chevalet;
+    }
 }

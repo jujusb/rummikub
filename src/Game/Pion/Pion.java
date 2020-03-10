@@ -1,5 +1,7 @@
 package Game.Pion;
 
+import Game.Table.Pioche;
+
 public class Pion implements  Comparable<Pion> {
     int num ;
     Couleur couleur;
@@ -17,6 +19,9 @@ public class Pion implements  Comparable<Pion> {
     public Pion(int n, Couleur c) {
         num = n;
         couleur=c;
+    }
+
+    public Pion() {
     }
 
     public Couleur getCouleur() {
@@ -51,6 +56,15 @@ public class Pion implements  Comparable<Pion> {
 
     public Boolean isSelected(){
         return select;
+    }
+
+    @Override
+    public Object clone() {
+        Pion p = new Pion();
+        p.num= num;
+        p.couleur=couleur;
+        p.select=select;
+        return p;
     }
 
     public boolean equals(Object o){

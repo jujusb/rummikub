@@ -9,44 +9,49 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Pioche {
-    private List<Pion> pions;
-
+public class Pioche extends ArrayList<Pion> {
     public Pioche() {
-        pions=new ArrayList<>();
+        super();
         for(Couleur c : Couleur.values()) {
             for(int i=0; i<26; i++){
-                pions.add(new Pion(i%13+1,c)); //chaque pièce est en double dans le jeu
+                add(new Pion(i%13+1,c)); //chaque pièce est en double dans le jeu
             }
         }
-        pions.add(new Joker(Couleur.NOIR));
-        pions.add(new Joker(Couleur.ROUGE));
-        Collections.shuffle(pions);
+        add(new Joker(Couleur.NOIR));
+        add(new Joker(Couleur.ROUGE));
+        Collections.shuffle(this);
     }
 
     @Override
     public String toString() {
-        return "Pions dans la pioche : "+pions.size()+"\n Game.Table.Table.Pioche : {" +
-                "pions=" + pions +
+        return "Pions dans la pioche : "+size()+"\n Game.Table.Table.Pioche : {" +
+                "pions=" + this +
                 '}';
     }
 
     public List<Pion> getPioche() {
-        return pions;
+        return this;
     }
     
     public Pion retirer() {
-    	int random = new Random().nextInt(pions.size()); 
-    	return pions.remove(random);
+    	int random = new Random().nextInt(size());
+    	return remove(random);
     }
 
-    
+    @Override
+    public Object clone() {
+        Pioche pioche = new Pioche();
+        for(Pion p : this)
+            pioche.add((Pion)p.clone());
+        return pioche;
+    }
+
     public static void main (String[] args) {
         Pioche p = new Pioche();
         System.out.println(p);
     }
 
     public int size() {
-        return pions.size();
+        return size();
     }
 }

@@ -27,6 +27,9 @@ public class Player {
         this.table = table;
     }
 
+    public Player() {
+    }
+
     public boolean jouer() {
         Scanner sc = new Scanner(System.in);
         System.out.println(table);
@@ -247,4 +250,18 @@ public class Player {
         return c;
     }
 
+    @Override
+    public Object clone() {
+        Player player = new Player();
+        player.debut=debut;
+        player.chevalet=(Chevalet) chevalet.clone();
+        player.endOfCombinaison=endOfCombinaison;
+        player.endOfturn=endOfturn;
+        player.name = name;
+        return player;
+    }
+
+    public void setTable(Table table) {
+        this.table=table;
+    }
 }

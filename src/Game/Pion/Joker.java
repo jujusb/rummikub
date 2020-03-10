@@ -24,4 +24,11 @@ public class Joker extends Pion {
                     '}';
         }
     }
+
+    @Override
+    public Object clone() {
+        Joker c = new Joker(couleur);
+        c.use=use;
+        return c;
+    }
 }

@@ -16,7 +16,9 @@ public class Game {
     private IA ia ;
     private Table table;
     private Player currentPlayer;
-    private Game backup;
+    private Table backUpTable;
+    private Player backUpPlayerHumain;
+    private IA backUpIA;
 
     public Game() {
         table = new Table();
@@ -39,6 +41,7 @@ public class Game {
 
     public void startGame() {
         while(!(playerHumain.gagne() || ia.gagne())) {
+            backUp();
             if (currentPlayer.isDebut()) {
                 if (!currentPlayer.passerTour()) {
                     List<Combinaison> list = currentPlayer.jouerdebut();
@@ -48,7 +51,7 @@ public class Game {
                             currentPlayer.setDebutFait();
                             changeCurrentPlayer();
                         } else {
-                            backup();//TODO backup all game
+                            restoreBackUp();//TODO backup all game
                         }
                     }
                 } else {
@@ -61,7 +64,7 @@ public class Game {
                     continueTour = currentPlayer.jouer();
                 }
                 if (!table.estValide()) {
-                    backup();
+                    restoreBackUp();
                 } else {
                     currentPlayer.setEndOfTurn(false);
                     changeCurrentPlayer();
@@ -70,10 +73,21 @@ public class Game {
         }
     }
 
-    private void backup() {
-    }
+        private void backUp(){
+            backUpTable = (Table) table.clone();
+            backUpPlayerHumain = (Player) playerHumain.clone();
+            backUpIA = (IA) ia.clone();
+            backUpPlayerHumain.setTable(backUpTable);
+            backUpIA.setTable(backUpTable);
+        }
 
-    public String toString() {
+        private void restoreBackUp() {
+            table = backUpTable;
+            playerHumain = backUpPlayerHumain;
+            ia = backUpIA;
+        }
+
+        public String toString() {
         String str = new String("Joueur humain : " + playerHumain.toString()+"\n");
         str+="ia : " + ia.toString()+"\n";
         str+="table :\n"+ table.toString();
