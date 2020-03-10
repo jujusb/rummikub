@@ -24,15 +24,18 @@ public class Pioche extends ArrayList<Pion> {
 
     @Override
     public String toString() {
-        return "Pions dans la pioche : "+size()+"\n Game.Table.Table.Pioche : {" +
-                "pions=" + this +
-                '}';
+        String str = new String("Pions dans la pioche : "+size()+"\n Game.Table.Table.Pioche : {");
+        for(Pion p : this) {
+            str+=p.toString()+" ";
+        }
+        str +="}";
+        return str;
     }
 
     public List<Pion> getPioche() {
         return this;
     }
-    
+
     public Pion retirer() {
     	int random = new Random().nextInt(size());
     	return remove(random);
@@ -41,6 +44,7 @@ public class Pioche extends ArrayList<Pion> {
     @Override
     public Object clone() {
         Pioche pioche = new Pioche();
+        pioche.clear();
         for(Pion p : this)
             pioche.add((Pion)p.clone());
         return pioche;
@@ -48,10 +52,6 @@ public class Pioche extends ArrayList<Pion> {
 
     public static void main (String[] args) {
         Pioche p = new Pioche();
-        System.out.println(p);
-    }
-
-    public int size() {
-        return size();
+        System.out.println(p.toString());
     }
 }

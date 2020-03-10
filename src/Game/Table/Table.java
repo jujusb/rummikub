@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Table extends ArrayList<Combinaison> {
-    Pioche pioche;
+    private Pioche pioche;
     public Table() {
         super();
         pioche = new Pioche();

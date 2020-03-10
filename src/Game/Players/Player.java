@@ -11,17 +11,17 @@ import java.util.Scanner;
 
 public class Player {
 
-    private String name;
-    private Chevalet chevalet;
-    private boolean endOfturn;
-    private boolean endOfCombinaison;
-    private boolean debut;
-    private Table table;
+    String name;
+    Chevalet chevalet;
+    boolean endOfturn;
+    boolean endOfCombinaison;
+    boolean debut;
+    Table table;
 
     public Player(String name, Table table) {
         this.name = name;
         this.chevalet = new Chevalet();
-        this.debut = false; //à mettre à true pour démarrer le jeu (utilisé pour faire des tests :) )
+        this.debut = true; //à mettre à true pour démarrer le jeu (utilisé à false pour faire des tests :) )
         this.endOfturn = false;
         this.endOfCombinaison = false;
         this.table = table;
@@ -171,15 +171,13 @@ public class Player {
         Scanner sc = new Scanner(System.in);
         System.out.println(chevalet.toString());
         System.out.println("Selectionez le pion du chevalet à jouer :");
-        String num = sc.nextLine();
-        int n = Integer.parseInt(num);
+        int n = sc.nextInt();
         if (n == -1) {
             return null;
         }
         while (n < 0 || n > chevalet.size()) {
             System.out.println("Ce numéro n'est pas valable. Il doit être compris entre 0 et " + chevalet.size() + " pour être contenu dans ton chevalet. \n Selectionez le  pion du chevalet à jouer :");
-            num = sc.nextLine();
-            n = Integer.parseInt(num);
+            n = sc.nextInt();
         }
         Pion p = chevalet.get(n);
         if (chevalet.contient(p)) {
@@ -205,6 +203,9 @@ public class Player {
         List<Combinaison> list = new ArrayList<>();
         while (!isEndOfTurn() && table.estValide()) {
             Combinaison c = jouerUneCombinaison();
+            if(c==null) {
+                return null;
+            }
             list.add(c);
         }
         return list;
