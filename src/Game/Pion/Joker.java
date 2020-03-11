@@ -11,7 +11,7 @@ public class Joker extends Pion {
         couleur=c;
         use=true;
     }
-
+    //TODO coder l'utilisation des jokers et leur moyens de se faire remplacer
     @Override
     public String toString() {
         if(use) {

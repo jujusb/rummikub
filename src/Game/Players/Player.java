@@ -203,7 +203,7 @@ public class Player {
         List<Combinaison> list = new ArrayList<>();
         while (!isEndOfTurn() && table.estValide()) {
             Combinaison c = jouerUneCombinaison();
-            if(c==null) {
+            if (c == null) {
                 return null;
             }
             list.add(c);
@@ -233,8 +233,13 @@ public class Player {
                 setEndOfCombinaison(true);
             }
         }
+        Pion pp;
         while (!isEndOfCombinaison()) {
-            table.ajoutALaCombinaison(c, selectPion());
+            pp = selectPion();
+            if (pp == null) {
+                return null;
+            }
+            table.ajoutALaCombinaison(c, pp);
             System.out.println(c);
             System.out.println("is end of combinaison (Y/n) ?");
             String b = sc.nextLine();
@@ -254,15 +259,15 @@ public class Player {
     @Override
     public Object clone() {
         Player player = new Player();
-        player.debut=debut;
-        player.chevalet=(Chevalet) chevalet.clone();
-        player.endOfCombinaison=endOfCombinaison;
-        player.endOfturn=endOfturn;
+        player.debut = debut;
+        player.chevalet = (Chevalet) chevalet.clone();
+        player.endOfCombinaison = endOfCombinaison;
+        player.endOfturn = endOfturn;
         player.name = name;
         return player;
     }
 
     public void setTable(Table table) {
-        this.table=table;
+        this.table = table;
     }
 }

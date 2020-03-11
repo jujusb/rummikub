@@ -40,7 +40,7 @@ public class Game {
     }
 
     public void startGame() {
-        while (!(playerHumain.gagne() || ia.gagne())) {
+        while (!(playerHumain.gagne()) && !(ia.gagne())) {
             backUp();
             if (currentPlayer.isDebut()) {
                 if (!currentPlayer.passerTour()) {
@@ -90,6 +90,12 @@ public class Game {
                     changeCurrentPlayer();
                 }
             }
+        }
+        if(ia.gagne()) {
+            System.out.println("L'IA a gagné !");
+        }
+        if(playerHumain.gagne()) {
+            System.out.println("Le joueur humain a gagné !");
         }
     }
 
