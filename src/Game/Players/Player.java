@@ -1,5 +1,6 @@
 package Game.Players;
 
+import Game.Pion.Joker;
 import Game.Pion.Pion;
 import Game.Table.Chevalet;
 import Game.Table.Combinaison;
@@ -44,7 +45,8 @@ public class Player {
             System.out.println("Passer tour (0) ?" +
                     "Une nouvelle combinaison (1) ? " +
                     "Ajouter un pion à une combinaison (2) ?" +
-                    "Retirer un pion d'une combinaison pour l'ajouter à une autre (3) ?");
+                    "Retirer un pion d'une combinaison pour l'ajouter à une autre (3) ?" +
+                    "Remplacer un joker ? (4)");
             int jeu = sc.nextInt();
             if (jeu == 0) {
                 setEndOfTurn(true);
@@ -56,22 +58,7 @@ public class Player {
                 }
             }
             if (jeu == 2) {
-                System.out.println(this);
-                System.out.println("Selectionez le pion du chevalet à jouer :");
-                int n = sc.nextInt();
-                if (n == -1) {
-                    return true;
-                }
-                if (n < 0 || n > chevalet.size()) {
-                    System.out.println("Ce numéro n'est pas valable. Il doit être compris entre 0 et " + chevalet.size() + " pour être contenu dans ton chevalet. \n Selectionez le  pion du chevalet à jouer :");
-                    n = sc.nextInt();
-                }
-                Pion p = chevalet.get(n);
-                try {
-                    chevalet.retirer(p);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                Pion p = selectPion();
                 if (!AjoutACombinaison(p)) return true;
             }
             if (jeu == 3) {
@@ -105,6 +92,11 @@ public class Player {
             String bb = sc.nextLine();
             if (bb.toUpperCase().equals("Y")) {
                 this.setEndOfTurn(true);
+            }
+            if(jeu==4) {
+                //Pion p = selectPion();
+                //TODO dire quel joker remplacer
+                //TODO vérifier que l'utilisation du pion est ok
             }
         }
         return false;
@@ -180,6 +172,9 @@ public class Player {
             n = sc.nextInt();
         }
         Pion p = chevalet.get(n);
+        if(p instanceof Joker) {
+            //TODO demander comment va être utilisé ce joker
+        }
         if (chevalet.contient(p)) {
             try {
                 chevalet.retirer(p);
