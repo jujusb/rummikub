@@ -94,9 +94,39 @@ public class Player {
                 this.setEndOfTurn(true);
             }
             if(jeu==4) {
-                //Pion p = selectPion();
-                //TODO dire quel joker remplacer
-                //TODO vérifier que l'utilisation du pion est ok
+                System.out.println(this);
+                System.out.println(table + "Selectionez la combinaison où doit être retirée le joker :");
+                int c = sc.nextInt();
+
+                if (c == -1) {
+                    return true;
+                }
+                if (c < 0 || c > table.size()) {
+                    System.out.println("Ce numéro n'est pas valable. Il doit être compris entre 0 et " + table.size() + " pour être contenu sur la table. \n Selectionez la combinaison où doit être retiré le pion :");
+                    c = sc.nextInt();
+                }
+                if(!table.get(c).contientJoker()){
+                    System.out.println("Cette combinaison ne contient pas de joker. \n Selectionez la combinaison où doit être retiré le joker :\"");
+                    c = sc.nextInt();
+                }
+                Combinaison cc = table.get(c);
+                System.out.println(cc + "Selectionez la position du joker à retirer de cette combinaison :");
+                int p = sc.nextInt();
+                if (p == -1) {
+                    return true;
+                }
+                if (p < 0 || p > cc.size()) {
+                    System.out.println("Ce numéro n'est pas valable. Il doit être compris entre 0 et " + cc.size() + " pour être contenu dans cette combinaison. \n Selectionez la position du pion à retirer de cette combinaison :");
+                    p = sc.nextInt();
+                }
+                if(cc.get(p).getNum()!=0){
+                    System.out.println("Ce pion n'est pas un joker. \n Selectionez un joker :\"");
+                    p = sc.nextInt();
+                }
+                Pion pp = cc.get(p);
+                table.retirerDeCombinaison(cc, pp);
+                chevalet.ajouter(pp);
+                //TODO si la combinaison n'est plus valide ajouter pion de notre chevalet à l'endroit où le joker a été pris
             }
         }
         return false;

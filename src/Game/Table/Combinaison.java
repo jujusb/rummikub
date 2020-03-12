@@ -39,6 +39,16 @@ public class Combinaison extends ArrayList<Pion> {
         return memeCouleur && suiteNum || serieCouleur && memeNum;
     }
 
+    public boolean contientJoker(){
+        boolean res = false;
+        for (Pion p : this){
+            if (p instanceof Game.Pion.Joker){
+                res = true;
+            }
+        }
+        return res;
+    }
+
     public void sort() {
         Collections.sort(this);
     }

@@ -1,10 +1,12 @@
 package Game.Table;
 
 import Game.Pion.Couleur;
+import Game.Pion.Joker;
 import Game.Pion.Pion;
 import Game.Table.Combinaison;
 import Game.Table.Pioche;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +89,7 @@ public class Table extends ArrayList<Combinaison> {
         Table t = new Table();
         t.pionsDansPioche();
         System.out.println(t);
+        Pion j = new Joker(Couleur.NOIR);
         Pion p = new Pion(1, Couleur.BLEU);
         Pion p2 = new Pion(2, Couleur.BLEU);
         Pion p3 = new Pion(3, Couleur.BLEU);
@@ -99,6 +102,7 @@ public class Table extends ArrayList<Combinaison> {
         t.ajoutALaCombinaison(c,p3);
         System.out.println(t.estValide());
         System.out.println(t);
+        System.out.println(c.contientJoker());
         Combinaison c2 = t.nouvelleCombinaison(p4);
         t.ajoutALaCombinaison(c2,p5);
         System.out.println(t.estValide());
