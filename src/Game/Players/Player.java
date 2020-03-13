@@ -9,6 +9,7 @@ import Game.Table.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.jar.JarOutputStream;
 
 public class Player {
 
@@ -86,13 +87,6 @@ public class Player {
                 table.retirerDeCombinaison(cc, pp);
                 if (!AjoutACombinaison(pp)) return true;
             }
-            System.out.println("---------------------");
-            System.out.println("is end of turn (Y/n) ?");
-            System.out.println("---------------------");
-            String bb = sc.nextLine();
-            if (bb.toUpperCase().equals("Y")) {
-                this.setEndOfTurn(true);
-            }
             if(jeu==4) {
                 System.out.println(this);
                 System.out.println(table + "Selectionez la combinaison où doit être retirée le joker :");
@@ -119,14 +113,28 @@ public class Player {
                     System.out.println("Ce numéro n'est pas valable. Il doit être compris entre 0 et " + cc.size() + " pour être contenu dans cette combinaison. \n Selectionez la position du pion à retirer de cette combinaison :");
                     p = sc.nextInt();
                 }
-                if(cc.get(p).getNum()!=0){
+                if(cc.get(p) instanceof Joker){
                     System.out.println("Ce pion n'est pas un joker. \n Selectionez un joker :\"");
                     p = sc.nextInt();
                 }
                 Pion pp = cc.get(p);
                 table.retirerDeCombinaison(cc, pp);
                 chevalet.ajouter(pp);
-                //TODO si la combinaison n'est plus valide ajouter pion de notre chevalet à l'endroit où le joker a été pris
+                Pion select = selectPion();
+                if(select.equals(pp)){ //changer la classe joker et la méthode equals de Pion por que ça marche
+                    table.ajoutALaCombinaison(cc,select);
+                } else {
+                    chevalet.ajouter(select);
+                    System.out.println("Selectionner un pion qui correspond à la valeur du joker.");
+                    select = selectPion();
+                }
+            }
+            System.out.println("---------------------");
+            System.out.println("is end of turn (Y/n) ?");
+            System.out.println("---------------------");
+            String bb = sc.nextLine();
+            if (bb.toUpperCase().equals("Y")) {
+                this.setEndOfTurn(true);
             }
         }
         return false;
