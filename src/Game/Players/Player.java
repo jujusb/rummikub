@@ -9,13 +9,14 @@ import Game.Table.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.jar.JarOutputStream;
 
 public class Player {
 
     String name;
+
+
     Chevalet chevalet;
-    boolean endOfturn;
+    boolean endOfTurn;
     boolean endOfCombinaison;
     boolean debut;
     Table table;
@@ -24,7 +25,7 @@ public class Player {
         this.name = name;
         this.chevalet = new Chevalet();
         this.debut = true; //à mettre à true pour démarrer le jeu (utilisé à false pour faire des tests :) )
-        this.endOfturn = false;
+        this.endOfTurn = false;
         this.endOfCombinaison = false;
         this.table = table;
     }
@@ -35,7 +36,7 @@ public class Player {
     public boolean jouer() {
         Scanner sc = new Scanner(System.in);
         System.out.println(table);
-        if (passerTour()) {
+        if (passerTour()) { // TODO à modifier
             chevalet.ajouter(table.piocherPion());
             return false;
         }
@@ -51,6 +52,7 @@ public class Player {
             int jeu = sc.nextInt();
             if (jeu == 0) {
                 setEndOfTurn(true);
+                // TODO rajouter compteur dans la boucle while et vérifier si 1er tour pour piocher
             }
             if (jeu == 1) {
                 Combinaison c = jouerUneCombinaison();
@@ -121,20 +123,13 @@ public class Player {
                 table.retirerDeCombinaison(cc, pp);
                 chevalet.ajouter(pp);
                 Pion select = selectPion();
-                if(select.equals(pp)){ //changer la classe joker et la méthode equals de Pion por que ça marche
+                if(select.equals(pp)){ //changer la classe joker et la méthode equals de Pion pour que ça marche
                     table.ajoutALaCombinaison(cc,select);
                 } else {
                     chevalet.ajouter(select);
                     System.out.println("Selectionner un pion qui correspond à la valeur du joker.");
                     select = selectPion();
                 }
-            }
-            System.out.println("---------------------");
-            System.out.println("is end of turn (Y/n) ?");
-            System.out.println("---------------------");
-            String bb = sc.nextLine();
-            if (bb.toUpperCase().equals("Y")) {
-                this.setEndOfTurn(true);
             }
         }
         return false;
@@ -165,11 +160,11 @@ public class Player {
 
 
     public boolean isEndOfTurn() {
-        return endOfturn;
+        return endOfTurn;
     }
 
     public void setEndOfTurn(boolean turn) {
-        this.endOfturn = turn;
+        this.endOfTurn = turn;
     }
 
     public String getName() {
@@ -295,7 +290,7 @@ public class Player {
         player.debut = debut;
         player.chevalet = (Chevalet) chevalet.clone();
         player.endOfCombinaison = endOfCombinaison;
-        player.endOfturn = endOfturn;
+        player.endOfTurn = endOfTurn;
         player.name = name;
         return player;
     }
@@ -303,4 +298,21 @@ public class Player {
     public void setTable(Table table) {
         this.table = table;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setChevalet(Chevalet chevalet) {
+        this.chevalet = chevalet;
+    }
+
+    public void setEndOfCombinaison(boolean endOfCombinaison) {
+        this.endOfCombinaison = endOfCombinaison;
+    }
+
+    public void setDebut(boolean debut) {
+        this.debut = debut;
+    }
+
 }

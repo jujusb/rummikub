@@ -17,8 +17,8 @@ public class Pioche extends ArrayList<Pion> {
                 add(new Pion(i%13+1,c)); //chaque pièce est en double dans le jeu
             }
         }
-        add(new Joker(Couleur.NOIR));
-        add(new Joker(Couleur.ROUGE));
+        //add(new Joker(Couleur.NOIR));
+        //add(new Joker(Couleur.ROUGE));
         Collections.shuffle(this);
     }
 

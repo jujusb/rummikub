@@ -1,15 +1,12 @@
 package Game;
 
 
-import Game.Pion.Pion;
-import Game.Players.IA;
+import Game.Players.IA.IA;
 import Game.Players.Player;
 import Game.Table.Combinaison;
 import Game.Table.Table;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Game {
     private Player playerHumain;
