@@ -30,10 +30,6 @@ public class Player {
         this.table = table;
     }
 
-    public Table getTable() {
-        return table;
-    }
-
     public Player() {
     }
 
