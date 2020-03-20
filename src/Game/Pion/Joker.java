@@ -31,7 +31,7 @@ public class Joker extends Pion {
         return useSuite;
     }
 
-    public void reset(){ //TODO il faut reset à chaque fois que l'on récupère un joker du plateau
+    public void reset(){
         num = 0;
         containsList.clear();
     }
@@ -40,11 +40,27 @@ public class Joker extends Pion {
         Scanner sc = new Scanner(System.in);
         System.out.println("Souhaitez vous utiliser le joker dans une suite (1) ? dans une série (2) ?");
         int use = sc.nextInt();
-        System.out.println("Quelle couleur souhaitez vous utiliser pour le joker ?");
-        String c = sc.nextLine();
-        this.couleur = Couleur.getValueOf(c);
+        System.out.println("Quelle couleur souhaitez vous utiliser pour le joker ? Jaune (1) Bleu (2) Noir (3) Rouge (4)");
+        int c = sc.nextInt();
+        if(c == 1){
+            this.couleur = Couleur.JAUNE;
+        }else{
+            if(c == 2){
+                this.couleur = Couleur.BLEU;
+            }else{
+                if(c == 3){
+                    this.couleur = Couleur.NOIR;
+                }else{
+                        this.couleur = Couleur.ROUGE;
+                }
+            }
+        }
         System.out.println("Quelle numéro souhaitez vous utiliser pour le joker ?");
         int n = sc.nextInt();
+        if(n>13 || n<1){
+            System.out.println("Le numéro doit être compris entre 1 et 13.");
+            n = sc.nextInt();
+        }
         this.num = n;
         if(use==1){
             useSuite = true;
@@ -79,15 +95,14 @@ public class Joker extends Pion {
                 || useSerie && containsList.contains(p.couleur) && p.num == num;
     }
 
-    //TODO coder l'utilisation des jokers et leur moyens de se faire remplacer
 
     @Override
     public String toString() {
-        if(useSerie) {
+        if(useSuite) {
             return "Joker{à remplacer par ce " +
                     super.toString()+
                     '}';
-        } else if(useSuite) {
+        } else if(useSerie) {
             return "Joker{à remplacer par un pion de num " +
                     num+" de couleur"+
                     containsList+

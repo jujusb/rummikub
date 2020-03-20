@@ -120,12 +120,13 @@ public class Player {
                     System.out.println("Ce numéro n'est pas valable. Il doit être compris entre 0 et " + cc.size() + " pour être contenu dans cette combinaison. \n Selectionez la position du pion à retirer de cette combinaison :");
                     p = sc.nextInt();
                 }
-                if(cc.get(p) instanceof Joker){
+                if(!(cc.get(p) instanceof Joker)){
                     System.out.println("Ce pion n'est pas un joker. \n Selectionez un joker :\"");
                     p = sc.nextInt();
                 }
                 Pion pp = cc.get(p);
                 table.retirerDeCombinaison(cc, pp);
+                ((Joker) pp).reset();
                 chevalet.ajouter(pp);
                 Pion select = selectPion();
                 if(((Joker) pp).canReplace(select)){
@@ -296,9 +297,11 @@ public class Player {
                 }
             }
             if(((Joker) joker).getUseSerie()){
-                ((Joker) joker).setContainsList(c);
+                ((Joker) joker).setContainsList(c); //TODO comment set la containsList si on ne sait meme pas encore
+                                                    //TODO quels vont être les pions qui la composent ??
             }
         }
+        System.out.println(c);
         System.out.println("is end of turn (Y/n) ?");
         String b = sc.nextLine();
         if (b.toUpperCase().equals("Y")) {

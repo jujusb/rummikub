@@ -43,14 +43,29 @@ public class Chevalet extends ArrayList<Pion> {
 		}
 	}
 	
-	public String toString() {
+	public String toString() { //TODO à afficher par couleur pour que ce soit plus pratique
 		String s = "Votre chevalet contient " + size() + " pions : ";
 		int i = 0;
+		Couleur prec = null;
+		boolean first = true;
 		for(Pion p : this) {
-			s+= i++ +":"+ p.toString()+" ";
+			if(!(p instanceof Joker)){
+				if(!p.getCouleur().equals(prec) && !first){ //TODO à débuguer car des fois il y a un java.lang.nullException
+					s += "\n                                   ";
+				}
+				s+= i++ +":"+ p.toString()+" ";
+				prec = p.getCouleur();
+				first = false;
+			} else {
+				s += i++ +":"+ p.toString()+" ";
+			}
+
+			/*
 			if(i%6 == 0 && i != 0){
 				s += "\n                                   ";
 			}
+			*/
+
 		}
 		return s;
 	}

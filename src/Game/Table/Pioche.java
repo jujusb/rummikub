@@ -14,11 +14,11 @@ public class Pioche extends ArrayList<Pion> {
         super();
         for(Couleur c : Couleur.values()) {
             for(int i=0; i<26; i++){
-                add(new Pion(i%13+1,c)); //chaque pièce est en double dans le jeu
+                add(new Pion(i%13+1,c));
             }
         }
-        //add(new Joker(Couleur.NOIR));
-        //add(new Joker(Couleur.ROUGE));
+        add(new Joker(Couleur.NOIR));
+        add(new Joker(Couleur.ROUGE));
         Collections.shuffle(this);
     }
 
