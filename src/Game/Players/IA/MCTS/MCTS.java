@@ -189,7 +189,6 @@ public class MCTS {
 					b.makeMove(finalNode.move);
 				}
 			} else { // this is a random node
-				//TODO ckeck what append in a random node
 
 				// Random nodes are special. We must guarantee that
 				// every random node has a fully populated list of
