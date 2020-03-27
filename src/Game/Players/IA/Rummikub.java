@@ -1,7 +1,6 @@
-package Game;
+package Game.Players.IA;
 
 
-import Game.Players.IA.IA;
 import Game.Players.IA.MCTS.Board;
 import Game.Players.IA.MCTS.CallLocation;
 import Game.Players.IA.MCTS.Move;
@@ -181,9 +180,10 @@ public class Rummikub implements Board {
         double[] score = new double[2];
         int playerhumainnbPions= playerHumain.getChevalet().getNbPions();
         int ianbPions= ia.getChevalet().getNbPions();
-        //TODO calcul score
-        score[0]=0; //score joueur humain
-        score[1]=0; //score ia
+        //score calculé en fonction du nombre de pions de chaque joueur
+        int tot = playerhumainnbPions + ianbPions;
+        score[0] = 1 - playerhumainnbPions/tot;
+        score[1] = 1 - ianbPions/tot;
         return score;
     }
 

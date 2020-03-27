@@ -1,12 +1,8 @@
 package Game.Players.IA;
 
-import Game.Pion.Pion;
 import Game.Players.IA.MCTS.FinalSelectionPolicy;
 import Game.Players.IA.MCTS.MCTS;
-import Game.Players.IA.MCTS.Move;
 import Game.Players.Player;
-import Game.Rummikub;
-import Game.RummikubMove;
 import Game.Table.Chevalet;
 import Game.Table.Combinaison;
 import Game.Table.Table;
