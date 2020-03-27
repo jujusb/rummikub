@@ -40,6 +40,26 @@ public class Pion implements  Comparable<Pion> {
     }
     @Override
     public int compareTo(Pion pion) {
+        if(pion instanceof Joker){
+            if(!(((Joker) pion).getUseSerie()) && !(((Joker) pion).getUseSuite())){
+                return -1;
+            } else {
+                if(couleur.equals(pion.couleur))
+                    return num - pion.num;
+                else
+                    return couleur.compareTo(pion.couleur);
+            }
+        }
+        if(this instanceof Joker){
+            if(!(((Joker) this).getUseSerie()) && !(((Joker) this).getUseSuite())){
+                return 1;
+            } else {
+                if(couleur.equals(pion.couleur))
+                    return num - pion.num;
+                else
+                    return couleur.compareTo(pion.couleur);
+            }
+        }
         if(couleur.equals(pion.couleur))
             return num - pion.num;
         else
