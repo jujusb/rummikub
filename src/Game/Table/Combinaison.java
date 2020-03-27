@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.TreeSet;
 
 public class Combinaison extends ArrayList<Pion> {
+
     public Combinaison() {
         super();
     }

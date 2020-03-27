@@ -9,17 +9,17 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Chevalet extends ArrayList<Pion> {
-	public int getNbPions() {
-		return nbPions;
-	}
-
 	private int nbPions;
-	
+
 	public Chevalet() {
 		super();
 		nbPions=0;
 	}
-	
+
+	public int getNbPions() {
+		return nbPions;
+	}
+
 	public boolean contient(Pion p) {
 		return this.contains(p);
 	}
@@ -43,11 +43,29 @@ public class Chevalet extends ArrayList<Pion> {
 		}
 	}
 	
-	public String toString() { //TODO afficher par groupe de 6 en plusieurs lignes
+	public String toString() { //TODO à afficher par couleur pour que ce soit plus pratique
 		String s = "Votre chevalet contient " + size() + " pions : ";
 		int i = 0;
+		Couleur prec = null;
+		boolean first = true;
 		for(Pion p : this) {
-			s+= i++ +":"+ p.toString()+" ";
+			if(!(p instanceof Joker)){
+				if(!p.getCouleur().equals(prec) && !first){ //TODO à débuguer car des fois il y a un java.lang.nullException
+					s += "\n                                   ";
+				}
+				s+= i++ +":"+ p.toString()+" ";
+				prec = p.getCouleur();
+				first = false;
+			} else {
+				s += i++ +":"+ p.toString()+" ";
+			}
+
+			/*
+			if(i%6 == 0 && i != 0){
+				s += "\n                                   ";
+			}
+			*/
+
 		}
 		return s;
 	}

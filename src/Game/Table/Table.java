@@ -38,6 +38,7 @@ public class Table extends ArrayList<Combinaison> {
 
     public void ajoutALaCombinaison(Combinaison c, Pion p) {
         get(indexOf(c)).add(p);
+
     }
 
     public boolean retirerDeCombinaison(Combinaison c, Pion p) {
