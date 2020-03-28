@@ -10,6 +10,10 @@ public class MoveReplaceByJoker extends RummikubMove {
         super(t, p, adv);
     }
 
+    public void makeRummikubMove(){
+        //TODO
+    }
+
     @Override
     public int scoreMove() {
         return 0;

@@ -16,6 +16,10 @@ public class Table extends ArrayList<Combinaison> {
     private List chevaletJoueurHumain;
     private List chevaletIA;
 
+    public Pioche getPioche(){
+        return pioche;
+    }
+
     public void setChevaletJoueurHumain(List chevaletJoueurHumain) {
         this.chevaletJoueurHumain = chevaletJoueurHumain;
     }

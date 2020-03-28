@@ -301,8 +301,7 @@ public class Player {
                 }
             }
             if(((Joker) joker).getUseSerie()){
-                ((Joker) joker).setContainsList(c); //TODO comment set la containsList si on ne sait meme pas encore
-                                                    //TODO quels vont être les pions qui la composent ??
+                ((Joker) joker).setContainsList(c);
             }
         }
         System.out.println(c);

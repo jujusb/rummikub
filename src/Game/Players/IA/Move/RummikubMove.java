@@ -13,15 +13,26 @@ public abstract class RummikubMove implements Move {
     Table table;
     IA player;
     Player adversaire;
+    int nbPionsAvantMove;
 
     public RummikubMove(Table t, IA p, Player adv) {
         table=t;
         player = p;
         adversaire = adv;
+        nbPionsAvantMove = player.getChevalet().getNbPions();
     }
 
+    public List<Combinaison> combinaisonsDébut() {
+        return null;
+    }
 
-    public abstract int scoreMove();
+    public List<Combinaison> combinaisonsApresDebut() {
+        return null;
+    }
+
+    public abstract int scoreMove(); //score correspond aux nombres de pions sur le chevalet après le move
+
+    public abstract void makeRummikubMove() throws Exception;
 
     @Override
     public int compareTo(Move o) {
