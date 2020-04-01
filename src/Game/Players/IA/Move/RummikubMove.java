@@ -2,7 +2,6 @@ package Game.Players.IA.Move;
 
 import Game.Players.IA.IA;
 import Game.Players.IA.MCTS.Move;
-import Game.Players.IA.Rummikub;
 import Game.Players.Player;
 import Game.Table.Combinaison;
 import Game.Table.Table;

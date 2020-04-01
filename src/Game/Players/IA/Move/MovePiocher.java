@@ -32,8 +32,9 @@ public class MovePiocher extends RummikubMove {
     }
     */
 
+    //piocher se fait automatiquement
     public void makeRummikubMove(){
-        //TODO
+        player.getChevalet().ajouter(table.piocherPion());
     }
 
     @Override

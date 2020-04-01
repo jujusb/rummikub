@@ -1,6 +1,6 @@
-package Game.Players.IA;
+package Game;
 
-
+import Game.Players.IA.IA;
 import Game.Players.IA.MCTS.Board;
 import Game.Players.IA.MCTS.CallLocation;
 import Game.Players.IA.MCTS.Move;
@@ -45,33 +45,29 @@ public class Rummikub implements Board {
         while (!(playerHumain.gagne()) && !(ia.gagne())) {
             backUp();
             if (currentPlayer.isDebut()) {
-                if (!currentPlayer.passerTour()) {
-                    List<Combinaison> list = currentPlayer.jouerdebut();
-                    if (list != null) {
-                        boolean valide = table.estValide();
-                        int compte = table.comptePointsCombinaisons(list);
-                        if (compte >= 30 && valide) {
-                            currentPlayer.setDebutFait();
-                            changeCurrentPlayer();
-                        } else {
-                            System.out.println(table);
-                            if (valide && compte < 30) {
-                                System.out.println("Ces coups de jeu ne sont pas valide pour le jeu car il faut au moins 30 " +
-                                        "points pour démarrer la partie : veuillez rejouer !");
-                                System.out.println(table);
-                            } else {
-                                System.out.println("Ces coups de jeu ne sont pas valide pour le jeu car il faut des combinaisons" +
-                                        "(séries de couleurs d'un même chiffre ou suites de chiffres d'une même couleur) " +
-                                        "d'au moins 3 pions pour jouer : veuillez rejouer !");
-                            }
-                            restoreBackUp();
-                            System.out.println(table);
-                        }
+                List<Combinaison> list = currentPlayer.jouerdebut();
+                if (list != null) {
+                    boolean valide = table.estValide();
+                    int compte = table.comptePointsCombinaisons(list);
+                    if (compte >= 30 && valide) {
+                        currentPlayer.setDebutFait();
+                        startGame();
                     } else {
+                        System.out.println(table);
+                        if (valide && compte < 30) {
+                            System.out.println("Ces coups de jeu ne sont pas valide pour le jeu car il faut au moins 30 " +
+                                    "points pour démarrer la partie : veuillez rejouer !");
+                            System.out.println(table);
+                        } else {
+                            System.out.println("Ces coups de jeu ne sont pas valide pour le jeu car il faut des combinaisons" +
+                                    "(séries de couleurs d'un même chiffre ou suites de chiffres d'une même couleur) " +
+                                    "d'au moins 3 pions pour jouer : veuillez rejouer !");
+                        }
                         restoreBackUp();
+                        System.out.println(table);
                     }
                 } else {
-                    currentPlayer.getChevalet().ajouter(table.piocherPion());
+                    restoreBackUp();
                     changeCurrentPlayer();
                 }
             } else {
