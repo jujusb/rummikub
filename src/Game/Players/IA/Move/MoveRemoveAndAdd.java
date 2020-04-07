@@ -11,8 +11,8 @@ public class MoveRemoveAndAdd extends RummikubMove {
     Pion pion; //pion à déplacer d'une combinaison à une autre
     int numberCombiAdd; //numéro de la combinaison auquelle on ajoute un pion
 
-    public MoveRemoveAndAdd(Table t, IA p, Player adv, int nR, int nA, Pion pi) {
-        super(t, p, adv);
+    public MoveRemoveAndAdd(Table t, Player currentPlayer, int nR, int nA, Pion pi) {
+        super(t, currentPlayer);
         numberCombiAdd = nA;
         numberCombiRemove = nR;
         pion = pi;

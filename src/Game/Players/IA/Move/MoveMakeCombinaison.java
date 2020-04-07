@@ -9,14 +9,14 @@ import Game.Table.Table;
 public class MoveMakeCombinaison extends RummikubMove {
     Combinaison combi;//combinaison qui fera partie de toutes les possibilités de combinaisons
 
-    public MoveMakeCombinaison(Table t, IA p, Player adv, Combinaison c) {
-        super(t, p, adv);
+    public MoveMakeCombinaison(Table t, Player currentPlayer, Combinaison c) {
+        super(t, currentPlayer);
         combi = c;
     }
 
     public void makeRummikubMove() throws Exception {
         for(Pion p : combi){
-            player.getChevalet().retirer(p);
+            currentPlayer.getChevalet().retirer(p);
         }
         int i = 0;
         Combinaison c = null;

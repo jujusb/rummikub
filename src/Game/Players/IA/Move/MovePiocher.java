@@ -11,11 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MovePiocher extends RummikubMove {
-    //private HashMap<Pion,Integer> possiblePioche;
+    private int indexpionAPiocher;
 
-    public MovePiocher(Table t, IA p, Player adv) {
-        super(t, p, adv);
+    public MovePiocher(Table t, Player currentPlayer, int indexpionAPiocher) {
+        super(t, currentPlayer);
         //possiblePioche = new HashMap<>();
+        this.indexpionAPiocher=indexpionAPiocher;
     }
 
     //est-ce que toutes les possibilités de pioche doivent être dans cette classe ?
@@ -34,7 +35,9 @@ public class MovePiocher extends RummikubMove {
 
     //piocher se fait automatiquement
     public void makeRummikubMove(){
-        player.getChevalet().ajouter(table.piocherPion());
+        Pion p = table.getPioche().get(indexpionAPiocher);
+        currentPlayer.getChevalet().ajouter(p);
+        table.getPioche().remove(p);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package Game.Players.IA.Move;
 
+import Game.Pion.Joker;
 import Game.Pion.Pion;
 import Game.Players.IA.IA;
 import Game.Players.Player;
@@ -10,8 +11,8 @@ public class MoveAddPionToCombinaison extends RummikubMove {
     Pion pionToAdd;
     int numberCombi; //numéro de la combinaison qui va recevoir le pion
 
-    public MoveAddPionToCombinaison(Table t, IA p, Player adv, Pion pi, int n) {
-        super(t, p, adv);
+    public MoveAddPionToCombinaison(Table t, Player currentPlayer, Pion pi, int n) {
+        super(t, currentPlayer);
         pionToAdd = pi;
         numberCombi = n;
     }

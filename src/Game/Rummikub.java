@@ -1,9 +1,12 @@
 package Game;
 
+import Game.Pion.Pion;
 import Game.Players.IA.IA;
 import Game.Players.IA.MCTS.Board;
 import Game.Players.IA.MCTS.CallLocation;
 import Game.Players.IA.MCTS.Move;
+import Game.Players.IA.Move.MovePiocher;
+import Game.Players.IA.Move.RummikubMove;
 import Game.Players.Player;
 import Game.Table.Combinaison;
 import Game.Table.Table;
@@ -89,10 +92,10 @@ public class Rummikub implements Board {
                 }
             }
         }
-        if(ia.gagne()) {
+        if (ia.gagne()) {
             System.out.println("L'IA a gagné !");
         }
-        if(playerHumain.gagne()) {
+        if (playerHumain.gagne()) {
             System.out.println("Le joueur humain a gagné !");
         }
     }
@@ -147,23 +150,33 @@ public class Rummikub implements Board {
 
     @Override
     public ArrayList<Move> getMoves(CallLocation location) {
+        ArrayList<Move> moves = new ArrayList<>();
+        for (int i = 0; i < table.getPioche().size(); i++) {
+            MovePiocher mp = new MovePiocher(table, currentPlayer, i);
+            moves.add(mp);
+        }
+
         //TODO
-        return null;
+        return moves;
     }
 
     @Override
     public void makeMove(Move m) {
-        //TODO
+        try {
+            ((RummikubMove) m).makeRummikubMove();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public boolean gameOver() {
-        return playerHumain.gagne() || ia.gagne() ;
+        return playerHumain.gagne() || ia.gagne();
     }
 
     @Override
     public int getCurrentPlayer() {
-        return currentPlayer.equals(playerHumain)?0:1;
+        return currentPlayer.equals(playerHumain) ? 0 : 1;
     }
 
     @Override
@@ -174,12 +187,12 @@ public class Rummikub implements Board {
     @Override
     public double[] getScore() {
         double[] score = new double[2];
-        int playerhumainnbPions= playerHumain.getChevalet().getNbPions();
-        int ianbPions= ia.getChevalet().getNbPions();
+        int playerhumainnbPions = playerHumain.getChevalet().getNbPions();
+        int ianbPions = ia.getChevalet().getNbPions();
         //score calculé en fonction du nombre de pions de chaque joueur
         int tot = playerhumainnbPions + ianbPions;
-        score[0] = 1 - playerhumainnbPions/tot;
-        score[1] = 1 - ianbPions/tot;
+        score[0] = 1 - playerhumainnbPions / tot;
+        score[1] = 1 - ianbPions / tot;
         return score;
     }
 
