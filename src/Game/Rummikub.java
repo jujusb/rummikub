@@ -36,7 +36,7 @@ public class Rummikub implements Board {
         currentPlayer = playerHumain;
     }
 
-    public void changeCurrentPlayer() {
+    private void changeCurrentPlayer() {
         if (currentPlayer.equals(playerHumain)) {
             currentPlayer = ia;
         } else {
@@ -44,7 +44,7 @@ public class Rummikub implements Board {
         }
     }
 
-    public void startGame() {
+    private void startGame() {
         while (!(playerHumain.gagne()) && !(ia.gagne())) {
             backUp();
             if (currentPlayer.isDebut()) {
@@ -57,7 +57,7 @@ public class Rummikub implements Board {
                         startGame();
                     } else {
                         System.out.println(table);
-                        if (valide && compte < 30) {
+                        if (compte < 30) {
                             System.out.println("Ces coups de jeu ne sont pas valide pour le jeu car il faut au moins 30 " +
                                     "points pour démarrer la partie : veuillez rejouer !");
                             System.out.println(table);
@@ -122,7 +122,7 @@ public class Rummikub implements Board {
     }
 
     public String toString() {
-        String str = new String("Joueur humain : " + playerHumain.toString() + "\n");
+        String str = "Joueur humain : " + playerHumain.toString() + "\n";
         str += "ia : " + ia.toString() + "\n";
         str += "table :\n" + table.toString();
         return str;
@@ -191,15 +191,20 @@ public class Rummikub implements Board {
         int ianbPions = ia.getChevalet().getNbPions();
         //score calculé en fonction du nombre de pions de chaque joueur
         int tot = playerhumainnbPions + ianbPions;
-        score[0] = 1 - playerhumainnbPions / tot;
-        score[1] = 1 - ianbPions / tot;
+        score[0] = 1.0 - 1.0 * playerhumainnbPions / tot;
+        score[1] = 1.0 - 1.0 * ianbPions / tot;
         return score;
     }
 
     @Override
     public double[] getMoveWeights() {
-        //TODO
-        return new double[0];
+        int size = table.getPioche().size();
+        double[] piocherMoveWeights = new double[size];
+        double proba = 1.0 / size;
+        for(int i =0; i <size; i++) {
+            piocherMoveWeights[i]= proba;
+        }
+        return piocherMoveWeights;
     }
 
     @Override
