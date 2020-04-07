@@ -32,7 +32,7 @@ public interface Board {
 	 */
 	public void makeMove(Move m);
 
-	/**
+    /**
 	 * Returns true if the game is over.
 	 * 
 	 * @return

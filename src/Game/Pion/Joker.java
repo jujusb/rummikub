@@ -1,6 +1,6 @@
 package Game.Pion;
 
-import com.sun.xml.internal.bind.v2.runtime.output.StAXExStreamWriterOutput;
+import Game.Table.Combinaison;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +36,7 @@ public class Joker extends Pion {
         containsList.clear();
     }
 
-    public void setValueJoker() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Souhaitez vous utiliser le joker dans une suite (1) ? dans une série (2) ?");
-        int use = sc.nextInt();
-        System.out.println("Quelle couleur souhaitez vous utiliser pour le joker ? Jaune (1) Bleu (2) Noir (3) Rouge (4)");
-        int c = sc.nextInt();
+    public void setValueJoker(int use, int c, int n) {
         if(c == 1){
             this.couleur = Couleur.JAUNE;
         }else{
@@ -55,12 +50,6 @@ public class Joker extends Pion {
                 }
             }
         }
-        System.out.println("Quelle numéro souhaitez vous utiliser pour le joker ?");
-        int n = sc.nextInt();
-        if(n>13 || n<1){
-            System.out.println("Le numéro doit être compris entre 1 et 13.");
-            n = sc.nextInt();
-        }
         this.num = n;
         if(use==1){
             useSuite = true;
@@ -70,7 +59,7 @@ public class Joker extends Pion {
     }
 
 
-    public void setContainsList(Game.Table.Combinaison c){
+    public void setContainsList(Combinaison c){
         List<Couleur> couleursCombinaison = new ArrayList<Couleur>();
         for(Pion pi : c){
             if(!(pi instanceof Joker)){

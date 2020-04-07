@@ -1,16 +1,12 @@
 package Game.Players.IA;
 
-import Game.Pion.Pion;
 import Game.Players.IA.MCTS.FinalSelectionPolicy;
 import Game.Players.IA.MCTS.MCTS;
-import Game.Players.IA.MCTS.Move;
 import Game.Players.Player;
-import Game.Rummikub;
-import Game.RummikubMove;
 import Game.Table.Chevalet;
 import Game.Table.Combinaison;
 import Game.Table.Table;
-
+import Game.Rummikub;
 import java.util.List;
 
 public class IA extends Player {
@@ -50,12 +46,13 @@ public class IA extends Player {
         return super.jouer();
     }
 
+    /*
     @Override
     public boolean passerTour(){
         //TODO return false; //ne passe pas son tour ici mais après si il a essayé de jouer mais qu'il ne peut pas
         return super.passerTour();
     }
-
+*/
     @Override
     public List<Combinaison> jouerdebut() {
         //Move move = mcts.runMCTS_UCT(board,10,true);
