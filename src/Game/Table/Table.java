@@ -3,6 +3,7 @@ package Game.Table;
 import Game.Pion.Couleur;
 import Game.Pion.Joker;
 import Game.Pion.Pion;
+import Game.Players.IA.MCTS.Board;
 import Game.Table.Combinaison;
 import Game.Table.Pioche;
 
@@ -12,6 +13,21 @@ import java.util.List;
 
 public class Table extends ArrayList<Combinaison> {
     private Pioche pioche;
+    private List chevaletJoueurHumain;
+    private List chevaletIA;
+
+    public Pioche getPioche(){
+        return pioche;
+    }
+
+    public void setChevaletJoueurHumain(List chevaletJoueurHumain) {
+        this.chevaletJoueurHumain = chevaletJoueurHumain;
+    }
+
+    public void setChevaletIA(List chevaletIA) {
+        this.chevaletIA = chevaletIA;
+    }
+
     public Table() {
         super();
         pioche = new Pioche();
@@ -71,6 +87,8 @@ public class Table extends ArrayList<Combinaison> {
     public String toString() {
         String str = new String("Pions dans la pioche : "+pionsDansPioche()+ "\n");
         str+="Pions sur la table : "+pionsSurTable()+ "\n";
+        str+="Chevalet Joueur Humain : " + chevaletJoueurHumain + "\n";
+        str+="Chevalet IA : " + chevaletIA + "\n";
         int i =0;
         for(Combinaison c : this)
             str+= "Combinaison " + i++ + " : " + c.toString() + "\n";
