@@ -1,13 +1,18 @@
 package Game;
 
+import Game.Pion.Couleur;
+import Game.Pion.Joker;
 import Game.Pion.Pion;
 import Game.Players.IA.IA;
 import Game.Players.IA.MCTS.Board;
 import Game.Players.IA.MCTS.CallLocation;
 import Game.Players.IA.MCTS.Move;
+import Game.Players.IA.Move.MoveAddPionToCombinaison;
+import Game.Players.IA.Move.MoveMakeCombinaison;
 import Game.Players.IA.Move.MovePiocher;
 import Game.Players.IA.Move.RummikubMove;
 import Game.Players.Player;
+import Game.Table.Chevalet;
 import Game.Table.Combinaison;
 import Game.Table.Table;
 
@@ -47,7 +52,12 @@ public class Rummikub implements Board {
     private void startGame() {
         while (!(playerHumain.gagne()) && !(ia.gagne())) {
             backUp();
+            ArrayList<Move> moves = getMoves();
+            for (Move m : moves) {
+                System.out.println(m);
+            }
             if (currentPlayer.isDebut()) {
+                System.out.println(currentPlayer);
                 List<Combinaison> list = currentPlayer.jouerdebut();
                 if (list != null) {
                     boolean valide = table.estValide();
@@ -70,7 +80,6 @@ public class Rummikub implements Board {
                         System.out.println(table);
                     }
                 } else {
-                    restoreBackUp();
                     changeCurrentPlayer();
                 }
             } else {
@@ -150,12 +159,103 @@ public class Rummikub implements Board {
 
     @Override
     public ArrayList<Move> getMoves(CallLocation location) {
+        return getMoves();
+    }
+
+    public ArrayList<Move> getMoves() {
         ArrayList<Move> moves = new ArrayList<>();
         for (int i = 0; i < table.getPioche().size(); i++) {
             MovePiocher mp = new MovePiocher(table, currentPlayer, i);
             moves.add(mp);
         }
-
+        currentPlayer.getChevalet().sort();
+        Chevalet chevalet = (Chevalet) currentPlayer.getChevalet().clone();
+        for (int i = 0; i < chevalet.size(); i++) {
+            Pion p = chevalet.get(i);
+            Combinaison c = new Combinaison();
+            c.add(p);
+            boolean suite = true;
+            Combinaison cc = null;
+            for (int j = i + 1; j < chevalet.size(); j++) {
+                if (suite) {
+                    Pion pp = chevalet.get(j);
+                    if (!(p instanceof Joker)) {
+                        if (pp.getCouleur().equals(p.getCouleur())) {
+                            if (pp.compareTo(p) == 1) { //Ecart de 1 et même couleur
+                                c.add(pp);
+                                p = pp;
+                            } else {
+                                suite = false;
+                            }
+                        } else {
+                            suite = false;
+                        }
+                        if (c.size() >= 3 && c.estValide() && !(c.equals(cc))) {
+                            cc = (Combinaison) c.clone();
+                            System.out.println(c);
+                            MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, c);
+                            moves.add(mc);
+                        }
+                    }
+                }
+            }
+        }
+        ArrayList<ArrayList<Pion>> tab = new ArrayList<>();
+        for (int i = 0; i < 13; i++) {
+            tab.add(i, new ArrayList<>());
+        }
+        for (Pion p : chevalet) {
+            ArrayList<Pion> list = tab.get(p.getNum() - 1);
+            list.add(p);
+        }
+        for (ArrayList<Pion> l : tab) {
+            if (l.size() == 3) {
+                Combinaison c = new Combinaison();
+                for (Pion p : l) {
+                    c.add(p);
+                    if (c.size() >= 3 && c.estValide()) {
+                        MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, c);
+                        moves.add(mc);
+                    }
+                }
+            }
+        }
+        System.out.println(tab);
+        if (!currentPlayer.isDebut()) {
+            int index = 0;
+            for (Combinaison c : table) {
+                if (c.isSuite()) {
+                    Couleur couleur = c.get(0).getCouleur();
+                    int numMin = c.get(0).getNum();
+                    int numMax = c.get(c.size() - 1).getNum();
+                    if (numMin != 1) {
+                        Pion p = new Pion(numMin - 1, couleur);
+                        if (chevalet.contient(p)) {
+                            MoveAddPionToCombinaison moveadd = new MoveAddPionToCombinaison(table, currentPlayer, p, index);
+                            moves.add(moveadd);
+                        }
+                    }
+                    if (numMax != 13) {
+                        Pion p = new Pion(numMax + 1, couleur);
+                        if (chevalet.contient(p)) {
+                            MoveAddPionToCombinaison moveadd = new MoveAddPionToCombinaison(table, currentPlayer, p, index);
+                            moves.add(moveadd);
+                        }
+                    }
+                } else if (c.isSerie()) {
+                    int num = c.get(0).getNum();
+                    ArrayList<Couleur> containList = c.setContainsList();
+                    for(Couleur couleur : containList) {
+                        Pion p = new Pion(num, couleur);
+                        if(chevalet.contient(p)) {
+                            MoveAddPionToCombinaison moveadd = new MoveAddPionToCombinaison(table, currentPlayer, p, index);
+                            moves.add(moveadd);
+                        }
+                    }
+                }
+                index++;
+            }
+        }
         //TODO
         return moves;
     }
@@ -201,8 +301,8 @@ public class Rummikub implements Board {
         int size = table.getPioche().size();
         double[] piocherMoveWeights = new double[size];
         double proba = 1.0 / size;
-        for(int i =0; i <size; i++) {
-            piocherMoveWeights[i]= proba;
+        for (int i = 0; i < size; i++) {
+            piocherMoveWeights[i] = proba;
         }
         return piocherMoveWeights;
     }

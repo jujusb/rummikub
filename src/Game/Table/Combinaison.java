@@ -1,16 +1,22 @@
 package Game.Table;
 
 import Game.Pion.Couleur;
+import Game.Pion.Joker;
 import Game.Pion.Pion;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.TreeSet;
 
 public class Combinaison extends ArrayList<Pion> {
+    private boolean suite;
+    private boolean serie;
+    private ArrayList<Couleur> containsList;
 
     public Combinaison() {
         super();
+        containsList= new ArrayList<>();
     }
 
     public boolean estValide() {
@@ -37,7 +43,17 @@ public class Combinaison extends ArrayList<Pion> {
         temp.add(get(size()-1).getCouleur());
         if(temp.size() < size())
             serieCouleur= false;
+        suite = memeCouleur && suiteNum;
+        serie = serieCouleur && memeNum;
         return memeCouleur && suiteNum || serieCouleur && memeNum;
+    }
+
+    public boolean isSuite() {
+        return suite;
+    }
+
+    public boolean isSerie() {
+        return serie;
     }
 
     public boolean contientJoker(){
@@ -48,6 +64,21 @@ public class Combinaison extends ArrayList<Pion> {
             }
         }
         return res;
+    }
+
+    public ArrayList<Couleur> setContainsList(){
+        List<Couleur> couleursCombinaison = new ArrayList<Couleur>();
+        for(Pion pi : this){
+            if(!(pi instanceof Joker)){
+                couleursCombinaison.add(pi.getCouleur());
+            }
+        }
+        for(Couleur col : Couleur.values()){
+            if(!(couleursCombinaison.contains(col))){
+                containsList.add(col);
+            }
+        }
+        return containsList;
     }
 
     public void sort() {

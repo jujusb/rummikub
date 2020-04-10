@@ -45,6 +45,10 @@ public class MovePiocher extends RummikubMove {
         return nbPionsAvantMove + 1;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "MovePiocher{" +
+                "indexpionAPiocher=" + indexpionAPiocher +
+                '}';
+    }
 }

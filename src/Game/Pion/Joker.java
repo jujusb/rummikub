@@ -58,21 +58,6 @@ public class Joker extends Pion {
         }
     }
 
-
-    public void setContainsList(Combinaison c){
-        List<Couleur> couleursCombinaison = new ArrayList<Couleur>();
-        for(Pion pi : c){
-            if(!(pi instanceof Joker)){
-                couleursCombinaison.add(pi.getCouleur());
-            }
-        }
-        for(Couleur col : Couleur.values()){
-            if(!(couleursCombinaison.contains(col))){
-                containsList.add(col);
-            }
-        }
-    }
-
     public void changeValue(int n, Couleur c) {
         num=n;
         couleur=c;

@@ -257,7 +257,10 @@ public class Player {
         int jeu = sc.nextInt();
         if (jeu == 0) {
             setEndOfTurn(true);
-            chevalet.ajouter(table.piocherPion());
+            Pion p = table.piocherPion();
+            chevalet.ajouter(p);
+            System.out.println(p);
+            list=null;
         }
         while (!isEndOfTurn() && table.estValide()) {
             Combinaison c = jouerUneCombinaison();
@@ -324,8 +327,9 @@ public class Player {
                     joker = pi;
                 }
             }
+            assert joker != null;
             if (((Joker) joker).getUseSerie()) {
-                ((Joker) joker).setContainsList(c);
+                c.setContainsList();
             }
         }
     }

@@ -35,4 +35,10 @@ public class MoveMakeCombinaison extends RummikubMove {
         return nbPionsAvantMove - combi.size();
     }
 
+    @Override
+    public String toString() {
+        return "MoveMakeCombinaison{" +
+                "combi=" + combi +
+                '}';
+    }
 }
