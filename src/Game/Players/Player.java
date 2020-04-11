@@ -129,17 +129,22 @@ public class Player {
                 //    p = sc.nextInt();
                 //}
                 Pion pp = cc.get(cc.getIndexJoker());
-                table.retirerDeCombinaison(cc, pp);
                 Pion select = selectPion();
+                if(select == null) {
+                    return true;
+                }
                 while(!((Joker) pp).canReplace(select)) {
                     chevalet.ajouter(select);
                     System.out.println("Selectionner un pion qui correspond à la valeur du joker.");
                     select = selectPion();
+                    if(select == null) {
+                        return true;
+                    }
                 }
+                table.retirerDeCombinaison(cc, pp);
                 chevalet.ajouter(pp);
                 ((Joker) pp).reset();
                 table.ajoutALaCombinaison(cc, select);
-                table.retirerDeCombinaison(cc, pp);
                 //System.out.println(table + "Selectionez la combinaison où doit être ajouté le joker :");
                 //int ccc = sc.nextInt();
                 //if (ccc < 0 || ccc > table.size()) {
