@@ -40,7 +40,6 @@ public class Player {
 
     public boolean jouer() {
         Scanner sc = new Scanner(System.in);
-        System.out.println(table);
         int compteur = 0;
         while (!isEndOfTurn()) {
             System.out.println(table);
@@ -131,26 +130,25 @@ public class Player {
                 //}
                 Pion pp = cc.get(cc.getIndexJoker());
                 table.retirerDeCombinaison(cc, pp);
-                ((Joker) pp).reset();
-                chevalet.ajouter(pp);
                 Pion select = selectPion();
-                if (((Joker) pp).canReplace(select)) {
-                    table.ajoutALaCombinaison(cc, select);
-                    table.retirerDeCombinaison(cc, pp);
-                } else {
+                while(!((Joker) pp).canReplace(select)) {
                     chevalet.ajouter(select);
                     System.out.println("Selectionner un pion qui correspond à la valeur du joker.");
                     select = selectPion();
                 }
-                System.out.println(table + "Selectionez la combinaison où doit être ajouté le joker :");
-                int ccc = sc.nextInt();
-                if (ccc < 0 || ccc > table.size()) {
-                    System.out.println("Ce numéro n'est pas valable. Il doit être compris entre 0 et " + table.size() + " pour être contenu sur la table. \n Selectionez la combinaison où doit être ajouté le joker :");
-                    ccc = sc.nextInt();
-                }
-                table.ajoutALaCombinaison(table.get(ccc), pp);
-                useJoker(pp);
-                setContainListForJoker(table.get(ccc));
+                chevalet.ajouter(pp);
+                ((Joker) pp).reset();
+                table.ajoutALaCombinaison(cc, select);
+                table.retirerDeCombinaison(cc, pp);
+                //System.out.println(table + "Selectionez la combinaison où doit être ajouté le joker :");
+                //int ccc = sc.nextInt();
+                //if (ccc < 0 || ccc > table.size()) {
+                //    System.out.println("Ce numéro n'est pas valable. Il doit être compris entre 0 et " + table.size() + " pour être contenu sur la table. \n Selectionez la combinaison où doit être ajouté le joker :");
+                //    ccc = sc.nextInt();
+                //}
+                //table.ajoutALaCombinaison(table.get(ccc), pp);
+                //useJoker(pp);
+                //setContainListForJoker(table.get(ccc));
             }
             compteur++;
         }

@@ -89,6 +89,9 @@ public class Rummikub implements Board {
                 }
             } else {
                 boolean continueTour = currentPlayer.jouer();
+                for (Move m : moves) {
+                    System.out.println(m);
+                }
                 while (continueTour) {
                     continueTour = currentPlayer.jouer();
                 }
