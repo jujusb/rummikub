@@ -104,12 +104,10 @@ public class Chevalet extends ArrayList<Pion> {
     }
 
 	public int getIndexJoker() {
-		int res = 0;
-		for (Pion p : this){
-			if (p instanceof Joker) {
-				return res;
+		for (int i = 0; i< size(); i++){
+			if (get(i) instanceof Joker) {
+				return i;
 			}
-			res ++;
 		}
 		return -1;
 	}

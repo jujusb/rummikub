@@ -170,43 +170,37 @@ public class Rummikub implements Board {
         return getMoves();
     }
 
-    public ArrayList<Move> getMoveCombinaisons(ArrayList<ArrayList<Pion>> tab, Chevalet chevalet) {
+    public ArrayList<Move> getMoveCombinaisons(ArrayList<ArrayList<Pion>> tabSerie, ArrayList<ArrayList<Pion>> tabSuite, Chevalet chevalet) {
         ArrayList<Move> moves = new ArrayList<>();
         //MOVES MAKE COMBINAISON
         int nbJoker = chevalet.contientJoker();
-        boolean joker = false;
-        if (nbJoker > 0) {
-            joker = true;
-        }
-        for (int i = 0; i < chevalet.size(); i++) {
-            Pion p = chevalet.get(i);
-            Combinaison c = new Combinaison();
-            c.add(p);
-            boolean suite = true;
-            Combinaison cc = null;
-            for (int j = i + 1; j < chevalet.size(); j++) {
-                if (suite) {
-                    Pion pp = chevalet.get(j);
-                    if (!(p instanceof Joker)) {
-                        if (pp.getCouleur().equals(p.getCouleur())) {
-                            if (pp.compareTo(p) == 1) { //Ecart de 1 et même couleur
-                                c.add(pp);
-                                p = pp;
-                            } else {
-                                if (joker) {
-                                    nbJoker--;
-                                    if (nbJoker == 0) joker = false;
-                                    int posjok = chevalet.getIndexJoker();
-                                    Joker joker1 = (Joker) chevalet.get(posjok);
-                                    joker1.setValueJoker(1, p.getCouleur(), p.getNum() + 1);
-                                } else {
-                                    suite = false;
-                                    nbJoker = chevalet.contientJoker();
-                                }
-                            }
+        boolean joker = nbJoker > 0;
+        for (ArrayList<Pion> tab : tabSuite) {
+            for (int i = 0; i < tab.size(); i++) {
+                Pion p = tab.get(i);
+                Combinaison c = new Combinaison();
+                c.add(p);
+                boolean suite = true;
+                Combinaison cc = null;
+                for (int j = i + 1; j < tab.size(); j++) {
+                    if (suite) {
+                        Pion pp = tab.get(j);
+                        if (pp.compareTo(p) == 1) { //Ecart de 1 et même couleur
+                            c.add(pp);
+                            p = pp;
                         } else {
-                            suite = false;
-                            nbJoker = chevalet.contientJoker();
+                            if (joker) {
+                                nbJoker--;
+                                if (nbJoker == 0) joker = false;
+                                int posjok = chevalet.getIndexJoker();
+                                Joker joker1 = (Joker) chevalet.get(posjok);
+                                joker1.setValueJoker(1, p.getCouleur(), p.getNum() + 1);
+                                c.add(joker1);
+                                p= joker1;
+                            } else {
+                                suite = false;
+                                nbJoker = chevalet.contientJoker();
+                            }
                         }
                         if (c.size() >= 3 && c.estValide() && !(c.equals(cc))) {
                             cc = (Combinaison) c.clone();
@@ -214,29 +208,27 @@ public class Rummikub implements Board {
                             moves.add(mc);
                         }
                     }
+                    nbJoker = chevalet.contientJoker();
                 }
+                nbJoker = chevalet.contientJoker();
             }
+            nbJoker = chevalet.contientJoker();
         }
 
+        //TODO A corriger avec joker
         int num = 1;
-        for (ArrayList<Pion> l : tab) {
+        for (ArrayList<Pion> l : tabSerie) {
             if (l.size() >= 3) {
                 Combinaison c = new Combinaison();
                 for (Pion p : l) {
                     c.add(p);
                     if (c.size() >= 3 && c.estValide()) {
-                        for (Pion pion : c) {
-                            try {
-                                chevalet.retirer(pion);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
                         MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, c);
                         moves.add(mc);
                     }
                 }
-            } else if (l.size() >= 2 && joker) {
+            }
+            if (joker) {
                 TreeSet<Couleur> couleurs = new TreeSet<>();
                 for (Pion p : l) {
                     couleurs.add(p.getCouleur());
@@ -257,28 +249,28 @@ public class Rummikub implements Board {
                             for (Couleur couleur : list) {
                                 setValueJokerInSerie(chevalet, moves, num, c, j, couleur);
                             }
-                        }
-                    } else if (c.size() == 2 && nbJoker == 2) {
-                        Joker j = (Joker) chevalet.get(chevalet.getIndexJoker());
-                        try {
-                            chevalet.retirer(j);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        Joker jj = (Joker) chevalet.get(chevalet.getIndexJoker());
-                        try {
-                            chevalet.retirer(jj);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        c.add(j);
-                        chevalet.ajouter(j);
-                        chevalet.ajouter(jj);
-                        for (Couleur couleur : list) {
-                            setValueJokerInSerie(chevalet, moves, num, c, j, couleur);
-                            for (Couleur couleur1 : list) {
-                                if (couleur != couleur1) {
-                                    setValueJokerInSerie(chevalet, moves, num, c, jj, couleur1);
+                        } else if (nbJoker == 2) {
+                            Joker j = (Joker) chevalet.get(chevalet.getIndexJoker());
+                            try {
+                                chevalet.retirer(j);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            Joker jj = (Joker) chevalet.get(chevalet.getIndexJoker());
+                            try {
+                                chevalet.retirer(jj);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            c.add(j);
+                            chevalet.ajouter(j);
+                            chevalet.ajouter(jj);
+                            for (Couleur couleur : list) {
+                                setValueJokerInSerie(chevalet, moves, num, c, j, couleur);
+                                for (Couleur couleur1 : list) {
+                                    if (couleur != couleur1) {
+                                        setValueJokerInSerie(chevalet, moves, num, c, jj, couleur1);
+                                    }
                                 }
                             }
                         }
@@ -290,7 +282,8 @@ public class Rummikub implements Board {
         return moves;
     }
 
-    private void setValueJokerInSerie(Chevalet chevalet, ArrayList<Move> moves, int num, Combinaison c, Joker j, Couleur couleur) {
+    private void setValueJokerInSerie(Chevalet chevalet, ArrayList<Move> moves, int num, Combinaison c, Joker
+            j, Couleur couleur) {
         j.setValueJoker(0, couleur, num);
         if (c.estValide()) {
             MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, c);
@@ -303,15 +296,26 @@ public class Rummikub implements Board {
         Chevalet chevalet = (Chevalet) currentPlayer.getChevalet().clone();
         chevalet.sort();
         //tab for series
-        ArrayList<ArrayList<Pion>> tab = new ArrayList<>();
+        ArrayList<ArrayList<Pion>> tabSeries = new ArrayList<>();
         for (int i = 0; i < 13; i++) {
-            tab.add(i, new ArrayList<>());
+            tabSeries.add(i, new ArrayList<>());
         }
         for (Pion p : chevalet) {
             if (!(p instanceof Joker)) {
-                tab.get(p.getNum() - 1).add(p);
+                tabSeries.get(p.getNum() - 1).add(p);
             }
         }
+        //tab for suites
+        ArrayList<ArrayList<Pion>> tabSuite = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            tabSuite.add(i, new ArrayList<>());
+        }
+        for (Pion p : chevalet) {
+            if (!(p instanceof Joker)) {
+                tabSuite.get(p.getCouleur().ordinal()).add(p);
+            }
+        }
+        System.out.println(tabSuite);
         moves = new ArrayList<>();
         //MOVES PIOCHER
         for (int i = 0; i < table.getPioche().size(); i++) {
@@ -319,10 +323,10 @@ public class Rummikub implements Board {
             moves.add(mp);
         }
         //MAKES COMBINAISONS
-        ArrayList<Move> movesCombinaisons = getMoveCombinaisons(tab, chevalet);
+        ArrayList<Move> movesCombinaisons = getMoveCombinaisons(tabSeries, tabSuite, chevalet);
         for (Move move : movesCombinaisons) {
             if (currentPlayer.isDebut()) {
-                if(((MoveMakeCombinaison) move).getCombi().score() >= 30) {
+                if (((MoveMakeCombinaison) move).getCombi().score() >= 30) {
                     moves.add(move);
                 }
             } else {
@@ -351,11 +355,17 @@ public class Rummikub implements Board {
                         score += make.getCombi().score();
                     }
                     if (currentPlayer.isDebut()) {
-                        if(score > 30) {
-                            moves.add(new MoveMakeCombinaisons(table, currentPlayer, makeCombinaisons));
+                        if (score > 30) {
+                            Move m = new MoveMakeCombinaisons(table, currentPlayer, makeCombinaisons);
+                            if (!moves.contains(m)) {
+                                moves.add(m);
+                            }
                         }
                     } else {
-                        moves.add(new MoveMakeCombinaisons(table, currentPlayer, makeCombinaisons));
+                        Move m = new MoveMakeCombinaisons(table, currentPlayer, makeCombinaisons);
+                        if (!moves.contains(m)) {
+                            moves.add(m);
+                        }
                     }
                 }
             }
@@ -366,7 +376,7 @@ public class Rummikub implements Board {
             //}
         }
         //MOVES ADD PION TO COMBINAISON AND REMOVE AND ADD
-        System.out.println(tab);
+        System.out.println(tabSeries);
         if (!currentPlayer.isDebut()) {
             int index = 0;
             for (Combinaison combinaison : table) {

@@ -279,7 +279,7 @@ public class Player {
             Pion p = table.piocherPion();
             chevalet.ajouter(p);
             System.out.println(p);
-            list=null;
+            return null;
         } else {
             while (!isEndOfTurn() && table.estValide()) {
                 Combinaison c = jouerUneCombinaison();
