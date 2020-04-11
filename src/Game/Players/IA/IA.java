@@ -1,9 +1,7 @@
 package Game.Players.IA;
 
-import Game.Players.IA.MCTS.Board;
 import Game.Players.IA.MCTS.FinalSelectionPolicy;
 import Game.Players.IA.MCTS.MCTS;
-import Game.Players.IA.MCTS.Move;
 import Game.Players.IA.Move.MoveMakeCombinaison;
 import Game.Players.IA.Move.MoveMakeCombinaisons;
 import Game.Players.IA.Move.MovePiocher;
@@ -16,7 +14,6 @@ import Game.Rummikub;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class IA extends Player {
     MCTS mcts;
@@ -42,13 +39,12 @@ public class IA extends Player {
 
     @Override
     public boolean jouer(){
-        RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,10,true);
-        if(move instanceof MovePiocher) {
-            return false;
-        }
-        //move.combinaisonsApresDebut();
-        //return super.jouer();
-        return true;
+        //RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,10,true);
+        //if(move instanceof MovePiocher) {
+        //    return false;
+        //}
+        //return true;
+        return super.jouer();
     }
 
     /*
@@ -60,16 +56,18 @@ public class IA extends Player {
 */
     @Override
     public List<Combinaison> jouerdebut() {
-        RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,10,true);
-        if(move instanceof MovePiocher) {
-            return null;
-        } else if(move instanceof MoveMakeCombinaisons) {
-            List<Combinaison> t = ((MoveMakeCombinaisons)move).getCombinaisons();
-            return t;
-        }
-        //move.combinaisonsApresDebut();
-        return null;
-        //return super.jouerdebut();
+        //RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,2,true);
+        //List<Combinaison> t;
+        //if(move instanceof MovePiocher) {
+        //    t=null;
+        //} else if(move instanceof MoveMakeCombinaisons) {
+        //    t = ((MoveMakeCombinaisons)move).getCombinaisons();
+        //} else { // if(move instanceof MoveMakeCombinaison)
+        //    t = new ArrayList<>();
+        //    t.add(((MoveMakeCombinaison) move).getCombi());
+        //}
+        //return t;
+        return super.jouerdebut();
     }
 
     @Override
