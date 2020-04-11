@@ -266,7 +266,7 @@ public class Rummikub implements Board {
                 ArrayList<Couleur> list = new ArrayList<>();
                 for (Couleur coul : Couleur.values()) {
                     if (!couleurs.contains(coul)) {
-                        couleurs.add(coul);
+                        list.add(coul);
                     }
                 }
                 Combinaison c = new Combinaison();
