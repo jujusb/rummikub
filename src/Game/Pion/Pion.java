@@ -38,6 +38,7 @@ public class Pion implements  Comparable<Pion> {
                 num + " " + couleur +
                 '}';
     }
+
     @Override
     public int compareTo(Pion pion) {
         if(pion instanceof Joker){

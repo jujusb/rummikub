@@ -18,7 +18,7 @@ public class MoveRemoveAndAdd extends RummikubMove {
         pion = pi;
     }
 
-    public void makeRummikubMove() { //TODO il faudrait tester si la combinaison contient plus de 3 pions au départ
+    public void makeRummikubMove() { // test fait si la combinaison contient plus de 3 pions au départ
         table.get(numberCombiRemove).remove(pion);
         table.ajoutALaCombinaison(table.get(numberCombiAdd), pion);
     }

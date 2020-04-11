@@ -108,7 +108,7 @@ public class Player {
                         return true;
                     }
                 }
-                if (!table.get(c).contientJoker()) {
+                if (table.get(c).contientJoker()==0) {
                     System.out.println("Cette combinaison ne contient pas de joker. \n Selectionez la combinaison où doit être retiré le joker :\"");
                     c = sc.nextInt();
                     if (c == -1) {
@@ -116,31 +116,41 @@ public class Player {
                     }
                 }
                 Combinaison cc = table.get(c);
-                System.out.println(cc + "Selectionez la position du joker à retirer de cette combinaison :");
-                int p = sc.nextInt();
-                if (p == -1) {
-                    return true;
-                }
-                if (p < 0 || p > cc.size()) {
-                    System.out.println("Ce numéro n'est pas valable. Il doit être compris entre 0 et " + cc.size() + " pour être contenu dans cette combinaison. \n Selectionez la position du pion à retirer de cette combinaison :");
-                    p = sc.nextInt();
-                }
-                if (!(cc.get(p) instanceof Joker)) {
-                    System.out.println("Ce pion n'est pas un joker. \n Selectionez un joker :\"");
-                    p = sc.nextInt();
-                }
-                Pion pp = cc.get(p);
+                //System.out.println(cc + "Selectionez la position du joker à retirer de cette combinaison :");
+                //int p = sc.nextInt();
+                //if (p == -1) {
+                //    return true;
+                //}
+                //if (p < 0 || p > cc.size()) {
+                //    System.out.println("Ce numéro n'est pas valable. Il doit être compris entre 0 et " + cc.size() + " pour être contenu dans cette combinaison. \n Selectionez la position du pion à retirer de cette combinaison :");
+                //    p = sc.nextInt();
+                //}
+                //if (!(cc.get(p) instanceof Joker)) {
+                //    System.out.println("Ce pion n'est pas un joker. \n Selectionez un joker :\"");
+                //    p = sc.nextInt();
+                //}
+                Pion pp = cc.get(cc.getIndexJoker());
                 table.retirerDeCombinaison(cc, pp);
                 ((Joker) pp).reset();
                 chevalet.ajouter(pp);
                 Pion select = selectPion();
                 if (((Joker) pp).canReplace(select)) {
                     table.ajoutALaCombinaison(cc, select);
+                    table.retirerDeCombinaison(cc, pp);
                 } else {
                     chevalet.ajouter(select);
                     System.out.println("Selectionner un pion qui correspond à la valeur du joker.");
                     select = selectPion();
                 }
+                System.out.println(table + "Selectionez la combinaison où doit être ajouté le joker :");
+                int ccc = sc.nextInt();
+                if (ccc < 0 || ccc > table.size()) {
+                    System.out.println("Ce numéro n'est pas valable. Il doit être compris entre 0 et " + table.size() + " pour être contenu sur la table. \n Selectionez la combinaison où doit être ajouté le joker :");
+                    ccc = sc.nextInt();
+                }
+                table.ajoutALaCombinaison(table.get(ccc), pp);
+                useJoker(pp);
+                setContainListForJoker(table.get(ccc));
             }
             compteur++;
         }
@@ -212,17 +222,7 @@ public class Player {
         }
         Pion p = chevalet.get(n);
         if (p instanceof Joker) {
-            System.out.println("Souhaitez vous utiliser le joker dans une suite (1) ? dans une série (2) ?");
-            int use = sc.nextInt();
-            System.out.println("Quelle couleur souhaitez vous utiliser pour le joker ? Jaune (1) Bleu (2) Noir (3) Rouge (4)");
-            int c = sc.nextInt();
-            System.out.println("Quelle numéro souhaitez vous utiliser pour le joker ?");
-            int n3 = sc.nextInt();
-            if (n3 > 13 || n3 < 1) {
-                System.out.println("Le numéro doit être compris entre 1 et 13.");
-                n3 = sc.nextInt();
-            }
-            ((Joker) p).setValueJoker(use, c, n3);
+            useJoker(p);
             try {
                 chevalet.retirer(p);
             } catch (Exception e) {
@@ -241,6 +241,26 @@ public class Player {
         return null;
     }
 
+    private void useJoker(Pion p) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Souhaitez vous utiliser le joker dans une suite (1) ? dans une série (2) ?");
+        int use = sc.nextInt();
+        int n3;
+        System.out.println("Quelle numéro souhaitez vous utiliser pour le joker ?");
+        n3 = sc.nextInt();
+        if (n3 > 13 || n3 < 1) {
+            System.out.println("Le numéro doit être compris entre 1 et 13.");
+            n3 = sc.nextInt();
+        }
+        System.out.println("Quelle couleur souhaitez vous utiliser pour le joker ? Jaune (1) Bleu (2) Noir (3) Rouge (4)");
+        int c = sc.nextInt();
+        if(c<0 || c>4) {
+            System.out.println("Cette couleur n'est pas valable. Quelle couleur souhaitez vous utiliser pour le joker ? Jaune (1) Bleu (2) Noir (3) Rouge (4)");
+            c = sc.nextInt();
+        }
+        ((Joker) p).setValueJoker(use, c, n3);
+    }
+
     public boolean isEndOfCombinaison() {
         return endOfCombinaison;
     }
@@ -256,18 +276,18 @@ public class Player {
                 "Jouer une nouvelle combinaison à 30 points minimum (1 ou plus) ?");
         int jeu = sc.nextInt();
         if (jeu == 0) {
-            setEndOfTurn(true);
             Pion p = table.piocherPion();
             chevalet.ajouter(p);
             System.out.println(p);
             list=null;
-        }
-        while (!isEndOfTurn() && table.estValide()) {
-            Combinaison c = jouerUneCombinaison();
-            if (c == null) {
-                return null;
+        } else {
+            while (!isEndOfTurn() && table.estValide()) {
+                Combinaison c = jouerUneCombinaison();
+                if (c == null) {
+                    return null;
+                }
+                list.add(c);
             }
-            list.add(c);
         }
         return list;
     }
@@ -320,14 +340,13 @@ public class Player {
     }
 
     public void setContainListForJoker(Combinaison c) {
-        if (c.contientJoker()) { //si la combinaison contient un joker on regarde si celle-ci est une série afin de set la containsList
+        if (c.contientJoker()>0) { //si la combinaison contient un joker on regarde si celle-ci est une série afin de set la containsList
             Pion joker = null;
             for (Pion pi : c) {
                 if (pi instanceof Joker) {
                     joker = pi;
                 }
             }
-            assert joker != null;
             if (((Joker) joker).getUseSerie()) {
                 c.setContainsList();
             }

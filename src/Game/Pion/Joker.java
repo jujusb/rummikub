@@ -36,6 +36,22 @@ public class Joker extends Pion {
         containsList.clear();
     }
 
+    /**
+     *
+     * @param use si 1,suite sinon série
+     * @param c
+     * @param n
+     */
+    public void setValueJoker(int use, Couleur c, int n) {
+        this.couleur = c;
+        this.num = n;
+        if(use==1){
+            useSuite = true;
+        } else {
+            useSerie = true;
+        }
+    }
+
     public void setValueJoker(int use, int c, int n) {
         if(c == 1){
             this.couleur = Couleur.JAUNE;

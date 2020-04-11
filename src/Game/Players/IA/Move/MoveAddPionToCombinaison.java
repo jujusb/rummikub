@@ -26,4 +26,11 @@ public class MoveAddPionToCombinaison extends RummikubMove {
         return nbPionsAvantMove - 1;
     }
 
+    @Override
+    public String toString() {
+        return "MoveAddPionToCombinaison{" +
+                "pionToAdd=" + pionToAdd +
+                ", numberCombi=" + numberCombi +
+                '}';
+    }
 }

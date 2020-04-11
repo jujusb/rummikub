@@ -42,7 +42,16 @@ public class Chevalet extends ArrayList<Pion> {
 			return p;
 		}
 	}
-	
+
+	public int contientJoker(){
+		int res = 0;
+		for (Pion p : this){
+			if (p instanceof Joker){
+				res ++;
+			}
+		}
+		return res;
+	}
 	public String toString() { //TODO à afficher par couleur pour que ce soit plus pratique
 		String s = "Votre chevalet contient " + size() + " pions : ";
 		int i = 0;
@@ -93,4 +102,16 @@ public class Chevalet extends ArrayList<Pion> {
         }
         return chevalet;
     }
+
+	public int getIndexJoker() {
+		int res = 0;
+		for (Pion p : this){
+			if (p instanceof Joker) {
+				return res;
+			}
+			res ++;
+		}
+		return -1;
+	}
+
 }

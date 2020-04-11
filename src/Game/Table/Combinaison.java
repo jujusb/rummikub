@@ -19,6 +19,14 @@ public class Combinaison extends ArrayList<Pion> {
         containsList= new ArrayList<>();
     }
 
+    public int score() {
+        int score = 0;
+        for(Pion p : this) {
+            score+=p.getNum();
+        }
+        return score;
+    }
+
     public boolean estValide() {
         if(size()< 3 || size() > 13)
             return false;
@@ -56,14 +64,25 @@ public class Combinaison extends ArrayList<Pion> {
         return serie;
     }
 
-    public boolean contientJoker(){
-        boolean res = false;
+    public int contientJoker(){
+        int res = 0;
         for (Pion p : this){
             if (p instanceof Game.Pion.Joker){
-                res = true;
+                res ++;
             }
         }
         return res;
+    }
+
+    public int getIndexJoker() {
+        int res = 0;
+        for (Pion p : this){
+            if (p instanceof Joker) {
+                return res;
+            }
+            res ++;
+        }
+        return -1;
     }
 
     public ArrayList<Couleur> setContainsList(){
@@ -91,5 +110,14 @@ public class Combinaison extends ArrayList<Pion> {
         for(Pion p : this)
             str += i++ + ":" + p.toString() + " ";
         return str;
+    }
+
+    public int getIndexPion(Pion p) {
+        for(int i =0; i<size(); i++){
+            if(get(i).equals(p)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

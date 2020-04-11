@@ -15,7 +15,7 @@ public abstract class RummikubMove implements Move {
 
     public RummikubMove(Table t, Player currentPlayer) {
         table=t;
-        currentPlayer = currentPlayer;
+        this.currentPlayer = currentPlayer;
         nbPionsAvantMove = currentPlayer.getChevalet().getNbPions();
     }
 

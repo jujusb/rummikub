@@ -1,21 +1,30 @@
 package Game.Players.IA;
 
+import Game.Players.IA.MCTS.Board;
 import Game.Players.IA.MCTS.FinalSelectionPolicy;
 import Game.Players.IA.MCTS.MCTS;
+import Game.Players.IA.MCTS.Move;
+import Game.Players.IA.Move.MoveMakeCombinaison;
+import Game.Players.IA.Move.MoveMakeCombinaisons;
+import Game.Players.IA.Move.MovePiocher;
+import Game.Players.IA.Move.RummikubMove;
 import Game.Players.Player;
 import Game.Table.Chevalet;
 import Game.Table.Combinaison;
 import Game.Table.Table;
 import Game.Rummikub;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class IA extends Player {
     MCTS mcts;
     Rummikub board;
 
-    public IA(Table table) {
+    public IA(Table table, Rummikub board) {
         super("IA", table);
-        //this.board=board;
+        this.board=board;
         mcts = new MCTS();
         //TODO check alls the values
         mcts.setExplorationConstant(0.2);
@@ -31,19 +40,13 @@ public class IA extends Player {
 
     @Override
     public boolean jouer(){
-        //Move move = mcts.runMCTS_UCT(board,10,true);
+        RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,10,true);
+        if(move instanceof MovePiocher) {
+            return false;
+        }
         //move.combinaisonsApresDebut();
-        //TODO
-        // RummikubMove move =  new RummikubMove(getTable());
-        // List<Combinaison> combs = move.combinaisonsApresDebut();
-        // /* for(Combinaison c : combs) {
-        //     Combinaison comb = super.getTable().nouvelleCombinaison(c.get(0));
-        //     for(int i = 1 ; i<c.size(); i++) {
-        //         super.getTable().ajoutALaCombinaison(comb, c.get(i));
-        //     }
-        // } */
-        // return false;
-        return super.jouer();
+        //return super.jouer();
+        return true;
     }
 
     /*
@@ -55,12 +58,15 @@ public class IA extends Player {
 */
     @Override
     public List<Combinaison> jouerdebut() {
-        //Move move = mcts.runMCTS_UCT(board,10,true);
-        //move.combinaisonsDébut();
-        //TODO
-        // RummikubMove move =  new RummikubMove(getTable());
-        // List<Combinaison> combs =
-        // return combs;
+        //RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,10,true);
+        //if(move instanceof MovePiocher) {
+        //    return null;
+        //} else if(move instanceof MoveMakeCombinaisons) {
+        //    List<Combinaison> t = ((MoveMakeCombinaisons)move).getCombinaisons();
+        //    return t;
+        //}
+        ////move.combinaisonsApresDebut();
+        //return null;
         return super.jouerdebut();
     }
 
@@ -72,7 +78,11 @@ public class IA extends Player {
         ia.setEndOfCombinaison(isEndOfCombinaison());
         ia.setEndOfTurn(isEndOfTurn());
         ia.setName(getName());
+        ia.mcts = mcts;
         return ia;
     }
 
+    public void setboard(Rummikub rummikub) {
+        this.board = board;
+    }
 }

@@ -2,6 +2,8 @@ package Game.Players.IA.MCTS;
 
 import Game.Players.IA.MCTS.support.HeuristicFunction;
 import Game.Players.IA.MCTS.support.PlayoutSelection;
+import Game.Players.IA.Move.MovePiocher;
+import Game.Rummikub;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -317,25 +319,32 @@ public class MCTS {
 		while (!brd.gameOver()) {
 			if (playoutpolicy == null) {
 				moves = brd.getMoves(CallLocation.treePolicy);
-				if (brd.getCurrentPlayer() >= 0) {
-					// make random selection normally
-					mv = moves.get(random.nextInt(moves.size()));
-				} else {
-
+				ArrayList<Move> movesPiocher= new ArrayList<>();
+				for(Move m : moves) {
+					if(m instanceof MovePiocher) {
+						movesPiocher.add(m);
+					}
+				}
+				for(Move m : movesPiocher) {
+					moves.remove(m);
+				}
+				if(movesPiocher.size() == moves.size()) {
 					// This situation only occurs when a move
 					// is entirely random, for example a die
 					// roll. We must consider the random weights
 					// of the moves.
-
-					mv = getRandomMove(brd, moves);
+					mv = getRandomMove(brd, movesPiocher);
+				} else {
+					// make random selection normally
+					mv = moves.get(random.nextInt(moves.size()));
 				}
-
 				brd.makeMove(mv);
-			} else {
+				if(mv instanceof MovePiocher) {
+					((Rummikub)board).changeCurrentPlayer();
+				}
 				playoutpolicy.Process(board);
 			}
 		}
-
 		return brd.getScore();
 	}
 

@@ -1,7 +1,6 @@
 package Game.Players.IA.Move;
 
 import Game.Pion.Pion;
-import Game.Players.IA.IA;
 import Game.Players.Player;
 import Game.Table.Combinaison;
 import Game.Table.Table;
@@ -14,8 +13,12 @@ public class MoveMakeCombinaison extends RummikubMove {
         combi = c;
     }
 
+    public Combinaison getCombi() {
+        return combi;
+    }
+
     public void makeRummikubMove() throws Exception {
-        for(Pion p : combi){
+        for(Pion p : combi) {
             currentPlayer.getChevalet().retirer(p);
         }
         int i = 0;
