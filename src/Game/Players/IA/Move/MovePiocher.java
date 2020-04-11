@@ -21,7 +21,7 @@ public class MovePiocher extends RummikubMove {
         this.indexpionAPiocher=indexpionAPiocher;
         this.rummikub = rummikub;
         pionAPiocher = table.getPioche().get(indexpionAPiocher);
-        currentPlayer.setEndOfTurn(true);
+        //
     }
 
     //est-ce que toutes les possibilités de pioche doivent être dans cette classe ?
@@ -42,6 +42,7 @@ public class MovePiocher extends RummikubMove {
     public void makeRummikubMove(){
         currentPlayer.getChevalet().ajouter(pionAPiocher);
         table.getPioche().remove(pionAPiocher);
+        currentPlayer.setEndOfTurn(true);
         rummikub.changeCurrentPlayer();
     }
 
