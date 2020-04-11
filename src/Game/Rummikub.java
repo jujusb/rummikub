@@ -277,8 +277,9 @@ public class Rummikub implements Board {
                     }
                 }
             }
+            num++;
         }
-        num++;
+
         return moves;
     }
 
