@@ -293,15 +293,6 @@ public class Rummikub implements Board {
     private void setValueJokerInSerie(Chevalet chevalet, ArrayList<Move> moves, int num, Combinaison c, Joker j, Couleur couleur) {
         j.setValueJoker(0, couleur, num);
         if (c.estValide()) {
-            //for (Pion pion : c) {
-            //    if (!(pion instanceof Joker)) {
-            //        try {
-            //            chevalet.retirer(pion);
-            //        } catch (Exception e) {
-            //            e.printStackTrace();
-            //        }
-            //    }
-            //}
             MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, c);
             moves.add(mc);
         }
@@ -311,6 +302,7 @@ public class Rummikub implements Board {
         ArrayList<Move> moves;
         Chevalet chevalet = (Chevalet) currentPlayer.getChevalet().clone();
         chevalet.sort();
+        //tab for series
         ArrayList<ArrayList<Pion>> tab = new ArrayList<>();
         for (int i = 0; i < 13; i++) {
             tab.add(i, new ArrayList<>());
@@ -321,6 +313,12 @@ public class Rummikub implements Board {
             }
         }
         moves = new ArrayList<>();
+        //MOVES PIOCHER
+        for (int i = 0; i < table.getPioche().size(); i++) {
+            MovePiocher mp = new MovePiocher(this, table, currentPlayer, i);
+            moves.add(mp);
+        }
+        //MAKES COMBINAISONS
         ArrayList<Move> movesCombinaisons = getMoveCombinaisons(tab, chevalet);
         for (Move move : movesCombinaisons) {
             if (currentPlayer.isDebut()) {
@@ -367,17 +365,6 @@ public class Rummikub implements Board {
             //moves.add(make);
             //}
         }
-        //MOVES PIOCHER
-        //for (
-        //        int i = 0; i < table.getPioche().
-//
-        //        size();
-//
-        //        i++) {
-        //    MovePiocher mp = new MovePiocher(this, table, currentPlayer, i);
-        //    moves.add(mp);
-        //}
-
         //MOVES ADD PION TO COMBINAISON AND REMOVE AND ADD
         System.out.println(tab);
         if (!currentPlayer.isDebut()) {

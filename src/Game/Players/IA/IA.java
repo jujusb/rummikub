@@ -32,6 +32,8 @@ public class IA extends Player {
         mcts.setOptimisticBias(0.0d);
         mcts.setPessimisticBias(0.0d);
         mcts.setMoveSelectionPolicy(FinalSelectionPolicy.robustChild);
+        mcts.setPlayoutSelection(new Playout());
+        mcts.setHeuristicFunction(new Heuristic());
     }
 
     public IA() {
@@ -58,16 +60,16 @@ public class IA extends Player {
 */
     @Override
     public List<Combinaison> jouerdebut() {
-        //RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,10,true);
-        //if(move instanceof MovePiocher) {
-        //    return null;
-        //} else if(move instanceof MoveMakeCombinaisons) {
-        //    List<Combinaison> t = ((MoveMakeCombinaisons)move).getCombinaisons();
-        //    return t;
-        //}
-        ////move.combinaisonsApresDebut();
-        //return null;
-        return super.jouerdebut();
+        RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,10,true);
+        if(move instanceof MovePiocher) {
+            return null;
+        } else if(move instanceof MoveMakeCombinaisons) {
+            List<Combinaison> t = ((MoveMakeCombinaisons)move).getCombinaisons();
+            return t;
+        }
+        //move.combinaisonsApresDebut();
+        return null;
+        //return super.jouerdebut();
     }
 
     @Override

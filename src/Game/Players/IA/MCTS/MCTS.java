@@ -325,9 +325,6 @@ public class MCTS {
 						movesPiocher.add(m);
 					}
 				}
-				for(Move m : movesPiocher) {
-					moves.remove(m);
-				}
 				if(movesPiocher.size() == moves.size()) {
 					// This situation only occurs when a move
 					// is entirely random, for example a die
@@ -335,6 +332,9 @@ public class MCTS {
 					// of the moves.
 					mv = getRandomMove(brd, movesPiocher);
 				} else {
+					for(Move m : movesPiocher) {
+						moves.remove(m);
+					}
 					// make random selection normally
 					mv = moves.get(random.nextInt(moves.size()));
 				}
