@@ -228,7 +228,9 @@ public class Rummikub implements Board {
                         if (c.size() >= 3 && c.estValide() && !(c.equals(cc))) {
                             cc = (Combinaison) c.clone();
                             MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, c);
-                            moves.add(mc);
+                            if(!moves.contains(mc)) {
+                                moves.add(mc);
+                            }
                         }
                     }
                     nbJoker = chevalet.contientJoker();
@@ -316,7 +318,9 @@ public class Rummikub implements Board {
         j.setValueJoker(0, couleur, num);
         if (c.estValide()) {
             MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, c);
-            moves.add(mc);
+            if(!moves.contains(mc)) {
+                moves.add(mc);
+            }
         }
     }
 
