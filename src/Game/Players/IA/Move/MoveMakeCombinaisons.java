@@ -8,6 +8,7 @@ import Game.Table.Combinaison;
 import Game.Table.Table;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.TreeSet;
 public class MoveMakeCombinaisons extends RummikubMove {
     ArrayList<MoveMakeCombinaison> combi;//ensemble combinaison qui fera partie des combinaisons de départs
@@ -39,6 +40,21 @@ public class MoveMakeCombinaisons extends RummikubMove {
             score+=m.combi.size();
         }
         return nbPionsAvantMove - score ;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MoveMakeCombinaisons)) return false;
+        if (!super.equals(o)) return false;
+        MoveMakeCombinaisons that = (MoveMakeCombinaisons) o;
+        return Objects.equals(combi, that.combi) &&
+                Objects.equals(combinaisons, that.combinaisons);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), combi, combinaisons);
     }
 
     @Override

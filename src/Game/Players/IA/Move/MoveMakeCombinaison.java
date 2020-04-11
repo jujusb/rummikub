@@ -5,6 +5,8 @@ import Game.Players.Player;
 import Game.Table.Combinaison;
 import Game.Table.Table;
 
+import java.util.Objects;
+
 public class MoveMakeCombinaison extends RummikubMove {
     Combinaison combi;//combinaison qui fera partie de toutes les possibilités de combinaisons
 
@@ -31,6 +33,20 @@ public class MoveMakeCombinaison extends RummikubMove {
             }
             i++;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MoveMakeCombinaison)) return false;
+        if (!super.equals(o)) return false;
+        MoveMakeCombinaison that = (MoveMakeCombinaison) o;
+        return Objects.equals(combi, that.combi);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), combi);
     }
 
     @Override

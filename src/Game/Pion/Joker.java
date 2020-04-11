@@ -81,7 +81,7 @@ public class Joker extends Pion {
     }
 
     public boolean canReplace(Pion p) {
-        return useSuite && containsList.contains(p.couleur) && p.num == num
+        return useSuite && couleur.equals(p.couleur) && p.num == num
                 || useSerie && containsList.contains(p.couleur) && p.num == num;
     }
 

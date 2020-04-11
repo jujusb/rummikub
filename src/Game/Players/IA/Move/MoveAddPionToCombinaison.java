@@ -7,6 +7,8 @@ import Game.Players.Player;
 import Game.Table.Combinaison;
 import Game.Table.Table;
 
+import java.util.Objects;
+
 public class MoveAddPionToCombinaison extends RummikubMove {
     Pion pionToAdd;
     int numberCombi; //numéro de la combinaison qui va recevoir le pion
@@ -32,5 +34,20 @@ public class MoveAddPionToCombinaison extends RummikubMove {
                 "pionToAdd=" + pionToAdd +
                 ", numberCombi=" + numberCombi +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MoveAddPionToCombinaison)) return false;
+        if (!super.equals(o)) return false;
+        MoveAddPionToCombinaison that = (MoveAddPionToCombinaison) o;
+        return numberCombi == that.numberCombi &&
+                Objects.equals(pionToAdd, that.pionToAdd);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), pionToAdd, numberCombi);
     }
 }

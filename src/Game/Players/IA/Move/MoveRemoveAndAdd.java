@@ -6,6 +6,8 @@ import Game.Players.Player;
 import Game.Table.Combinaison;
 import Game.Table.Table;
 
+import java.util.Objects;
+
 public class MoveRemoveAndAdd extends RummikubMove {
     int numberCombiRemove; //numéro de la combinaison auquelle on enlève un pion
     Pion pion; //pion à déplacer d'une combinaison à une autre
@@ -30,6 +32,22 @@ public class MoveRemoveAndAdd extends RummikubMove {
     public void makeRummikubMove() { // test fait si la combinaison contient plus de 3 pions au départ
         table.get(numberCombiRemove).remove(pion);
         table.ajoutALaCombinaison(table.get(numberCombiAdd), pion);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MoveRemoveAndAdd)) return false;
+        if (!super.equals(o)) return false;
+        MoveRemoveAndAdd that = (MoveRemoveAndAdd) o;
+        return numberCombiRemove == that.numberCombiRemove &&
+                numberCombiAdd == that.numberCombiAdd &&
+                Objects.equals(pion, that.pion);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), numberCombiRemove, pion, numberCombiAdd);
     }
 
     @Override

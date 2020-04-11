@@ -7,6 +7,7 @@ import Game.Table.Combinaison;
 import Game.Table.Table;
 
 import java.util.List;
+import java.util.Objects;
 
 public abstract class RummikubMove implements Move {
     Table table;
@@ -30,6 +31,21 @@ public abstract class RummikubMove implements Move {
     public abstract int scoreMove(); //score correspond aux nombres de pions sur le chevalet après le move
 
     public abstract void makeRummikubMove() throws Exception;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RummikubMove)) return false;
+        RummikubMove that = (RummikubMove) o;
+        return nbPionsAvantMove == that.nbPionsAvantMove &&
+                table.equals(that.table) &&
+                currentPlayer.equals(that.currentPlayer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(table, currentPlayer, nbPionsAvantMove);
+    }
 
     @Override
     public int compareTo(Move o) {
