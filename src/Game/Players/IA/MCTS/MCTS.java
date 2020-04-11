@@ -316,6 +316,7 @@ public class MCTS {
 		Board brd = board.duplicate();
 
 		// Start playing random moves until the game is over
+		//TODO vérifier que c'est bon
 		while (!brd.gameOver()) {
 			if (playoutpolicy == null) {
 				moves = brd.getMoves(CallLocation.treePolicy);

@@ -47,13 +47,6 @@ public class IA extends Player {
         return super.jouer();
     }
 
-    /*
-    @Override
-    public boolean passerTour(){
-        //TODO return false; //ne passe pas son tour ici mais après si il a essayé de jouer mais qu'il ne peut pas
-        return super.passerTour();
-    }
-*/
     @Override
     public List<Combinaison> jouerdebut() {
         //RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,2,true);
