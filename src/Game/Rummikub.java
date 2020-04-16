@@ -18,14 +18,12 @@ import Game.Players.Player;
 import Game.Table.Chevalet;
 import Game.Table.Combinaison;
 import Game.Table.Table;
-import com.sun.source.doctree.SeeTree;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.TreeSet;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class Rummikub implements Board {
     private Player playerHumain;
@@ -550,5 +548,9 @@ public class Rummikub implements Board {
     @Override
     public void bPrint() {
         System.out.println(this.toString());
+    }
+
+    public Table getTable() {
+        return table;
     }
 }
