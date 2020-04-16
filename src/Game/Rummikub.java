@@ -37,6 +37,7 @@ public class Rummikub implements Board {
     public Rummikub() {
         table = new Table();
         playerHumain = new Player("HUMAIN", table);
+        playerHumain.setTable(table);
         ia = new IA(table, this);
         for (int i = 0; i < 14; i++) {
             playerHumain.getChevalet().ajouter(table.piocherPion());
@@ -56,6 +57,9 @@ public class Rummikub implements Board {
     }
 
     private void startGame() {
+        //ia.setboard(this);
+        //ia.setTable(table);
+        //playerHumain.setTable(table);
         while (!(playerHumain.gagne()) && !(ia.gagne())) {
             backUp();
             ArrayList<Move> moves = getMoves();
@@ -170,19 +174,23 @@ public class Rummikub implements Board {
 
     @Override
     public Board duplicate() {
-        Rummikub rummikub = new Rummikub();
+        IA ai = (IA) ia.clone();
+        Rummikub rummikub = ai.board;
         rummikub.table = (Table) table.clone();
         rummikub.playerHumain = (Player) playerHumain.clone();
-        rummikub.backUpPlayerHumain = (Player) backUpPlayerHumain.clone();
-        rummikub.backUpIA = (IA) backUpIA.clone();
-        rummikub.ia = (IA) ia.clone();
+        rummikub.playerHumain.setTable(rummikub.table);
+        rummikub.ia = ai;
+        rummikub.ia.setTable(rummikub.table);
         if (currentPlayer == playerHumain) {
             rummikub.currentPlayer = rummikub.playerHumain;
         } else {
             rummikub.currentPlayer = rummikub.ia;
         }
-        rummikub.ia.setboard(rummikub);
         return rummikub;
+    }
+
+    public Board clone() {
+        return new Rummikub();
     }
 
     @Override
@@ -419,7 +427,6 @@ public class Rummikub implements Board {
                         Pion p = new Pion(numMax + 1, couleur);
                         moveAddPion(moves, chevalet, index, p);
                     }
-                    int ind = 0;
                 } else if (combinaison.isSerie()) {
                     int numS = combinaison.get(0).getNum();
                     ArrayList<Couleur> containList = combinaison.setContainsList();

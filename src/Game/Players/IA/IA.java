@@ -17,7 +17,7 @@ import java.util.List;
 
 public class IA extends Player {
     MCTS mcts;
-    Rummikub board;
+    public Rummikub board;
 
     public IA(Table table, Rummikub board) {
         super("IA", table);
@@ -39,28 +39,28 @@ public class IA extends Player {
 
     @Override
     public boolean jouer(){
-        //RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,10,true);
-        //if(move instanceof MovePiocher) {
-        //    return false;
-        //}
-        //return true;
-        return super.jouer();
+        RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,10,true);
+        if(move instanceof MovePiocher) {
+            return false;
+        }
+        return true;
+        //return super.jouer();
     }
 
     @Override
     public List<Combinaison> jouerdebut() {
-        //RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,2,true);
-        //List<Combinaison> t;
-        //if(move instanceof MovePiocher) {
-        //    t=null;
-        //} else if(move instanceof MoveMakeCombinaisons) {
-        //    t = ((MoveMakeCombinaisons)move).getCombinaisons();
-        //} else { // if(move instanceof MoveMakeCombinaison)
-        //    t = new ArrayList<>();
-        //    t.add(((MoveMakeCombinaison) move).getCombi());
-        //}
-        //return t;
-        return super.jouerdebut();
+        RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,2,true);
+        List<Combinaison> t;
+        if(move instanceof MovePiocher) {
+            t=null;
+        } else if(move instanceof MoveMakeCombinaisons) {
+            t = ((MoveMakeCombinaisons)move).getCombinaisons();
+        } else { // if(move instanceof MoveMakeCombinaison)
+            t = new ArrayList<>();
+            t.add(((MoveMakeCombinaison) move).getCombi());
+        }
+        return t;
+        //return super.jouerdebut();
     }
 
     @Override
@@ -72,6 +72,7 @@ public class IA extends Player {
         ia.setEndOfTurn(isEndOfTurn());
         ia.setName(getName());
         ia.mcts = mcts;
+        ia.board = (Rummikub) board.clone();
         return ia;
     }
 
