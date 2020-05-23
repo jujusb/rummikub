@@ -2,6 +2,7 @@ package Rummikub.Player.AI.Moves;
 
 import Rummikub.Pion.Pion;
 import Rummikub.Player.Player;
+import Rummikub.Rummikub;
 import Rummikub.Tablle.Table;
 
 import java.util.Objects;
@@ -27,9 +28,9 @@ public class MoveRemoveAndAdd extends RummikubMove {
                 '}';
     }
 
-    public void makeRummikubMove() { // test fait si la combinaison contient plus de 3 pions au départ
-        table.get(numberCombiRemove).remove(pion);
-        table.ajoutALaCombinaison(table.get(numberCombiAdd), pion);
+    public void makeRummikubMove(Rummikub game) { // test fait si la combinaison contient plus de 3 pions au départ
+        game.getTable().get(numberCombiRemove).remove(pion);
+        game.getTable().ajoutALaCombinaison(game.getTable().get(numberCombiAdd), pion);
     }
 
     @Override

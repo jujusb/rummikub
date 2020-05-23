@@ -2,6 +2,7 @@ package Rummikub.Player.AI.Moves;
 
 import Rummikub.Pion.Pion;
 import Rummikub.Player.Player;
+import Rummikub.Rummikub;
 import Rummikub.Tablle.Table;
 
 import java.util.Objects;
@@ -16,8 +17,9 @@ public class MoveAddPionToCombinaison extends RummikubMove {
         numberCombi = n;
     }
 
-    public void makeRummikubMove(){
-        table.ajoutALaCombinaison(table.get(numberCombi),pionToAdd);
+    public void makeRummikubMove(Rummikub game) throws Exception {
+        game.getTable().ajoutALaCombinaison(game.getTable().get(numberCombi),pionToAdd);
+        game.playerGetCurrentPlayer().getChevalet().retirer(pionToAdd);
     }
 
     @Override

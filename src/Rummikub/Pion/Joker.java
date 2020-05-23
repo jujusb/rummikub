@@ -111,6 +111,15 @@ public class Joker extends Pion {
         return c;
     }
 
+    public boolean equals(Object o) {
+        if (o instanceof Joker){
+            Joker j = (Joker)o;
+            return this.couleurJoker.equals(j.couleurJoker);
+        } else {
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
         Joker j = new Joker(Couleur.NOIR);
         System.out.println(j.toString());

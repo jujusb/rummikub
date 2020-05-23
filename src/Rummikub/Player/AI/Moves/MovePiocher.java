@@ -17,25 +17,11 @@ public class MovePiocher extends RummikubMove {
         //
     }
 
-    //est-ce que toutes les possibilités de pioche doivent être dans cette classe ?
-
-    /*
-    public void setPossiblePioche(){
-        for(Pion p : table.getPioche()){
-            if(possiblePioche.containsKey(p)){
-                possiblePioche.replace(p, possiblePioche.get(p)+1);
-            }else{
-                possiblePioche.put(p,1);
-            }
-        }
-    }
-    */
-
     //piocher se fait automatiquement
-    public void makeRummikubMove(){
-        currentPlayer.getChevalet().ajouter(pionAPiocher);
-        table.getPioche().remove(pionAPiocher);
-        currentPlayer.setEndOfTurn(true);
+    public void makeRummikubMove(Rummikub game){
+        game.playerGetCurrentPlayer().getChevalet().ajouter(pionAPiocher);
+        game.getTable().getPioche().remove(pionAPiocher);
+        game.playerGetCurrentPlayer().setEndOfTurn(true);
     }
 
     @Override

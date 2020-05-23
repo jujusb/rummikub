@@ -3,6 +3,7 @@ package Rummikub.Player.AI.Moves;
 import Rummikub.Pion.Joker;
 import Rummikub.Pion.Pion;
 import Rummikub.Player.Player;
+import Rummikub.Rummikub;
 import Rummikub.Tablle.Combinaison;
 import Rummikub.Tablle.Table;
 
@@ -24,15 +25,15 @@ public class MoveReplaceByJoker extends RummikubMove {
         this.combinaisonP = combinaisonP;
     }
 
-    public void makeRummikubMove(){
+    public void makeRummikubMove(Rummikub game){
         if(!chevalet) {
-            table.get(combinaisonP).remove(p);
+            game.getTable().get(combinaisonP).remove(p);
         }
-        Combinaison c = table.get(combinaisonJ);
-        table.retirerDeCombinaison(c, joker);
-        currentPlayer.getChevalet().ajouter(joker);
+        Combinaison c = game.getTable().get(combinaisonJ);
+        game.getTable().retirerDeCombinaison(c, joker);
+        game.playerGetCurrentPlayer().getChevalet().ajouter(joker);
         joker.reset();
-        table.ajoutALaCombinaison(c, p);
+        game.getTable().ajoutALaCombinaison(c, p);
     }
 
     @Override

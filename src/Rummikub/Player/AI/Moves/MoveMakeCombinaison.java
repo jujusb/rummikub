@@ -2,6 +2,7 @@ package Rummikub.Player.AI.Moves;
 
 import Rummikub.Pion.Pion;
 import Rummikub.Player.Player;
+import Rummikub.Rummikub;
 import Rummikub.Tablle.Combinaison;
 import Rummikub.Tablle.Table;
 
@@ -19,17 +20,17 @@ public class MoveMakeCombinaison extends RummikubMove {
         return combi;
     }
 
-    public void makeRummikubMove() throws Exception {
+    public void makeRummikubMove(Rummikub game) throws Exception {
         for(Pion p : combi) {
-            currentPlayer.getChevalet().retirer(p);
+            game.playerGetCurrentPlayer().getChevalet().retirer(p);
         }
         int i = 0;
         Combinaison c = null;
         for(Pion p : combi){
             if(i == 0){
-                c = table.nouvelleCombinaison(p);
+                c = game.getTable().nouvelleCombinaison(p);
             } else {
-                table.ajoutALaCombinaison(c,p);
+                game.getTable().ajoutALaCombinaison(c,p);
             }
             i++;
         }

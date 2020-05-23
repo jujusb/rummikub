@@ -1,6 +1,7 @@
 package Rummikub.Player.AI.Moves;
 
 import Rummikub.Player.Player;
+import Rummikub.Rummikub;
 import Rummikub.Tablle.Combinaison;
 import Rummikub.Tablle.Table;
 
@@ -24,9 +25,9 @@ public class MoveMakeCombinaisons extends RummikubMove {
         return combinaisons;
     }
 
-    public void makeRummikubMove() throws Exception {
+    public void makeRummikubMove(Rummikub game) throws Exception {
         for(RummikubMove m : combi) {
-            m.makeRummikubMove();
+            m.makeRummikubMove(game);
         }
     }
 

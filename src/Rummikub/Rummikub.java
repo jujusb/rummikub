@@ -62,7 +62,7 @@ public class Rummikub implements Board {
         //playerHumain.setTable(table);
         while (!(playerHumain.gagne()) && !(ia.gagne())) {
             backUp();
-            ArrayList<Move> moves = getMoves();
+            ArrayList<Move> moves = getAllsMoves();
             for (Move m : moves) {
                 System.out.println(m);
             }
@@ -195,7 +195,7 @@ public class Rummikub implements Board {
 
     @Override
     public ArrayList<Move> getMoves(CallLocation location) {
-        return getMoves();
+        return getAllsMoves();
     }
 
     public ArrayList<Move> getMoveCombinaisons(ArrayList<ArrayList<Pion>> tabSerie, ArrayList<ArrayList<Pion>> tabSuite, Chevalet chevalet) {
@@ -252,7 +252,19 @@ public class Rummikub implements Board {
         //TODO A corriger avec joker
         int num = 1;
         for (ArrayList<Pion> l : tabSerie) {
-            if (l.size() >= 3) {
+            if (l.size() == 3) {
+                Combinaison c = new Combinaison();
+                for (Pion p : l) {
+                    c.add(p);
+                }
+                if (c.estValide()) {
+                    MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, c);
+                    if (!moves.contains(mc)) {
+                        moves.add(mc);
+                    }
+                }
+            }
+            if (l.size() > 3) {
                 Combinaison c = new Combinaison();
                 for (Pion p : l) {
                     c.add(p);
@@ -330,7 +342,7 @@ public class Rummikub implements Board {
         }
     }
 
-    public ArrayList<Move> getMoves() {
+    public ArrayList<Move> getAllsMoves() {
         ArrayList<Move> moves;
         Chevalet chevalet = (Chevalet) currentPlayer.getChevalet().clone();
         chevalet.sort();
@@ -503,7 +515,7 @@ public class Rummikub implements Board {
     @Override
     public void makeMove(Move m) {
         try {
-            ((RummikubMove) m).makeRummikubMove();
+            ((RummikubMove) m).makeRummikubMove(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
