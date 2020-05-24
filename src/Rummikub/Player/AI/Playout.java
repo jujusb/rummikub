@@ -18,44 +18,51 @@ public class Playout implements PlayoutSelection {
     @Override
     public void Process(Board board) {
         Rummikub game = (Rummikub)board;
-        ArrayList<Move> listMoves= new ArrayList<>();
+        ArrayList<Move> listMoves = game.getAllsMoves();
         RummikubMove randomMove;
         int random;
         ArrayList<Move> movesSansPioche = new ArrayList<>();
         ArrayList<Move> movesPioche = new ArrayList<>();
         int etape = 0;
-        while(!board.gameOver()||(!(movesPioche.isEmpty() && movesSansPioche.isEmpty()))) { //TODO partie aléatoire jusqu'à la fin
-            try {
-                listMoves = game.getAllsMoves();
-                movesSansPioche = new ArrayList<>();
-                movesPioche = new ArrayList<>();
-                for(Move move:listMoves) {
-                    if (!(move instanceof MovePiocher)) {
-                        movesSansPioche.add(move);
-                    } else {
-                        movesPioche.add(move);
-                    }
-                }
-                if(movesSansPioche.isEmpty()) {
-                    random = new Random().nextInt(movesPioche.size());
-                    randomMove = (RummikubMove) movesPioche.get(random);
-                    if(game.playerGetCurrentPlayer().isDebut()) {
-                        game.playerGetCurrentPlayer().setDebutFait();
-                    }
+        boolean movepossible = true;
+        while(!board.gameOver()||movepossible) { //TODO partie aléatoire jusqu'à la fin
+            movesSansPioche = new ArrayList<>();
+            movesPioche = new ArrayList<>();
+            for(Move move:listMoves) {
+                if (!(move instanceof MovePiocher)) {
+                    movesSansPioche.add(move);
+                    System.out.println(move);
                 } else {
-                    random = new Random().nextInt(movesSansPioche.size());
-                    randomMove = (RummikubMove) movesSansPioche.get(random);
+                    movesPioche.add(move);
                 }
-                System.out.println(randomMove);
-                randomMove.makeRummikubMove(game);
-                System.out.println(game.getTable().toString());
-                System.out.println(game.playerGetCurrentPlayer().toString());
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-            game.changeCurrentPlayer();
-            etape++;
-        }
+            if(movesSansPioche.isEmpty()&&movesPioche.isEmpty()) {
+                movepossible = false;
+            } else {
+                try {
+                    if(movesSansPioche.isEmpty()) {
+                        random = new Random().nextInt(movesPioche.size());
+                        randomMove = (RummikubMove) movesPioche.get(random);
+                    } else {
+                        random = new Random().nextInt(movesSansPioche.size());
+                        randomMove = (RummikubMove) movesSansPioche.get(random);
+                        if(game.playerGetCurrentPlayer().isDebut()) {
+                            game.playerGetCurrentPlayer().setDebutFait();
+                        }
+                    }
+                    System.out.println(randomMove);
+                    randomMove.makeRummikubMove(game);
+                    System.out.println(game.getTable().toString());
+                    System.out.println(game.playerGetCurrentPlayer().toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                game.changeCurrentPlayer();
+                listMoves = game.getAllsMoves();
+                etape++;
+
+            }
+       }
         if(listMoves.size()==0) {
             System.out.println("Match null");
         }

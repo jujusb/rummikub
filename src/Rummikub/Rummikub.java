@@ -221,11 +221,18 @@ public class Rummikub implements Board {
                                 nbJoker--;
                                 if (nbJoker == 0) joker = false;
                                 int posjok = chevalet.getIndexJoker();
-                                Joker joker1 = (Joker) chevalet.get(posjok);
-                                joker1.setValueJoker(1, p.getCouleur(), p.getNum() + 1);
+                                Joker joker1 = (Joker) chevalet.get(posjok).clone();
+                                if(c.size() == 2 && c.get(0).getNum()==12) {
+                                    joker1.setValueJoker(1, p.getCouleur(), 10);
+                                } else {
+                                    joker1.setValueJoker(1, p.getCouleur(), p.getNum() + 1);
+                                }
                                 c.add(joker1);
-                                c.add(pp);
-                                p = pp;
+                                p = joker1;
+                                if(pp.compareTo(joker1) == 1) {
+                                    c.add(pp);
+                                    p=pp;
+                                }
                             } else {
                                 suite = false;
                                 nbJoker = chevalet.contientJoker();
@@ -239,8 +246,6 @@ public class Rummikub implements Board {
                             }
                         }
                     }
-                    nbJoker = chevalet.contientJoker();
-                    joker= nbJoker>0;
                 }
                 nbJoker = chevalet.contientJoker();
                 joker= nbJoker>0;
@@ -333,7 +338,7 @@ public class Rummikub implements Board {
 
     private void setValueJokerInSerie(Chevalet chevalet, ArrayList<Move> moves, int num, Combinaison c, Joker
             j, Couleur couleur) {
-        j.setValueJoker(0, couleur, num);
+        ((Joker)j.clone()).setValueJoker(0, couleur, num);
         if (c.estValide()) {
             MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, c);
             if(!moves.contains(mc)) {

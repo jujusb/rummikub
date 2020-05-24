@@ -25,6 +25,24 @@ public class MoveReplaceByJoker extends RummikubMove {
         this.combinaisonP = combinaisonP;
     }
 
+    @Override
+    public String toString() {
+        if(chevalet) {
+            return "MoveReplaceByJoker{" +
+                    "joker=" + joker +
+                    ", p=" + p +
+                    ", combinaisonJ=" + combinaisonJ +
+                    '}';
+        } else {
+            return "MoveReplaceByJoker{Joker à remplace" +
+                    "joker=" + joker +
+                    ", combinaisonJ=" + combinaisonJ +
+                    ", p=" + p +
+                    ", combinaisonP=" + combinaisonP +
+                    '}';
+        }
+    }
+
     public void makeRummikubMove(Rummikub game){
         if(!chevalet) {
             game.getTable().get(combinaisonP).remove(p);
