@@ -48,6 +48,7 @@ public class Joker extends Pion {
 
     public void setValueJokerInSerie(List<Couleur> list, int n) {
         this.containsList = list;
+        this.couleur = list.get(0);
         this.num = n;
         this.useSerie = true;
     }

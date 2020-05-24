@@ -275,10 +275,9 @@ public class Rummikub implements Board {
             System.out.println(list);
             PartitionSetCreator<Pion> partition = new PartitionSetCreator<>(pionTreeSet);
             Set<Set<Set<Pion>>> partitionsSet = partition.findAllPartitions();
-            int size = 1;
             for(Set<Set<Pion>> setSize : partitionsSet) {
-                if(size==1 && nbJoker == 2) {
-                    for(Set<Pion> setPion : setSize) {
+                for(Set<Pion> setPion : setSize) {
+                    if(setPion.size()==1 && nbJoker == 2) {
                         Combinaison c = new Combinaison();
                         c.addAll(setPion);
                         Joker j = (Joker) chevalet.get(chevalet.getIndexJoker()).clone();
@@ -293,22 +292,30 @@ public class Rummikub implements Board {
                                 moves.add(mc);
                             }
                         }
-                    }
-                } else if(size==2 && joker) {
-                    for(Set<Pion> setPion : setSize) {
+                    } else if(setPion.size()==2 && joker) {
                         Combinaison c = new Combinaison();
                         c.addAll(setPion);
                         Joker j = (Joker) chevalet.get(chevalet.getIndexJoker()).clone();
                         c.add(j);
-                        setValueJokerInSerie(chevalet, moves, num, c, j, list);
+                        j.setValueJokerInSerie(list, num);
+                        if(c.estValide()) {
+                            MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, (Combinaison) c.clone());
+                            if (!moves.contains(mc)) {
+                                moves.add(mc);
+                            }
+                        }
                         if(nbJoker==2) {
                             Joker j2 = (Joker) chevalet.get(chevalet.getIndexJoker()).clone();
                             c.add(j2);
-                            setValueJokerInSerie(chevalet, moves, num, c, j2, list);
+                            j2.setValueJokerInSerie(list, num);
+                            if(c.estValide()) {
+                                MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, (Combinaison) c.clone());
+                                if (!moves.contains(mc)) {
+                                    moves.add(mc);
+                                }
+                            }
                         }
-                    }
-                } else if(size==3) {
-                    for(Set<Pion> setPion : setSize) {
+                    } else if(setPion.size()==3) {
                         Combinaison c = new Combinaison();
                         c.addAll(setPion);
                         if(c.estValide()) {
@@ -322,9 +329,7 @@ public class Rummikub implements Board {
                             c.add(j);
                             setValueJokerInSerie(chevalet, moves, num, c, j, list);
                         }
-                    }
-                } else if(size==4) {
-                    for(Set<Pion> setPion : setSize) {
+                    } else if(setPion.size()==4) {
                         Combinaison c = new Combinaison();
                         c.addAll(setPion);
                         if(c.estValide()) {
@@ -335,7 +340,6 @@ public class Rummikub implements Board {
                         }
                     }
                 }
-                size++;
             }
             System.out.println(partitionsSet);
             num++;
