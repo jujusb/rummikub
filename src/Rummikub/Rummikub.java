@@ -399,9 +399,7 @@ public class Rummikub implements Board {
                     moves.add(move);
                 }
             } else {
-                for (Move m : movesCombinaisons) {
-                    moves.add(m);
-                }
+                moves.addAll(movesCombinaisons);
             }
             ArrayList<MoveMakeCombinaison> makeCombinaisons = new ArrayList<>();
             makeCombinaisons.add((MoveMakeCombinaison) move);
@@ -440,28 +438,29 @@ public class Rummikub implements Board {
             }
         }
         //MOVES ADD PION TO COMBINAISON AND REMOVE AND ADD
-        System.out.println(tabSeries);
+        //System.out.println(tabSeries);
         if (!currentPlayer.isDebut()) {
             int index = 0;
             for (Combinaison combinaison : table) {
+                combinaison.estValide();
                 if (combinaison.isSuite()) {
                     Couleur couleur = combinaison.get(0).getCouleur();
                     int numMin = combinaison.get(0).getNum();
                     int numMax = combinaison.get(combinaison.size() - 1).getNum();
                     if (numMin != 1) {
                         Pion p = new Pion(numMin - 1, couleur);
-                        moveAddPion(moves, chevalet, index, p);
+                        moves = moveAddPion(moves, chevalet, index, p);
                     }
                     if (numMax != 13) {
                         Pion p = new Pion(numMax + 1, couleur);
-                        moveAddPion(moves, chevalet, index, p);
+                        moves = moveAddPion(moves, chevalet, index, p);
                     }
                 } else if (combinaison.isSerie()) {
                     int numS = combinaison.get(0).getNum();
                     ArrayList<Couleur> containList = combinaison.setContainsList();
                     for (Couleur couleur : containList) {
                         Pion p = new Pion(numS, couleur);
-                        moveAddPion(moves, chevalet, index, p);
+                        moves = moveAddPion(moves, chevalet, index, p);
                     }
                 }
                 index++;
@@ -504,7 +503,7 @@ public class Rummikub implements Board {
         return moves;
     }
 
-    private void moveAddPion(ArrayList<Move> moves, Chevalet chevalet, int index, Pion p) {
+    private ArrayList<Move> moveAddPion(ArrayList<Move> moves, Chevalet chevalet, int index, Pion p) {
         if (chevalet.contient(p)) {
             MoveAddPionToCombinaison moveadd = new MoveAddPionToCombinaison(table, currentPlayer, p, index);
             if(!moves.contains(moveadd)) {
@@ -518,7 +517,7 @@ public class Rummikub implements Board {
                 ccclone.remove(p);
                 if (ccclone.estValide()) {
                     if(index != ind) {
-                        MoveRemoveAndAdd moveRemoveAndAdd = new MoveRemoveAndAdd(table, currentPlayer, index, ind, p);
+                        MoveRemoveAndAdd moveRemoveAndAdd = new MoveRemoveAndAdd(table, currentPlayer, ind, index, p);
                         if(!moves.contains(moveRemoveAndAdd)) {
                             moves.add(moveRemoveAndAdd);
                         }
@@ -527,6 +526,7 @@ public class Rummikub implements Board {
             }
             ind++;
         }
+        return moves;
     }
 
     @Override

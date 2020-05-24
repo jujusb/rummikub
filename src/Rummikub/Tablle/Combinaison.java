@@ -6,7 +6,6 @@ import Rummikub.Pion.Pion;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.TreeSet;
 
 public class Combinaison extends ArrayList<Pion> {
@@ -17,6 +16,8 @@ public class Combinaison extends ArrayList<Pion> {
     public Combinaison() {
         super();
         containsList= new ArrayList<>();
+        suite=false;
+        serie=false;
     }
 
     public int score() {
@@ -86,7 +87,7 @@ public class Combinaison extends ArrayList<Pion> {
     }
 
     public ArrayList<Couleur> setContainsList(){
-        List<Couleur> couleursCombinaison = new ArrayList<Couleur>();
+        TreeSet<Couleur> couleursCombinaison = new TreeSet<>();
         for(Pion pi : this){
             if(!(pi instanceof Joker)){
                 couleursCombinaison.add(pi.getCouleur());
@@ -105,11 +106,11 @@ public class Combinaison extends ArrayList<Pion> {
     }
 
     public String toString() {
-        String str= new String();
+        StringBuilder str= new StringBuilder();
         int i = 0;
         for(Pion p : this)
-            str += i++ + ":" + p.toString() + " ";
-        return str;
+            str.append(i++).append(":").append(p.toString()).append(" ");
+        return str.toString();
     }
 
     public int getIndexPion(Pion p) {
