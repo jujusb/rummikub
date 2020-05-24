@@ -88,6 +88,7 @@ public class Combinaison extends ArrayList<Pion> {
 
     public ArrayList<Couleur> setContainsList(){
         TreeSet<Couleur> couleursCombinaison = new TreeSet<>();
+        containsList=new ArrayList<>();
         for(Pion pi : this){
             if(!(pi instanceof Joker)){
                 couleursCombinaison.add(pi.getCouleur());

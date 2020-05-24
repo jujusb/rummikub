@@ -449,18 +449,18 @@ public class Rummikub implements Board {
                     int numMax = combinaison.get(combinaison.size() - 1).getNum();
                     if (numMin != 1) {
                         Pion p = new Pion(numMin - 1, couleur);
-                        moves = moveAddPion(moves, chevalet, index, p);
+                        moveAddPion(moves, chevalet, index, p);
                     }
                     if (numMax != 13) {
                         Pion p = new Pion(numMax + 1, couleur);
-                        moves = moveAddPion(moves, chevalet, index, p);
+                        moveAddPion(moves, chevalet, index, p);
                     }
                 } else if (combinaison.isSerie()) {
                     int numS = combinaison.get(0).getNum();
                     ArrayList<Couleur> containList = combinaison.setContainsList();
                     for (Couleur couleur : containList) {
                         Pion p = new Pion(numS, couleur);
-                        moves = moveAddPion(moves, chevalet, index, p);
+                        moveAddPion(moves, chevalet, index, p);
                     }
                 }
                 index++;
@@ -506,6 +506,19 @@ public class Rummikub implements Board {
     private ArrayList<Move> moveAddPion(ArrayList<Move> moves, Chevalet chevalet, int index, Pion p) {
         if (chevalet.contient(p)) {
             MoveAddPionToCombinaison moveadd = new MoveAddPionToCombinaison(table, currentPlayer, p, index);
+            if(!moves.contains(moveadd)) {
+                moves.add(moveadd);
+            }
+        } else if(chevalet.contientJoker()>0) {
+            Joker j = (Joker)chevalet.get(chevalet.getIndexJoker()).clone();
+            Combinaison c = table.get(index);
+            c.estValide();
+            if(c.isSerie()) {
+                j.setValueJokerInSerie(c.setContainsList(), p.getNum());
+            } else {
+                j.setValueJokerInSuite(p.getCouleur(),p.getNum());
+            }
+            MoveAddPionToCombinaison moveadd = new MoveAddPionToCombinaison(table, currentPlayer, j, index);
             if(!moves.contains(moveadd)) {
                 moves.add(moveadd);
             }

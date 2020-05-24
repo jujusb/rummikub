@@ -23,16 +23,16 @@ public class Playout implements PlayoutSelection {
         RummikubMove randomMove;
         int random;
         ArrayList<Move> movesSansPioche = new ArrayList<>();
+        movesSansPioche.add(new MovePiocher(game.getTable(), game.playerGetCurrentPlayer(),1));
         ArrayList<Move> movesPioche = new ArrayList<>();
         int etape = 0;
         boolean piochepossible = true;
-        while (!board.gameOver() || !(!piochepossible && movesSansPioche.isEmpty())) { //TODO partie aléatoire jusqu'à la fin
+        while ((piochepossible || !movesSansPioche.isEmpty()) && !board.gameOver()) { //TODO partie aléatoire jusqu'à la fin
             movesSansPioche = new ArrayList<>();
             movesPioche = new ArrayList<>();
             for (Move move : listMoves) {
                 if (move instanceof MovePiocher) {
                     movesPioche.add(move);
-                    if (movesPioche.size() == 0) piochepossible=false;
                 } else if (move instanceof MoveRemoveAndAdd) {
                     movesPioche.add(move);
                 } else {
@@ -40,9 +40,8 @@ public class Playout implements PlayoutSelection {
                     System.out.println(move);
                 }
             }
-            if (movesSansPioche.isEmpty() && movesPioche.isEmpty()) {
-                piochepossible = false;
-            } else {
+            piochepossible=this.piochepossible(movesPioche);
+            if (!(movesSansPioche.isEmpty() && movesPioche.isEmpty())) {
                 try {
                     if (movesSansPioche.isEmpty()) {
                         random = new Random().nextInt(movesPioche.size());
@@ -72,6 +71,14 @@ public class Playout implements PlayoutSelection {
         System.out.println(etape);
     }
 
+    public boolean piochepossible(ArrayList<Move> movesPioche) {
+        for(Move m : movesPioche) {
+            if(m instanceof MovePiocher) {
+                return true;
+            }
+        }
+        return false;
+    }
     public static void main(String[] args) {
         Rummikub rummikub = new Rummikub();
         Playout playout = new Playout();
