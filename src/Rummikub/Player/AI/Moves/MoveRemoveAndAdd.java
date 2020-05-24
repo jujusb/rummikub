@@ -11,12 +11,14 @@ public class MoveRemoveAndAdd extends RummikubMove {
     int numberCombiRemove; //numéro de la combinaison auquelle on enlève un pion
     Pion pion; //pion à déplacer d'une combinaison à une autre
     int numberCombiAdd; //numéro de la combinaison auquelle on ajoute un pion
+    boolean createCombi;
 
-    public MoveRemoveAndAdd(Table t, Player currentPlayer, int nR, int nA, Pion pi) {
+    public MoveRemoveAndAdd(Table t, Player currentPlayer, int nR, int nA, Pion pi, boolean createCombi) {
         super(t, currentPlayer);
         numberCombiAdd = nA;
         numberCombiRemove = nR;
         pion = pi;
+        this.createCombi=createCombi;
     }
 
     @Override
@@ -30,7 +32,7 @@ public class MoveRemoveAndAdd extends RummikubMove {
 
     public void makeRummikubMove(Rummikub game) { // test fait si la combinaison contient plus de 3 pions au départ
         game.getTable().get(numberCombiRemove).remove(pion);
-        game.getTable().ajoutALaCombinaison(game.getTable().get(numberCombiAdd), pion);
+        game.getTable().ajoutALaCombinaison(game.getTable().get(createCombi?game.getTable().size()-1:numberCombiAdd), pion);
     }
 
     @Override

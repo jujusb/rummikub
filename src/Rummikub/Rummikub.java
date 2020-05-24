@@ -240,8 +240,23 @@ public class Rummikub implements Board {
                                 nbJoker = chevalet.contientJoker();
                             }
                         }
-
-                        //TODO add pion déjà sur table dans la combinaison si pas début
+                        //add pion déjà sur table dans la combinaison si pas début
+                        if(!currentPlayer.isDebut()) {
+                            Couleur couleur = c.get(0).getCouleur();
+                            int numMin = c.get(0).getNum();
+                            int numMax = c.get(c.size() - 1).getNum();
+                            ArrayList<RummikubMove> removeAndAddPion = new ArrayList<>();
+                            if (numMin != 1) {
+                                Pion pion = new Pion(numMin - 1, couleur);
+                                removeAndAddPion.addAll(removeAndAddPion(moves, table.size(), pion,true,c));
+                            }
+                            if (numMax != 13) {
+                                Pion pion = new Pion(numMax + 1, couleur);
+                                removeAndAddPion.addAll(removeAndAddPion(moves, table.size(), pion,true, c));
+                            }
+                            movesCreerCombinaisonPlusAjoutPiondeTable(moves, c, removeAndAddPion);
+                            //TODO add plusieurs pions déjà sur la table dans la combinaison si pas début
+                        }
                         if (c.size() >= 3 && c.estValide() && !(c.equals(cc))) {
                             cc = (Combinaison) c.clone();
                             MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, c);
@@ -316,13 +331,25 @@ public class Rummikub implements Board {
                         }
                     } else if(setPion.size()==4) {
                         System.out.println(c); //Tout déjà fait
-                    } else {
-                        //TODO add pion from table if début passé
                     }
                     if(c.estValide()) {
                         MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, (Combinaison) c.clone());
                         if (!moves.contains(mc)) {
                             moves.add(mc);
+                        }
+                    }
+                    //add pion at combinaison pas forcément complète from table if début passé
+                    if(!currentPlayer.isDebut()) {
+                        if(c.size()>0) {
+                            int numS = c.get(0).getNum();
+                            ArrayList<Couleur> containList = c.setContainsList();
+                            ArrayList<RummikubMove> removeAndAddPion = new ArrayList<>();
+                            for (Couleur couleur : containList) {
+                                Pion pion = new Pion(numS, couleur);
+                                removeAndAddPion.addAll(removeAndAddPion(moves, table.size(), pion, true, c));
+                            }
+                            movesCreerCombinaisonPlusAjoutPiondeTable(moves, c, removeAndAddPion);
+                            //TODO add plusieurs pions déjà sur la table dans la combinaison si pas début
                         }
                     }
                 }
@@ -332,6 +359,19 @@ public class Rummikub implements Board {
         }
 
         return moves;
+    }
+
+    private void movesCreerCombinaisonPlusAjoutPiondeTable(ArrayList<Move> moves, Combinaison c, ArrayList<RummikubMove> removeAndAddPion) {
+        for(RummikubMove removeMove : removeAndAddPion) {
+            ArrayList<RummikubMove> setMoves = new ArrayList<>();
+            MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, c);
+            setMoves.add(mc);
+            setMoves.add(removeMove);
+            MoveSetMoves moveSetMoves = new MoveSetMoves(table, currentPlayer,setMoves);
+            if(!moves.contains(moveSetMoves)) {
+                moves.add(moveSetMoves);
+            }
+        }
     }
 
     private void setValueJokerInSerie(Chevalet chevalet, ArrayList<Move> moves, int num, Combinaison c, Joker
@@ -388,36 +428,44 @@ public class Rummikub implements Board {
                 moves.addAll(movesCombinaisons);
             }
             ArrayList<RummikubMove> makeCombinaisons = new ArrayList<>();
-            makeCombinaisons.add((MoveMakeCombinaison) move);
-            boolean ok = true;
-            chevalet = (Chevalet) currentPlayer.getChevalet().clone();
-            for (Move move1 : movesCombinaisons) {
-                for (Pion p : ((MoveMakeCombinaison) move1).getCombi()) {
-                    for (Move m : makeCombinaisons) {
-                        for (Pion pp : ((MoveMakeCombinaison) m).getCombi()) {
-                            if (p.equals(pp)) {
-                                ok = false;
+            if(move instanceof MoveMakeCombinaison) {
+                makeCombinaisons.add((MoveMakeCombinaison) move);
+                boolean ok = true;
+                chevalet = (Chevalet) currentPlayer.getChevalet().clone();
+                for (Move move1 : movesCombinaisons) {
+                    if(move1 instanceof MoveMakeCombinaison) {
+                        for (Pion p : ((MoveMakeCombinaison) move1).getCombi()) {
+                            for (Move m : makeCombinaisons) {
+                                if(m instanceof MoveMakeCombinaison) {
+                                    for (Pion pp : ((MoveMakeCombinaison) m).getCombi()) {
+                                        if (p.equals(pp)) {
+                                            ok = false;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
-                }
-                if (ok) {
-                    makeCombinaisons.add((MoveMakeCombinaison) move1);
-                    int score = 0;
-                    for (RummikubMove make : makeCombinaisons) {
-                        score += ((MoveMakeCombinaison)make).getCombi().score();
-                    }
-                    if (currentPlayer.isDebut()) {
-                        if (score > 30) {
-                            Move m = new MoveSetMoves(table, currentPlayer, makeCombinaisons);
-                            if (!moves.contains(m)) {
-                                moves.add(m);
+                    if (ok) {
+                        if(move1 instanceof MoveMakeCombinaison) {
+                            makeCombinaisons.add((MoveMakeCombinaison) move1);
+                            int score = 0;
+                            for (RummikubMove make : makeCombinaisons) {
+                                score += ((MoveMakeCombinaison)make).getCombi().score();
                             }
-                        }
-                    } else {
-                        Move m = new MoveSetMoves(table, currentPlayer, makeCombinaisons);
-                        if (!moves.contains(m)) {
-                            moves.add(m);
+                            if (currentPlayer.isDebut()) {
+                                if (score > 30) {
+                                    Move m = new MoveSetMoves(table, currentPlayer, makeCombinaisons);
+                                    if (!moves.contains(m)) {
+                                        moves.add(m);
+                                    }
+                                }
+                            } else {
+                                Move m = new MoveSetMoves(table, currentPlayer, makeCombinaisons);
+                                if (!moves.contains(m)) {
+                                    moves.add(m);
+                                }
+                            }
                         }
                     }
                 }
@@ -452,6 +500,95 @@ public class Rummikub implements Board {
                 index++;
             }
 
+            /*TODO corriger joker quand vient d'une autre combinaison comme montré dans l'exemple
+                Pions dans la pioche : 17
+                Pions sur la table : 80
+                Chevalet Joueur Humain : Votre chevalet contient 5 pions : 0:Pion{8 Blu}
+                                                   1:Pion{2 Red} 2:Pion{4 Red}
+                                                   3:Pion{5 Yel} 4:Pion{12 Yel}
+                Chevalet IA : Votre chevalet contient 5 pions : 0:Pion{8 Red}
+                                                   1:Pion{2 Yel}
+                                                   2:Pion{2 Blk} 3:Pion{5 Blk} 4:Pion{10 Blk}
+                Combinaison 0 : 0:Pion{12 Blu} 1:Pion{12 Yel} 2:Pion{12 Blk}
+                Combinaison 1 : 0:Pion{13 Blu} 1:Pion{13 Red} 2:Pion{13 Yel} 3:Pion{13 Blk}
+                Combinaison 2 : 0:Pion{4 Blu} 1:Pion{4 Red} 2:Pion{4 Yel} 3:Pion{4 Blk}
+                Combinaison 3 : 0:Pion{6 Red} 1:Pion{6 Yel} 2:Pion{6 Blk}
+                Combinaison 4 : 0:Pion{2 Blu} 1:Pion{2 Red} 2:Pion{2 Yel} 3:Pion{2 Blk}
+                Combinaison 5 : 0:Pion{11 Blu} 1:Pion{11 Yel} 2:Pion{11 Blk}
+                Combinaison 6 : 0:Pion{2 Blu} 1:Pion{3 Blu} 2:Pion{4 Blu} 3:Pion{5 Blu} 4:Pion{6 Blu} 5:Pion{7 Blu} 6:Pion{8 Blu} 7:Pion{9 Blu} 8:Pion{10 Blu} 9:Pion{11 Blu} 10:Pion{12 Blu} 11:Pion{13 Blu}
+                Combinaison 7 : 0:Pion{9 Blu} 1:Pion{9 Red} 2:Pion{9 Blk}
+                Combinaison 8 : 0:Pion{6 Red} 1:Pion{7 Red} 2:Pion{8 Red} 3:Pion{9 Red} 4:Pion{10 Red} 5:Pion{11 Red} 6:Pion{12 Red} 7:Pion{13 Red}
+                Combinaison 9 : 0:Pion{3 Red} 1:Pion{3 Yel} 2:Pion{3 Blk}
+                Combinaison 10 : 0:Pion{7 Blk} 1:Pion{8 Blk} 2:Pion{9 Blk} 3:Pion{10 Blk} 4:Pion{11 Blk} 5:Pion{12 Blk}
+                Combinaison 11 : 0:Pion{1 Blu} 1:Pion{1 Red} 2:Pion{1 Yel} 3:Pion{1 Blk}
+                Combinaison 12 : 0:Pion{5 Blk} 1:Pion{6 Blk} 2:Pion{7 Blk}
+                Combinaison 13 : 0:Pion{10 Yel} 1:Joker{à remplacer par ce Pion{11 Yel}} 2:Pion{12 Yel} 3:Pion{13 Yel} 4:Pion{9 Yel}
+                Combinaison 14 : 0:Pion{4 Yel} 1:Pion{5 Yel} 2:Pion{6 Yel} 3:Pion{7 Yel} 4:Pion{8 Yel}
+                Combinaison 15 : 0:Pion{1 Blu} 1:Pion{1 Red} 2:Pion{1 Yel}
+                Combinaison 16 : 0:Pion{7 Yel} 1:Pion{8 Yel} 2:Joker{à remplacer par ce Pion{9 Yel}} 3:Pion{10 Yel}
+                Combinaison 17 : 0:Pion{10 Red} 1:Pion{11 Red} 2:Pion{12 Red}
+                IA
+                Votre chevalet contient 5 pions : 0:Pion{8 Red}
+                                                   1:Pion{2 Yel}
+                                                   2:Pion{2 Blk} 3:Pion{5 Blk} 4:Pion{10 Blk}
+                [[Pion{8 Blu}], [Pion{2 Red}, Pion{4 Red}], [Pion{5 Yel}, Pion{12 Yel}], []]
+                [[], [Pion{2 Red}], [], [Pion{4 Red}], [Pion{5 Yel}], [], [], [Pion{8 Blu}], [], [], [], [Pion{12 Yel}], []]
+                Joker ? :false
+                [Blu, Red, Yel, Blk]
+                [[[]]]
+                [Blu, Yel, Blk]
+                [[[Pion{2 Red}]]]
+                [Blu, Red, Yel, Blk]
+                [[[]]]
+                [Blu, Yel, Blk]
+                [[[Pion{4 Red}]]]
+                [Blu, Red, Blk]
+                [[[Pion{5 Yel}]]]
+                [Blu, Red, Yel, Blk]
+                [[[]]]
+                [Blu, Red, Yel, Blk]
+                [[[]]]
+                [Red, Yel, Blk]
+                [[[Pion{8 Blu}]]]
+                [Blu, Red, Yel, Blk]
+                [[[]]]
+                [Blu, Red, Yel, Blk]
+                [[[]]]
+                [Blu, Red, Yel, Blk]
+                [[[]]]
+                [Blu, Red, Blk]
+                [[[Pion{12 Yel}]]]
+                [Blu, Red, Yel, Blk]
+                [[[]]]
+                MoveReplaceByJoker{Joker à remplacejoker=Joker{à remplacer par ce Pion{9 Yel}}, combinaisonJ=0, p=Pion{9 Yel}, combinaisonP=0}
+                MoveReplaceByJoker{Joker à remplacejoker=Joker{à remplacer par ce Pion{9 Yel}}, combinaisonJ=0, p=Pion{9 Yel}, combinaisonP=0}
+                Pions dans la pioche : 17
+                Pions sur la table : 81
+                Chevalet Joueur Humain : Votre chevalet contient 6 pions : 0:Pion{8 Blu}
+                                                   1:Pion{2 Red} 2:Pion{4 Red}
+                                                   3:Pion{5 Yel} 4:Joker{JColor=Red} 5:Pion{12 Yel}
+                Chevalet IA : Votre chevalet contient 5 pions : 0:Pion{8 Red}
+                                                   1:Pion{2 Yel}
+                                                   2:Pion{2 Blk} 3:Pion{5 Blk} 4:Pion{10 Blk}
+                Combinaison 0 : 0:Pion{12 Blu} 1:Pion{12 Yel} 2:Pion{12 Blk} 3:Pion{9 Yel}
+                Combinaison 1 : 0:Pion{13 Blu} 1:Pion{13 Red} 2:Pion{13 Yel} 3:Pion{13 Blk}
+                Combinaison 2 : 0:Pion{4 Blu} 1:Pion{4 Red} 2:Pion{4 Yel} 3:Pion{4 Blk}
+                Combinaison 3 : 0:Pion{6 Red} 1:Pion{6 Yel} 2:Pion{6 Blk}
+                Combinaison 4 : 0:Pion{2 Blu} 1:Pion{2 Red} 2:Pion{2 Yel} 3:Pion{2 Blk}
+                Combinaison 5 : 0:Pion{11 Blu} 1:Pion{11 Yel} 2:Pion{11 Blk}
+                Combinaison 6 : 0:Pion{2 Blu} 1:Pion{3 Blu} 2:Pion{4 Blu} 3:Pion{5 Blu} 4:Pion{6 Blu} 5:Pion{7 Blu} 6:Pion{8 Blu} 7:Pion{9 Blu} 8:Pion{10 Blu} 9:Pion{11 Blu} 10:Pion{12 Blu} 11:Pion{13 Blu}
+                Combinaison 7 : 0:Pion{9 Blu} 1:Pion{9 Red} 2:Pion{9 Blk}
+                Combinaison 8 : 0:Pion{6 Red} 1:Pion{7 Red} 2:Pion{8 Red} 3:Pion{9 Red} 4:Pion{10 Red} 5:Pion{11 Red} 6:Pion{12 Red} 7:Pion{13 Red}
+                Combinaison 9 : 0:Pion{3 Red} 1:Pion{3 Yel} 2:Pion{3 Blk}
+                Combinaison 10 : 0:Pion{7 Blk} 1:Pion{8 Blk} 2:Pion{9 Blk} 3:Pion{10 Blk} 4:Pion{11 Blk} 5:Pion{12 Blk}
+                Combinaison 11 : 0:Pion{1 Blu} 1:Pion{1 Red} 2:Pion{1 Yel} 3:Pion{1 Blk}
+                Combinaison 12 : 0:Pion{5 Blk} 1:Pion{6 Blk} 2:Pion{7 Blk}
+                Combinaison 13 : 0:Pion{9 Yel} 1:Pion{10 Yel} 2:Joker{à remplacer par ce Pion{11 Yel}} 3:Pion{12 Yel} 4:Pion{13 Yel}
+                Combinaison 14 : 0:Pion{4 Yel} 1:Pion{5 Yel} 2:Pion{6 Yel} 3:Pion{7 Yel} 4:Pion{8 Yel}
+                Combinaison 15 : 0:Pion{1 Blu} 1:Pion{1 Red} 2:Pion{1 Yel}
+                Combinaison 16 : 0:Pion{7 Yel} 1:Pion{8 Yel} 2:Joker{JColor=Red} 3:Pion{10 Yel}
+                Combinaison 17 : 0:Pion{10 Red} 1:Pion{11 Red} 2:Pion{12 Red}
+            **/
             int ind = 0;
             for (Combinaison combinaison : table) {
                 if (combinaison.contientJoker() > 0) {
@@ -489,7 +626,7 @@ public class Rummikub implements Board {
         return moves;
     }
 
-    private ArrayList<Move> moveAddPion(ArrayList<Move> moves, Chevalet chevalet, int index, Pion p) {
+    private void moveAddPion(ArrayList<Move> moves, Chevalet chevalet, int index, Pion p) {
         if (chevalet.contient(p)) {
             MoveAddPionToCombinaison moveadd = new MoveAddPionToCombinaison(table, currentPlayer, p, index);
             if(!moves.contains(moveadd)) {
@@ -509,23 +646,46 @@ public class Rummikub implements Board {
                 moves.add(moveadd);
             }
         }
+        removeAndAddPion(moves, index, p, false, new Combinaison());
+    }
+
+    private ArrayList<RummikubMove> removeAndAddPion(ArrayList<Move> moves, int index, Pion p, boolean createCombi, Combinaison c) {
         int ind = 0;
+        ArrayList<RummikubMove> movesRemoveAndAdd = new ArrayList<>();
         for (Combinaison cc : table) {
             if (cc.contains(p)) {
                 Combinaison ccclone = (Combinaison) cc.clone();
                 ccclone.remove(p);
                 if (ccclone.estValide()) {
                     if(index != ind) {
-                        MoveRemoveAndAdd moveRemoveAndAdd = new MoveRemoveAndAdd(table, currentPlayer, ind, index, p);
-                        if(!moves.contains(moveRemoveAndAdd)) {
-                            moves.add(moveRemoveAndAdd);
+                        MoveRemoveAndAdd moveRemoveAndAdd = new MoveRemoveAndAdd(table, currentPlayer, ind, index, p, createCombi);
+                        if(createCombi) {
+                            Combinaison cclone = (Combinaison) c.clone();
+                            cclone.add(p);
+                            if(cclone.estValide()) {
+                                movesRemoveAndAdd.add(moveRemoveAndAdd);
+                            }
+                            //TODO essai d'un ajout d'un pion de plus déjà sur la table dans la combinaison si pas début
+                            // ArrayList<RummikubMove> move = new ArrayList<RummikubMove>();
+                            // move.add(moveRemoveAndAdd);
+                            // MoveRemoveAndAdd moveRemoveAndAdd2 = new MoveRemoveAndAdd(table, currentPlayer, ind2, index2, pp, createCombi);
+                            // move.add(moveRemoveAndAdd2);
+                            // MoveSetMoves moveSetMoves = new MoveSetMoves(table,currentPlayer, move);
+                            // cclone.add(pp);
+                            // if(cclone.estValide()) {
+                            //     movesRemoveAndAdd.add(moveSetMoves);
+                            // }
+                        } else {
+                            if(!moves.contains(moveRemoveAndAdd)) {
+                                moves.add(moveRemoveAndAdd);
+                            }
                         }
                     }
                 }
             }
             ind++;
         }
-        return moves;
+        return movesRemoveAndAdd;
     }
 
     @Override
