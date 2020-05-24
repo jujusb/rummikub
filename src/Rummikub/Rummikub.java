@@ -10,7 +10,7 @@ import Rummikub.Player.AI.MCTS.CallLocation;
 import Rummikub.Player.AI.MCTS.Move;
 import Rummikub.Player.AI.Moves.MoveAddPionToCombinaison;
 import Rummikub.Player.AI.Moves.MoveMakeCombinaison;
-import Rummikub.Player.AI.Moves.MoveMakeCombinaisons;
+import Rummikub.Player.AI.Moves.MoveSetMoves;
 import Rummikub.Player.AI.Moves.MovePiocher;
 import Rummikub.Player.AI.Moves.MoveRemoveAndAdd;
 import Rummikub.Player.AI.Moves.MoveReplaceByJoker;
@@ -240,6 +240,8 @@ public class Rummikub implements Board {
                                 nbJoker = chevalet.contientJoker();
                             }
                         }
+
+                        //TODO add pion déjà sur table dans la combinaison si pas début
                         if (c.size() >= 3 && c.estValide() && !(c.equals(cc))) {
                             cc = (Combinaison) c.clone();
                             MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, c);
@@ -256,7 +258,6 @@ public class Rummikub implements Board {
             joker= nbJoker>0;
         }
 
-        //TODO A corriger avec joker
         int num = 1;
         System.out.println("Joker ? :" + joker);
         for (ArrayList<Pion> l : tabSerie) {
@@ -277,47 +278,31 @@ public class Rummikub implements Board {
             Set<Set<Set<Pion>>> partitionsSet = partition.findAllPartitions();
             for(Set<Set<Pion>> setSize : partitionsSet) {
                 for(Set<Pion> setPion : setSize) {
+                    Combinaison c = new Combinaison();
+                    c.addAll(setPion);
                     if(setPion.size()==1 && nbJoker == 2) {
-                        Combinaison c = new Combinaison();
-                        c.addAll(setPion);
                         Joker j = (Joker) chevalet.get(chevalet.getIndexJoker()).clone();
                         Joker j2 = (Joker) chevalet.get(chevalet.getIndexJoker()).clone();
                         c.add(j);
                         c.add(j2);
                         j.setValueJokerInSerie(list, num);
                         j2.setValueJokerInSerie(list, num);
-                        if(c.estValide()) {
-                            MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, (Combinaison) c.clone());
-                            if (!moves.contains(mc)) {
-                                moves.add(mc);
-                            }
-                        }
                     } else if(setPion.size()==2 && joker) {
-                        Combinaison c = new Combinaison();
-                        c.addAll(setPion);
                         Joker j = (Joker) chevalet.get(chevalet.getIndexJoker()).clone();
                         c.add(j);
                         j.setValueJokerInSerie(list, num);
-                        if(c.estValide()) {
-                            MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, (Combinaison) c.clone());
-                            if (!moves.contains(mc)) {
-                                moves.add(mc);
-                            }
-                        }
                         if(nbJoker==2) {
-                            Joker j2 = (Joker) chevalet.get(chevalet.getIndexJoker()).clone();
-                            c.add(j2);
-                            j2.setValueJokerInSerie(list, num);
                             if(c.estValide()) {
                                 MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, (Combinaison) c.clone());
                                 if (!moves.contains(mc)) {
                                     moves.add(mc);
                                 }
                             }
+                            Joker j2 = (Joker) chevalet.get(chevalet.getIndexJoker()).clone();
+                            c.add(j2);
+                            j2.setValueJokerInSerie(list, num);
                         }
                     } else if(setPion.size()==3) {
-                        Combinaison c = new Combinaison();
-                        c.addAll(setPion);
                         if(c.estValide()) {
                             MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, (Combinaison) c.clone());
                             if (!moves.contains(mc)) {
@@ -330,13 +315,14 @@ public class Rummikub implements Board {
                             setValueJokerInSerie(chevalet, moves, num, c, j, list);
                         }
                     } else if(setPion.size()==4) {
-                        Combinaison c = new Combinaison();
-                        c.addAll(setPion);
-                        if(c.estValide()) {
-                            MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, (Combinaison) c.clone());
-                            if (!moves.contains(mc)) {
-                                moves.add(mc);
-                            }
+                        System.out.println(c); //Tout déjà fait
+                    } else {
+                        //TODO add pion from table if début passé
+                    }
+                    if(c.estValide()) {
+                        MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, (Combinaison) c.clone());
+                        if (!moves.contains(mc)) {
+                            moves.add(mc);
                         }
                     }
                 }
@@ -401,7 +387,7 @@ public class Rummikub implements Board {
             } else {
                 moves.addAll(movesCombinaisons);
             }
-            ArrayList<MoveMakeCombinaison> makeCombinaisons = new ArrayList<>();
+            ArrayList<RummikubMove> makeCombinaisons = new ArrayList<>();
             makeCombinaisons.add((MoveMakeCombinaison) move);
             boolean ok = true;
             chevalet = (Chevalet) currentPlayer.getChevalet().clone();
@@ -418,18 +404,18 @@ public class Rummikub implements Board {
                 if (ok) {
                     makeCombinaisons.add((MoveMakeCombinaison) move1);
                     int score = 0;
-                    for (MoveMakeCombinaison make : makeCombinaisons) {
-                        score += make.getCombi().score();
+                    for (RummikubMove make : makeCombinaisons) {
+                        score += ((MoveMakeCombinaison)make).getCombi().score();
                     }
                     if (currentPlayer.isDebut()) {
                         if (score > 30) {
-                            Move m = new MoveMakeCombinaisons(table, currentPlayer, makeCombinaisons);
+                            Move m = new MoveSetMoves(table, currentPlayer, makeCombinaisons);
                             if (!moves.contains(m)) {
                                 moves.add(m);
                             }
                         }
                     } else {
-                        Move m = new MoveMakeCombinaisons(table, currentPlayer, makeCombinaisons);
+                        Move m = new MoveSetMoves(table, currentPlayer, makeCombinaisons);
                         if (!moves.contains(m)) {
                             moves.add(m);
                         }
