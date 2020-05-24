@@ -31,22 +31,25 @@ public class Joker extends Pion {
     public void reset(){
         num = 0;
         containsList.clear();
+        useSerie=false;
+        useSuite=false;
     }
 
     /**
      *
-     * @param use si 1,suite sinon série
      * @param c
      * @param n
      */
-    public void setValueJoker(int use, Couleur c, int n) {
+    public void setValueJokerInSuite(Couleur c, int n) {
         this.couleur = c;
         this.num = n;
-        if(use==1){
-            useSuite = true;
-        } else {
-            useSerie = true;
-        }
+        this.useSuite = true;
+    }
+
+    public void setValueJokerInSerie(List<Couleur> list, int n) {
+        this.containsList = list;
+        this.num = n;
+        this.useSerie = true;
     }
 
     public void setValueJoker(int use, int c, int n) {
