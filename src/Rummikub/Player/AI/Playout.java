@@ -4,6 +4,7 @@ import Rummikub.Player.AI.MCTS.Board;
 import Rummikub.Player.AI.MCTS.Move;
 import Rummikub.Player.AI.MCTS.support.PlayoutSelection;
 import Rummikub.Player.AI.Moves.MovePiocher;
+import Rummikub.Player.AI.Moves.MoveRemoveAndAdd;
 import Rummikub.Player.AI.Moves.RummikubMove;
 import Rummikub.Rummikub;
 
@@ -17,36 +18,39 @@ public class Playout implements PlayoutSelection {
 
     @Override
     public void Process(Board board) {
-        Rummikub game = (Rummikub)board;
+        Rummikub game = (Rummikub) board;
         ArrayList<Move> listMoves = game.getAllsMoves();
         RummikubMove randomMove;
         int random;
         ArrayList<Move> movesSansPioche = new ArrayList<>();
         ArrayList<Move> movesPioche = new ArrayList<>();
         int etape = 0;
-        boolean movepossible = true;
-        while(!board.gameOver()||movepossible) { //TODO partie aléatoire jusqu'à la fin
+        boolean piochepossible = true;
+        while (!board.gameOver() || !(!piochepossible && movesSansPioche.isEmpty())) { //TODO partie aléatoire jusqu'à la fin
             movesSansPioche = new ArrayList<>();
             movesPioche = new ArrayList<>();
-            for(Move move:listMoves) {
-                if (!(move instanceof MovePiocher)) {
+            for (Move move : listMoves) {
+                if (move instanceof MovePiocher) {
+                    movesPioche.add(move);
+                    if (movesPioche.size() == 0) piochepossible=false;
+                } else if (move instanceof MoveRemoveAndAdd) {
+                    movesPioche.add(move);
+                } else {
                     movesSansPioche.add(move);
                     System.out.println(move);
-                } else {
-                    movesPioche.add(move);
                 }
             }
-            if(movesSansPioche.isEmpty()&&movesPioche.isEmpty()) {
-                movepossible = false;
+            if (movesSansPioche.isEmpty() && movesPioche.isEmpty()) {
+                piochepossible = false;
             } else {
                 try {
-                    if(movesSansPioche.isEmpty()) {
+                    if (movesSansPioche.isEmpty()) {
                         random = new Random().nextInt(movesPioche.size());
                         randomMove = (RummikubMove) movesPioche.get(random);
                     } else {
                         random = new Random().nextInt(movesSansPioche.size());
                         randomMove = (RummikubMove) movesSansPioche.get(random);
-                        if(game.playerGetCurrentPlayer().isDebut()) {
+                        if (game.playerGetCurrentPlayer().isDebut()) {
                             game.playerGetCurrentPlayer().setDebutFait();
                         }
                     }
@@ -60,10 +64,9 @@ public class Playout implements PlayoutSelection {
                 game.changeCurrentPlayer();
                 listMoves = game.getAllsMoves();
                 etape++;
-
             }
-       }
-        if(listMoves.size()==0) {
+        }
+        if (listMoves.size() == 0) {
             System.out.println("Match null");
         }
         System.out.println(etape);
