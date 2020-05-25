@@ -43,9 +43,11 @@ public class MoveReplaceByJoker extends RummikubMove {
         }
     }
 
-    public void makeRummikubMove(Rummikub game){
+    public void makeRummikubMove(Rummikub game) throws Exception {
         if(!chevalet) {
             game.getTable().get(combinaisonP).remove(p);
+        } else {
+            game.playerGetCurrentPlayer().getChevalet().retirer(p);
         }
         Combinaison c = game.getTable().get(combinaisonJ);
         game.getTable().retirerDeCombinaison(c, joker);
