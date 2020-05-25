@@ -65,8 +65,8 @@ public class MoveReplaceByJoker extends RummikubMove {
         return chevalet == that.chevalet &&
                 combinaisonJ == that.combinaisonJ &&
                 combinaisonP == that.combinaisonP &&
-                Objects.equals(joker, that.joker) &&
-                Objects.equals(p, that.p);
+                joker.equals(that.joker) &&
+                p.equals(that.p);
     }
 
     @Override

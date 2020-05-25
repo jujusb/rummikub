@@ -68,13 +68,16 @@ public class Playout implements PlayoutSelection {
         double[] scores = game.getScore();
         if (!game.gameOver()) {
             System.out.println("Match null en "+etape+" etapes");
-            System.out.println(scores[0]>scores[1]?"Joueur 1 gagne de peu":"Joueur 2 gagne de peu");
+            if (scores[0] > scores[1]) {
+                System.out.println("Joueur humain gagne de peu");
+            }
+            else System.out.println("IA gagne de peu");
         } else {
             if (game.playerGetCurrentPlayer().gagne()) {
-                System.out.println(game.playerGetCurrentPlayer().getName() + "is Winner");
+                System.out.println(game.playerGetCurrentPlayer().getName() + " is Winner en"+etape+" etapes");
             } else {
                 game.changeCurrentPlayer();
-                System.out.println(game.playerGetCurrentPlayer().getName() + "is Winner");
+                System.out.println(game.playerGetCurrentPlayer().getName() + " is Winner "+etape+" etapes");
             }
         }
         System.out.println(scores[0]);

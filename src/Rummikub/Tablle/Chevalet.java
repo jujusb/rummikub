@@ -38,6 +38,7 @@ public class Chevalet extends ArrayList<Pion> {
 			throw new Exception("Votre chevalet ne contient pas ce pion.");
 		} else {
 			this.remove(p);
+			nbPions--;
 			return p;
 		}
 	}

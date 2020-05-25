@@ -240,6 +240,13 @@ public class Rummikub implements Board {
                                 nbJoker = chevalet.contientJoker();
                             }
                         }
+                        if (c.size() >= 3 && c.estValide() && !(c.equals(cc))) {
+                            cc = (Combinaison) c.clone();
+                            MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, c);
+                            if(!moves.contains(mc)) {
+                                moves.add(mc);
+                            }
+                        }
                         //add pion déjà sur table dans la combinaison si pas début
                         if(!currentPlayer.isDebut()) {
                             Couleur couleur = c.get(0).getCouleur();
@@ -257,13 +264,6 @@ public class Rummikub implements Board {
                                 removeAndAddPion.addAll(removeAndAddPion(moves, table.size(), t, pion,true, false, 0,c));
                             }
                             movesCreerCombinaisonPlusAjoutPiondeTable(moves, c, removeAndAddPion);
-                        }
-                        if (c.size() >= 3 && c.estValide() && !(c.equals(cc))) {
-                            cc = (Combinaison) c.clone();
-                            MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, c);
-                            if(!moves.contains(mc)) {
-                                moves.add(mc);
-                            }
                         }
                     }
                 }
@@ -333,12 +333,12 @@ public class Rummikub implements Board {
                     } else if(setPion.size()==4) {
                         System.out.println(c); //Tout déjà fait
                     }
-                    if(c.estValide()) {
-                        MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, (Combinaison) c.clone());
-                        if (!moves.contains(mc)) {
-                            moves.add(mc);
-                        }
-                    }
+                    //if(c.estValide()) {
+                    //    MoveMakeCombinaison mc = new MoveMakeCombinaison(table, currentPlayer, (Combinaison) c.clone());
+                    //    if (!moves.contains(mc)) {
+                    //        moves.add(mc);
+                    //    }
+                    //}
                     //add pion at combinaison pas forcément complète from table if début passé
                     if(!currentPlayer.isDebut()) {
                         if(c.size()>0) {
@@ -387,6 +387,9 @@ public class Rummikub implements Board {
     }
 
     public ArrayList<Move> getAllsMoves() {
+        for(Combinaison c : table) {
+            c.sort();
+        }
         ArrayList<Move> moves;
         Chevalet chevalet = (Chevalet) currentPlayer.getChevalet().clone();
         chevalet.sort();
@@ -421,12 +424,14 @@ public class Rummikub implements Board {
         //MAKES COMBINAISONS
         ArrayList<Move> movesCombinaisons = getMoveCombinaisons(tabSeries, tabSuite, chevalet);
         for (Move move : movesCombinaisons) {
-            if (currentPlayer.isDebut()) {
-                if (((MoveMakeCombinaison) move).getCombi().score() >= 30) {
+            if(!moves.contains(move)){
+                if (currentPlayer.isDebut()) {
+                    if (((MoveMakeCombinaison) move).getCombi().score() >= 30) {
+                        moves.add(move);
+                    }
+                } else {
                     moves.add(move);
                 }
-            } else {
-                moves.addAll(movesCombinaisons);
             }
             ArrayList<RummikubMove> makeCombinaisons = new ArrayList<>();
             if(move instanceof MoveMakeCombinaison) {

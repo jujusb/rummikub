@@ -47,7 +47,7 @@ public class MoveRemoveAndAdd extends RummikubMove {
         MoveRemoveAndAdd that = (MoveRemoveAndAdd) o;
         return numberCombiRemove == that.numberCombiRemove &&
                 numberCombiAdd == that.numberCombiAdd &&
-                Objects.equals(pion, that.pion);
+                pion.equals(that.pion);
     }
 
     @Override

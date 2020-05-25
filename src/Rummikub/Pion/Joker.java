@@ -30,6 +30,7 @@ public class Joker extends Pion {
 
     public void reset(){
         num = 0;
+        couleur=null;
         containsList.clear();
         useSerie=false;
         useSuite=false;
@@ -104,8 +105,7 @@ public class Joker extends Pion {
                     '}';
         } else {
             return "Joker{" +
-                    "JColor=" + couleurJoker +
-                    '}';
+                    "JColor=" + couleurJoker + '}';
         }
     }
 

@@ -42,7 +42,7 @@ public class MoveAddPionToCombinaison extends RummikubMove {
         if (!super.equals(o)) return false;
         MoveAddPionToCombinaison that = (MoveAddPionToCombinaison) o;
         return numberCombi == that.numberCombi &&
-                Objects.equals(pionToAdd, that.pionToAdd);
+                pionToAdd.equals(that.pionToAdd);
     }
 
     @Override

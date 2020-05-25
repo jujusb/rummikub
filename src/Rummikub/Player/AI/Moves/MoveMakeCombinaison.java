@@ -42,7 +42,7 @@ public class MoveMakeCombinaison extends RummikubMove {
         if (!(o instanceof MoveMakeCombinaison)) return false;
         if (!super.equals(o)) return false;
         MoveMakeCombinaison that = (MoveMakeCombinaison) o;
-        return Objects.equals(combi, that.combi);
+        return combi.equals(that.combi);
     }
 
     @Override
