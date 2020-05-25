@@ -603,24 +603,24 @@ public class Rummikub implements Board {
                         }
                     }
                     //TODO Vérifier pour que ça fonctionne venant des combinaisons de la table
-                    // for(Combinaison comb : table) {
-                    //    Combinaison combclone = (Combinaison) comb.clone();
-                    //    if(!comb.equals(combinaison)) {
-                    //        int indcombinaison = 0;
-                    //        for (Pion p : comb) {
-                    //            if (joker.canReplace(p)) {
-                    //                combclone.remove(p);
-                    //                if(combclone.estValide()) {
-                    //                    MoveReplaceByJoker move = new MoveReplaceByJoker(table, currentPlayer, indcombinaison, joker, false, p, indcombinaison);
-                    //                    if(!moves.contains(move)) {
-                    //                        moves.add(move);
-                    //                    }
-                    //                }
-                    //            }
-                    //            indcombinaison++;
-                    //        }
-                    //    }
-                    // }
+                    int indcombinaison = 0;
+                    for(Combinaison comb : table) {
+                       Combinaison combclone = (Combinaison) comb.clone();
+                       if(!comb.equals(combinaison)) {
+                           for (Pion p : comb) {
+                               if (joker.canReplace(p)) {
+                                   combclone.remove(p);
+                                   if(combclone.estValide()) {
+                                       MoveReplaceByJoker move = new MoveReplaceByJoker(table, currentPlayer, ind, joker, false, p, indcombinaison);
+                                       if(!moves.contains(move)) {
+                                           moves.add(move);
+                                       }
+                                   }
+                               }
+                           }
+                       }
+                       indcombinaison++;
+                    }
                 }
                 ind++;
             }

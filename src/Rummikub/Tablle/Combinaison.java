@@ -29,6 +29,7 @@ public class Combinaison extends ArrayList<Pion> {
     }
 
     public boolean estValide() {
+        setContainsList();
         if(size()< 3 || size() > 13)
             return false;
         sort();
@@ -97,6 +98,12 @@ public class Combinaison extends ArrayList<Pion> {
         for(Couleur col : Couleur.values()){
             if(!(couleursCombinaison.contains(col))){
                 containsList.add(col);
+            }
+        }
+        if(this.contientJoker()>0) {
+            Joker j = (Joker) this.get(getIndexJoker());
+            if(isSerie()) {
+                j.setValueJokerInSerie(containsList, j.getNum());
             }
         }
         return containsList;
