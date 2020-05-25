@@ -23,7 +23,7 @@ public class Playout implements PlayoutSelection {
         RummikubMove randomMove;
         int random;
         ArrayList<Move> movesSansPioche = new ArrayList<>();
-        movesSansPioche.add(new MovePiocher(game.getTable(), game.playerGetCurrentPlayer(),1));
+        movesSansPioche.add(null);
         ArrayList<Move> movesPioche = new ArrayList<>();
         int etape = 0;
         boolean piochepossible = true;

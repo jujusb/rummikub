@@ -30,8 +30,8 @@ public class IA extends Player {
         mcts.setPessimisticBias(0.0d);
         mcts.setMoveSelectionPolicy(FinalSelectionPolicy.robustChild);
         mcts.setPlayoutSelection(new Playout());
-        mcts.setHeuristicFunction(new Heuristic());
-        mcts.enableRootParallelisation(20);//TODO
+        //mcts.setHeuristicFunction(new Heuristic());
+        mcts.enableRootParallelisation(50);//TODO
     }
 
     public IA() {
@@ -40,7 +40,7 @@ public class IA extends Player {
 
     @Override
     public boolean jouer(){
-        RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,10,true);
+        RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,1,true);
         if(move instanceof MovePiocher) {
             return false;
         }
@@ -50,7 +50,7 @@ public class IA extends Player {
 
     @Override
     public List<Combinaison> jouerdebut() {
-        RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,2,true);
+        RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,1,true);
         List<Combinaison> t;
         if(move instanceof MovePiocher) {
             t=null;

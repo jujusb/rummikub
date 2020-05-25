@@ -14,7 +14,6 @@ public class MovePiocher extends RummikubMove {
         //possiblePioche = new HashMap<>();
         this.indexpionAPiocher=indexpionAPiocher;
         pionAPiocher = table.getPioche().get(indexpionAPiocher);
-        //
     }
 
     //piocher se fait automatiquement
