@@ -21,6 +21,10 @@ public class MoveRemoveAndAdd extends RummikubMove {
         this.createCombi=createCombi;
     }
 
+    public Pion getPion() {
+        return pion;
+    }
+
     @Override
     public String toString() {
         return "MoveRemoveAndAdd{" +

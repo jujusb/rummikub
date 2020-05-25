@@ -248,14 +248,15 @@ public class Rummikub implements Board {
                             ArrayList<RummikubMove> removeAndAddPion = new ArrayList<>();
                             if (numMin != 1) {
                                 Pion pion = new Pion(numMin - 1, couleur);
-                                removeAndAddPion.addAll(removeAndAddPion(moves, table.size(), pion,true,c));
+                                Table t = (Table) table.clone();
+                                removeAndAddPion.addAll(removeAndAddPion(moves, table.size(), t, pion,true, false, 0, c));
                             }
                             if (numMax != 13) {
                                 Pion pion = new Pion(numMax + 1, couleur);
-                                removeAndAddPion.addAll(removeAndAddPion(moves, table.size(), pion,true, c));
+                                Table t = (Table) table.clone();
+                                removeAndAddPion.addAll(removeAndAddPion(moves, table.size(), t, pion,true, false, 0,c));
                             }
                             movesCreerCombinaisonPlusAjoutPiondeTable(moves, c, removeAndAddPion);
-                            //TODO add plusieurs pions déjà sur la table dans la combinaison si pas début
                         }
                         if (c.size() >= 3 && c.estValide() && !(c.equals(cc))) {
                             cc = (Combinaison) c.clone();
@@ -346,10 +347,10 @@ public class Rummikub implements Board {
                             ArrayList<RummikubMove> removeAndAddPion = new ArrayList<>();
                             for (Couleur couleur : containList) {
                                 Pion pion = new Pion(numS, couleur);
-                                removeAndAddPion.addAll(removeAndAddPion(moves, table.size(), pion, true, c));
+                                Table t = (Table) table.clone();
+                                removeAndAddPion.addAll(removeAndAddPion(moves, table.size(), t, pion, true, true, 0, c));
                             }
                             movesCreerCombinaisonPlusAjoutPiondeTable(moves, c, removeAndAddPion);
-                            //TODO add plusieurs pions déjà sur la table dans la combinaison si pas début
                         }
                     }
                 }
@@ -601,24 +602,25 @@ public class Rummikub implements Board {
                             }
                         }
                     }
-                    for(Combinaison comb : table) {
-                        Combinaison combclone = (Combinaison) comb.clone();
-                        if(!comb.equals(combinaison)) {
-                            int indcombinaison = 0;
-                            for (Pion p : comb) {
-                                if (joker.canReplace(p)) {
-                                    combclone.remove(p);
-                                    if(combclone.estValide()) {
-                                        MoveReplaceByJoker move = new MoveReplaceByJoker(table, currentPlayer, indcombinaison, joker, false, p, indcombinaison);
-                                        if(!moves.contains(move)) {
-                                            moves.add(move);
-                                        }
-                                    }
-                                }
-                                indcombinaison++;
-                            }
-                        }
-                    }
+                    //TODO Vérifier pour que ça fonctionne venant des combinaisons de la table
+                    // for(Combinaison comb : table) {
+                    //    Combinaison combclone = (Combinaison) comb.clone();
+                    //    if(!comb.equals(combinaison)) {
+                    //        int indcombinaison = 0;
+                    //        for (Pion p : comb) {
+                    //            if (joker.canReplace(p)) {
+                    //                combclone.remove(p);
+                    //                if(combclone.estValide()) {
+                    //                    MoveReplaceByJoker move = new MoveReplaceByJoker(table, currentPlayer, indcombinaison, joker, false, p, indcombinaison);
+                    //                    if(!moves.contains(move)) {
+                    //                        moves.add(move);
+                    //                    }
+                    //                }
+                    //            }
+                    //            indcombinaison++;
+                    //        }
+                    //    }
+                    // }
                 }
                 ind++;
             }
@@ -646,44 +648,74 @@ public class Rummikub implements Board {
                 moves.add(moveadd);
             }
         }
-        removeAndAddPion(moves, index, p, false, new Combinaison());
+        Table t = (Table) table.clone();
+        removeAndAddPion(moves, index, t, p,false, false, 0, new Combinaison());
     }
 
-    private ArrayList<RummikubMove> removeAndAddPion(ArrayList<Move> moves, int index, Pion p, boolean createCombi, Combinaison c) {
-        int ind = 0;
+    private ArrayList<RummikubMove> removeAndAddPion(ArrayList<Move> moves, int index, Table table1, Pion p, boolean createCombi, boolean serie, int nbFois, Combinaison c) {
         ArrayList<RummikubMove> movesRemoveAndAdd = new ArrayList<>();
-        for (Combinaison cc : table) {
-            if (cc.contains(p)) {
-                Combinaison ccclone = (Combinaison) cc.clone();
-                ccclone.remove(p);
-                if (ccclone.estValide()) {
-                    if(index != ind) {
-                        MoveRemoveAndAdd moveRemoveAndAdd = new MoveRemoveAndAdd(table, currentPlayer, ind, index, p, createCombi);
-                        if(createCombi) {
-                            Combinaison cclone = (Combinaison) c.clone();
-                            cclone.add(p);
-                            if(cclone.estValide()) {
-                                movesRemoveAndAdd.add(moveRemoveAndAdd);
-                            }
-                            //TODO essai d'un ajout d'un pion de plus déjà sur la table dans la combinaison si pas début
-                            // ArrayList<RummikubMove> move = new ArrayList<RummikubMove>();
-                            // move.add(moveRemoveAndAdd);
-                            // MoveRemoveAndAdd moveRemoveAndAdd2 = new MoveRemoveAndAdd(table, currentPlayer, ind2, index2, pp, createCombi);
-                            // move.add(moveRemoveAndAdd2);
-                            // MoveSetMoves moveSetMoves = new MoveSetMoves(table,currentPlayer, move);
-                            // cclone.add(pp);
-                            // if(cclone.estValide()) {
-                            //     movesRemoveAndAdd.add(moveSetMoves);
-                            // }
-                        } else {
-                            if(!moves.contains(moveRemoveAndAdd)) {
-                                moves.add(moveRemoveAndAdd);
+        if(nbFois!=2) {
+            int ind = 0;
+            for (Combinaison cc : table1) {
+                if (cc.contains(p)) {
+                    Combinaison ccclone = (Combinaison) cc.clone();
+                    ccclone.remove(p);
+                    if (ccclone.estValide()) {
+                        if (index != ind) {
+                            MoveRemoveAndAdd moveRemoveAndAdd = new MoveRemoveAndAdd(table, currentPlayer, ind, index, p, createCombi);
+                            if (createCombi) {
+                                Combinaison cclone = (Combinaison) c.clone();
+                                cclone.add(p);
+                                if (cclone.estValide()) {
+                                    movesRemoveAndAdd.add(moveRemoveAndAdd);
+                                }
+                                ArrayList<RummikubMove> removeAndAdd2= new ArrayList<>();
+                                if(serie) {
+                                    int numS = c.get(0).getNum();
+                                    ArrayList<Couleur> containList = c.setContainsList();
+                                    for (Couleur couleur : containList) {
+                                        Pion pion = new Pion(numS, couleur);
+                                        Table t = (Table) table1.clone();
+                                        removeAndAdd2.addAll(removeAndAddPion(moves, table.size(), t, pion, true, true, nbFois+1, c));
+                                    }
+                                } else {
+                                    Couleur couleur = c.get(0).getCouleur();
+                                    int numMin = c.get(0).getNum();
+                                    int numMax = c.get(c.size() - 1).getNum();
+                                    if (numMin != 1) {
+                                        Pion pion = new Pion(numMin - 1, couleur);
+                                        Table t = (Table) table1.clone();
+                                        removeAndAdd2.addAll(removeAndAddPion(moves, table.size(), t, pion,true, false, nbFois+1, c));
+                                    }
+                                    if (numMax != 13) {
+                                        Pion pion = new Pion(numMax + 1, couleur);
+                                        Table t = (Table) table1.clone();
+                                        removeAndAdd2.addAll(removeAndAddPion(moves, table.size(), t, pion,true, false, nbFois+1,c));
+                                    }
+                                }
+                                //TODO essai d'un ajout d'un pion de plus déjà sur la table dans la combinaison si pas début
+                                for(RummikubMove moveRemoveAndAdd2: removeAndAdd2) {
+                                    ArrayList<RummikubMove> move = new ArrayList<RummikubMove>();
+                                    move.add(moveRemoveAndAdd);
+                                    move.add(moveRemoveAndAdd2);
+                                    MoveSetMoves moveSetMoves = new MoveSetMoves(table,currentPlayer, move);
+                                    if(moveRemoveAndAdd2 instanceof MoveRemoveAndAdd) {
+                                        cclone.add(((MoveRemoveAndAdd)moveRemoveAndAdd2).getPion());
+                                        if(cclone.estValide()) {
+                                            movesRemoveAndAdd.add(moveSetMoves);
+                                        }
+                                    }
+                                }
+                            } else {
+                                if (!moves.contains(moveRemoveAndAdd)) {
+                                    moves.add(moveRemoveAndAdd);
+                                }
                             }
                         }
                     }
                 }
+                ind++;
             }
-            ind++;
         }
         return movesRemoveAndAdd;
     }
