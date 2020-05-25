@@ -2,9 +2,9 @@ package Rummikub.Player;
 
 import Rummikub.Pion.Joker;
 import Rummikub.Pion.Pion;
-import Rummikub.Tablle.Chevalet;
-import Rummikub.Tablle.Combinaison;
-import Rummikub.Tablle.Table;
+import Rummikub.Table.Chevalet;
+import Rummikub.Table.Combinaison;
+import Rummikub.Table.Table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,19 +114,6 @@ public class Player {
                     }
                 }
                 Combinaison cc = table.get(c);
-                //System.out.println(cc + "Selectionez la position du joker à retirer de cette combinaison :");
-                //int p = sc.nextInt();
-                //if (p == -1) {
-                //    return true;
-                //}
-                //if (p < 0 || p > cc.size()) {
-                //    System.out.println("Ce numéro n'est pas valable. Il doit être compris entre 0 et " + cc.size() + " pour être contenu dans cette combinaison. \n Selectionez la position du pion à retirer de cette combinaison :");
-                //    p = sc.nextInt();
-                //}
-                //if (!(cc.get(p) instanceof Joker)) {
-                //    System.out.println("Ce pion n'est pas un joker. \n Selectionez un joker :\"");
-                //    p = sc.nextInt();
-                //}
                 Pion pp = cc.get(cc.getIndexJoker());
                 Pion select = selectPion();
                 if(select == null) {
@@ -144,15 +131,6 @@ public class Player {
                 chevalet.ajouter(pp);
                 ((Joker) pp).reset();
                 table.ajoutALaCombinaison(cc, select);
-                //System.out.println(table + "Selectionez la combinaison où doit être ajouté le joker :");
-                //int ccc = sc.nextInt();
-                //if (ccc < 0 || ccc > table.size()) {
-                //    System.out.println("Ce numéro n'est pas valable. Il doit être compris entre 0 et " + table.size() + " pour être contenu sur la table. \n Selectionez la combinaison où doit être ajouté le joker :");
-                //    ccc = sc.nextInt();
-                //}
-                //table.ajoutALaCombinaison(table.get(ccc), pp);
-                //useJoker(pp);
-                //setContainListForJoker(table.get(ccc));
             }
             compteur++;
         }

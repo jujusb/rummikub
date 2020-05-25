@@ -3,8 +3,8 @@ package Rummikub.Player.AI.Moves;
 import Rummikub.Player.AI.MCTS.Move;
 import Rummikub.Player.Player;
 import Rummikub.Rummikub;
-import Rummikub.Tablle.Combinaison;
-import Rummikub.Tablle.Table;
+import Rummikub.Table.Combinaison;
+import Rummikub.Table.Table;
 
 import java.util.List;
 import java.util.Objects;

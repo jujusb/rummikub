@@ -4,8 +4,8 @@ import Rummikub.Pion.Joker;
 import Rummikub.Pion.Pion;
 import Rummikub.Player.Player;
 import Rummikub.Rummikub;
-import Rummikub.Tablle.Combinaison;
-import Rummikub.Tablle.Table;
+import Rummikub.Table.Combinaison;
+import Rummikub.Table.Table;
 
 import java.util.Objects;
 

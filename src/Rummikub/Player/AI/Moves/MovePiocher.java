@@ -3,7 +3,7 @@ package Rummikub.Player.AI.Moves;
 import Rummikub.Pion.Pion;
 import Rummikub.Player.Player;
 import Rummikub.Rummikub;
-import Rummikub.Tablle.Table;
+import Rummikub.Table.Table;
 
 public class MovePiocher extends RummikubMove {
     private int indexpionAPiocher;

@@ -2,7 +2,7 @@ package Rummikub.Player.AI.Moves;
 
 import Rummikub.Player.Player;
 import Rummikub.Rummikub;
-import Rummikub.Tablle.Table;
+import Rummikub.Table.Table;
 
 import java.util.ArrayList;
 import java.util.Objects;

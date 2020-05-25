@@ -1,4 +1,4 @@
-package Rummikub.Tablle;
+package Rummikub.Table;
 
 import Rummikub.Pion.Couleur;
 import Rummikub.Pion.Joker;

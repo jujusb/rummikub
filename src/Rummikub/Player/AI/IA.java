@@ -4,9 +4,9 @@ import Rummikub.Player.AI.MCTS.FinalSelectionPolicy;
 import Rummikub.Player.AI.MCTS.MCTS;
 import Rummikub.Player.Player;
 import Rummikub.Rummikub;
-import Rummikub.Tablle.Chevalet;
-import Rummikub.Tablle.Combinaison;
-import Rummikub.Tablle.Table;
+import Rummikub.Table.Chevalet;
+import Rummikub.Table.Combinaison;
+import Rummikub.Table.Table;
 
 import java.util.List;
 
@@ -26,6 +26,7 @@ public class IA extends Player {
         mcts.setMoveSelectionPolicy(FinalSelectionPolicy.robustChild);
         mcts.setPlayoutSelection(new Playout());
         mcts.setHeuristicFunction(new Heuristic());
+        //mcts.enableRootParallelisation(20);//TODO
     }
 
     public IA() {

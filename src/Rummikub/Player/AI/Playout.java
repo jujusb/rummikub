@@ -27,7 +27,7 @@ public class Playout implements PlayoutSelection {
         ArrayList<Move> movesPioche = new ArrayList<>();
         int etape = 0;
         boolean piochepossible = true;
-        while ((piochepossible || !movesSansPioche.isEmpty()) && !board.gameOver()) { //TODO partie aléatoire jusqu'à la fin
+        while ((piochepossible || !movesSansPioche.isEmpty()) && !board.gameOver()) { //partie aléatoire jusqu'à la fin
             movesSansPioche = new ArrayList<>();
             movesPioche = new ArrayList<>();
             for (Move move : listMoves) {
