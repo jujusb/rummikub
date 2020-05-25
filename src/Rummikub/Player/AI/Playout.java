@@ -65,10 +65,20 @@ public class Playout implements PlayoutSelection {
                 etape++;
             }
         }
-        if (listMoves.size() == 0) {
-            System.out.println("Match null");
+        double[] scores = game.getScore();
+        if (!game.gameOver()) {
+            System.out.println("Match null en "+etape+" etapes");
+            System.out.println(scores[0]>scores[1]?"Joueur 1 gagne de peu":"Joueur 2 gagne de peu");
+        } else {
+            if (game.playerGetCurrentPlayer().gagne()) {
+                System.out.println(game.playerGetCurrentPlayer().getName() + "is Winner");
+            } else {
+                game.changeCurrentPlayer();
+                System.out.println(game.playerGetCurrentPlayer().getName() + "is Winner");
+            }
         }
-        System.out.println(etape);
+        System.out.println(scores[0]);
+        System.out.println(scores[1]);
     }
 
     public boolean piochepossible(ArrayList<Move> movesPioche) {
