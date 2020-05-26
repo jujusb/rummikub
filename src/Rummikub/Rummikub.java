@@ -54,17 +54,15 @@ public class Rummikub implements Board {
         this.table = (Table) t.clone();
         if (player instanceof IA) {
             ia = (IA) player.clone();
-            ia.setTable(table);
             playerHumain = (Player) opponent.clone();
-            playerHumain.setTable(table);
             currentPlayer = playerHumain;
         } else {
             playerHumain = (Player) player.clone();
-            playerHumain.setTable(table);
             ia = (IA) opponent.clone();
-            ia.setTable(table);
-            currentPlayer = opponent;
+            currentPlayer = ia;
         }
+        ia.setTable(table);
+        playerHumain.setTable(table);
         table.setChevaletIA(ia.getChevalet());
         table.setChevaletJoueurHumain(playerHumain.getChevalet());
     }
