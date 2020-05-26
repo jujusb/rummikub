@@ -3,25 +3,23 @@ package Rummikub.Player.AI;
 import Rummikub.Player.AI.MCTS.FinalSelectionPolicy;
 import Rummikub.Player.AI.MCTS.MCTS;
 import Rummikub.Player.AI.Moves.MoveMakeCombinaison;
-import Rummikub.Player.AI.Moves.MoveMakeCombinaisons;
 import Rummikub.Player.AI.Moves.MovePiocher;
+import Rummikub.Player.AI.Moves.MoveSetMoves;
 import Rummikub.Player.AI.Moves.RummikubMove;
 import Rummikub.Player.Player;
-import Rummikub.Tablle.Chevalet;
-import Rummikub.Tablle.Combinaison;
-import Rummikub.Tablle.Table;
 import Rummikub.Rummikub;
+import Rummikub.Table.Chevalet;
+import Rummikub.Table.Combinaison;
+import Rummikub.Table.Table;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class IA extends Player {
     MCTS mcts;
-    public Rummikub board;
 
-    public IA(Table table, Rummikub board) {
+    public IA(Table table) {
         super("IA", table);
-        this.board=board;
         mcts = new MCTS();
         //TODO check alls the values
         mcts.setExplorationConstant(0.2);
@@ -30,7 +28,8 @@ public class IA extends Player {
         mcts.setPessimisticBias(0.0d);
         mcts.setMoveSelectionPolicy(FinalSelectionPolicy.robustChild);
         mcts.setPlayoutSelection(new Playout());
-        mcts.setHeuristicFunction(new Heuristic());
+        //mcts.setHeuristicFunction(new Heuristic());
+        mcts.enableRootParallelisation(50);//TODO
     }
 
     public IA() {
@@ -38,8 +37,9 @@ public class IA extends Player {
     }
 
     @Override
-    public boolean jouer(){
-        RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,10,true);
+    public boolean jouer(Player currentPlayer, Player opponent, Table table){
+        Rummikub board = new Rummikub(currentPlayer, opponent, table);
+        RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,1,true);
         if(move instanceof MovePiocher) {
             return false;
         }
@@ -48,16 +48,19 @@ public class IA extends Player {
     }
 
     @Override
-    public List<Combinaison> jouerdebut() {
-        RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,2,true);
+    public List<Combinaison> jouerdebut(Player currentPlayer, Player opponent, Table table) {
+        Rummikub board = new Rummikub(currentPlayer, opponent, table);
+        RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,1,true);
         List<Combinaison> t;
         if(move instanceof MovePiocher) {
             t=null;
-        } else if(move instanceof MoveMakeCombinaisons) {
-            t = ((MoveMakeCombinaisons)move).getCombinaisons();
-        } else { // if(move instanceof MoveMakeCombinaison)
+        } else if(move instanceof MoveSetMoves) {
+            t = ((MoveSetMoves)move).getCombinaisons();
+        } else if(move instanceof MoveMakeCombinaison) { // move instanceof MoveMakeCombinaison
             t = new ArrayList<>();
             t.add(((MoveMakeCombinaison) move).getCombi());
+        } else {
+            t=null;
         }
         return t;
         //return super.jouerdebut();
@@ -72,11 +75,6 @@ public class IA extends Player {
         ia.setEndOfTurn(isEndOfTurn());
         ia.setName(getName());
         ia.mcts = mcts;
-        ia.board = (Rummikub) board.clone();
         return ia;
-    }
-
-    public void setboard(Rummikub rummikub) {
-        this.board = board;
     }
 }

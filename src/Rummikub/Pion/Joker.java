@@ -30,23 +30,32 @@ public class Joker extends Pion {
 
     public void reset(){
         num = 0;
+        couleur=null;
         containsList.clear();
+        useSerie=false;
+        useSuite=false;
     }
 
     /**
      *
-     * @param use si 1,suite sinon série
      * @param c
      * @param n
      */
-    public void setValueJoker(int use, Couleur c, int n) {
+    public void setValueJokerInSuite(Couleur c, int n) {
         this.couleur = c;
         this.num = n;
-        if(use==1){
-            useSuite = true;
+        this.useSuite = true;
+    }
+
+    public void setValueJokerInSerie(List<Couleur> list, int n) {
+        this.containsList = list;
+        if(list.size()>0) {
+            this.couleur = list.get(0);
         } else {
-            useSerie = true;
+            this.couleur = Couleur.BLEU;
         }
+        this.num = n;
+        this.useSerie = true;
     }
 
     public void setValueJoker(int use, int c, int n) {
@@ -96,8 +105,7 @@ public class Joker extends Pion {
                     '}';
         } else {
             return "Joker{" +
-                    "JColor=" + couleurJoker +
-                    '}';
+                    "JColor=" + couleurJoker + '}';
         }
     }
 
@@ -109,6 +117,15 @@ public class Joker extends Pion {
         c.useSerie=useSerie;
         c.couleurJoker= couleurJoker;
         return c;
+    }
+
+    public boolean equals(Object o) {
+        if (o instanceof Joker){
+            Joker j = (Joker)o;
+            return this.couleurJoker.equals(j.couleurJoker);
+        } else {
+            return false;
+        }
     }
 
     public static void main(String[] args) {

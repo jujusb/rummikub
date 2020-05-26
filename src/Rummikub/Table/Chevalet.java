@@ -1,4 +1,4 @@
-package Rummikub.Tablle;
+package Rummikub.Table;
 
 import Rummikub.Pion.Couleur;
 import Rummikub.Pion.Joker;
@@ -38,6 +38,7 @@ public class Chevalet extends ArrayList<Pion> {
 			throw new Exception("Votre chevalet ne contient pas ce pion.");
 		} else {
 			this.remove(p);
+			nbPions--;
 			return p;
 		}
 	}
@@ -51,7 +52,7 @@ public class Chevalet extends ArrayList<Pion> {
 		}
 		return res;
 	}
-	public String toString() { //TODO à afficher par couleur pour que ce soit plus pratique
+	public String toString() { //chevalet affiché par couleur pour que ce soit plus pratique
 		String s = "Votre chevalet contient " + size() + " pions : ";
 		int i = 0;
 		Couleur prec = null;

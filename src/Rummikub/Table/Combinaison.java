@@ -1,4 +1,4 @@
-package Rummikub.Tablle;
+package Rummikub.Table;
 
 import Rummikub.Pion.Couleur;
 import Rummikub.Pion.Joker;
@@ -6,7 +6,6 @@ import Rummikub.Pion.Pion;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.TreeSet;
 
 public class Combinaison extends ArrayList<Pion> {
@@ -17,6 +16,8 @@ public class Combinaison extends ArrayList<Pion> {
     public Combinaison() {
         super();
         containsList= new ArrayList<>();
+        suite=false;
+        serie=false;
     }
 
     public int score() {
@@ -28,6 +29,7 @@ public class Combinaison extends ArrayList<Pion> {
     }
 
     public boolean estValide() {
+        setContainsList();
         if(size()< 3 || size() > 13)
             return false;
         sort();
@@ -86,7 +88,8 @@ public class Combinaison extends ArrayList<Pion> {
     }
 
     public ArrayList<Couleur> setContainsList(){
-        List<Couleur> couleursCombinaison = new ArrayList<Couleur>();
+        TreeSet<Couleur> couleursCombinaison = new TreeSet<>();
+        containsList=new ArrayList<>();
         for(Pion pi : this){
             if(!(pi instanceof Joker)){
                 couleursCombinaison.add(pi.getCouleur());
@@ -97,6 +100,12 @@ public class Combinaison extends ArrayList<Pion> {
                 containsList.add(col);
             }
         }
+        if(this.contientJoker()>0) {
+            Joker j = (Joker) this.get(getIndexJoker());
+            if(isSerie()) {
+                j.setValueJokerInSerie(containsList, j.getNum());
+            }
+        }
         return containsList;
     }
 
@@ -105,11 +114,11 @@ public class Combinaison extends ArrayList<Pion> {
     }
 
     public String toString() {
-        String str= new String();
+        StringBuilder str= new StringBuilder();
         int i = 0;
         for(Pion p : this)
-            str += i++ + ":" + p.toString() + " ";
-        return str;
+            str.append(i++).append(":").append(p.toString()).append(" ");
+        return str.toString();
     }
 
     public int getIndexPion(Pion p) {

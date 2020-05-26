@@ -2,7 +2,8 @@ package Rummikub.Player.AI.Moves;
 
 import Rummikub.Pion.Pion;
 import Rummikub.Player.Player;
-import Rummikub.Tablle.Table;
+import Rummikub.Rummikub;
+import Rummikub.Table.Table;
 
 import java.util.Objects;
 
@@ -16,8 +17,9 @@ public class MoveAddPionToCombinaison extends RummikubMove {
         numberCombi = n;
     }
 
-    public void makeRummikubMove(){
-        table.ajoutALaCombinaison(table.get(numberCombi),pionToAdd);
+    public void makeRummikubMove(Rummikub game) throws Exception {
+        game.getTable().ajoutALaCombinaison(game.getTable().get(numberCombi),pionToAdd);
+        game.playerGetCurrentPlayer().getChevalet().retirer(pionToAdd);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class MoveAddPionToCombinaison extends RummikubMove {
         if (!super.equals(o)) return false;
         MoveAddPionToCombinaison that = (MoveAddPionToCombinaison) o;
         return numberCombi == that.numberCombi &&
-                Objects.equals(pionToAdd, that.pionToAdd);
+                pionToAdd.equals(that.pionToAdd);
     }
 
     @Override

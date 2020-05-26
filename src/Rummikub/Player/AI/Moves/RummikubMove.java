@@ -2,8 +2,9 @@ package Rummikub.Player.AI.Moves;
 
 import Rummikub.Player.AI.MCTS.Move;
 import Rummikub.Player.Player;
-import Rummikub.Tablle.Combinaison;
-import Rummikub.Tablle.Table;
+import Rummikub.Rummikub;
+import Rummikub.Table.Combinaison;
+import Rummikub.Table.Table;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,6 +20,8 @@ public abstract class RummikubMove implements Move {
         nbPionsAvantMove = currentPlayer.getChevalet().getNbPions();
     }
 
+
+
     public List<Combinaison> combinaisonsDébut() {
         return null;
     }
@@ -28,7 +31,7 @@ public abstract class RummikubMove implements Move {
     }
     //nd aux nombres de pions sur le chevalet après le move
 
-    public abstract void makeRummikubMove() throws Exception;
+    public abstract void makeRummikubMove(Rummikub rummikub) throws Exception;
     public abstract int scoreMove(); //score correspoion;
 
     @Override

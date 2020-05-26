@@ -2,7 +2,8 @@ package Rummikub.Player.AI.Moves;
 
 import Rummikub.Pion.Pion;
 import Rummikub.Player.Player;
-import Rummikub.Tablle.Table;
+import Rummikub.Rummikub;
+import Rummikub.Table.Table;
 
 import java.util.Objects;
 
@@ -10,12 +11,18 @@ public class MoveRemoveAndAdd extends RummikubMove {
     int numberCombiRemove; //numéro de la combinaison auquelle on enlève un pion
     Pion pion; //pion à déplacer d'une combinaison à une autre
     int numberCombiAdd; //numéro de la combinaison auquelle on ajoute un pion
+    boolean createCombi;
 
-    public MoveRemoveAndAdd(Table t, Player currentPlayer, int nR, int nA, Pion pi) {
+    public MoveRemoveAndAdd(Table t, Player currentPlayer, int nR, int nA, Pion pi, boolean createCombi) {
         super(t, currentPlayer);
         numberCombiAdd = nA;
         numberCombiRemove = nR;
         pion = pi;
+        this.createCombi=createCombi;
+    }
+
+    public Pion getPion() {
+        return pion;
     }
 
     @Override
@@ -27,9 +34,9 @@ public class MoveRemoveAndAdd extends RummikubMove {
                 '}';
     }
 
-    public void makeRummikubMove() { // test fait si la combinaison contient plus de 3 pions au départ
-        table.get(numberCombiRemove).remove(pion);
-        table.ajoutALaCombinaison(table.get(numberCombiAdd), pion);
+    public void makeRummikubMove(Rummikub game) { // test fait si la combinaison contient plus de 3 pions au départ
+        game.getTable().get(numberCombiRemove).remove(pion);
+        game.getTable().ajoutALaCombinaison(game.getTable().get(createCombi?game.getTable().size()-1:numberCombiAdd), pion);
     }
 
     @Override
@@ -40,7 +47,7 @@ public class MoveRemoveAndAdd extends RummikubMove {
         MoveRemoveAndAdd that = (MoveRemoveAndAdd) o;
         return numberCombiRemove == that.numberCombiRemove &&
                 numberCombiAdd == that.numberCombiAdd &&
-                Objects.equals(pion, that.pion);
+                pion.equals(that.pion);
     }
 
     @Override

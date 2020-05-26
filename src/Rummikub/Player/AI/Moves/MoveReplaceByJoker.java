@@ -3,8 +3,9 @@ package Rummikub.Player.AI.Moves;
 import Rummikub.Pion.Joker;
 import Rummikub.Pion.Pion;
 import Rummikub.Player.Player;
-import Rummikub.Tablle.Combinaison;
-import Rummikub.Tablle.Table;
+import Rummikub.Rummikub;
+import Rummikub.Table.Combinaison;
+import Rummikub.Table.Table;
 
 import java.util.Objects;
 
@@ -24,15 +25,35 @@ public class MoveReplaceByJoker extends RummikubMove {
         this.combinaisonP = combinaisonP;
     }
 
-    public void makeRummikubMove(){
-        if(!chevalet) {
-            table.get(combinaisonP).remove(p);
+    @Override
+    public String toString() {
+        if(chevalet) {
+            return "MoveReplaceByJoker{" +
+                    "joker=" + joker +
+                    ", p=" + p +
+                    ", combinaisonJ=" + combinaisonJ +
+                    '}';
+        } else {
+            return "MoveReplaceByJoker{Joker à remplace" +
+                    "joker=" + joker +
+                    ", combinaisonJ=" + combinaisonJ +
+                    ", p=" + p +
+                    ", combinaisonP=" + combinaisonP +
+                    '}';
         }
-        Combinaison c = table.get(combinaisonJ);
-        table.retirerDeCombinaison(c, joker);
-        currentPlayer.getChevalet().ajouter(joker);
+    }
+
+    public void makeRummikubMove(Rummikub game) throws Exception {
+        if(!chevalet) {
+            game.getTable().get(combinaisonP).remove(p);
+        } else {
+            game.playerGetCurrentPlayer().getChevalet().retirer(p);
+        }
+        Combinaison c = game.getTable().get(combinaisonJ);
+        game.getTable().retirerDeCombinaison(c, joker);
+        game.playerGetCurrentPlayer().getChevalet().ajouter(joker);
         joker.reset();
-        table.ajoutALaCombinaison(c, p);
+        game.getTable().ajoutALaCombinaison(c, p);
     }
 
     @Override
@@ -44,8 +65,8 @@ public class MoveReplaceByJoker extends RummikubMove {
         return chevalet == that.chevalet &&
                 combinaisonJ == that.combinaisonJ &&
                 combinaisonP == that.combinaisonP &&
-                Objects.equals(joker, that.joker) &&
-                Objects.equals(p, that.p);
+                joker.equals(that.joker) &&
+                p.equals(that.p);
     }
 
     @Override
