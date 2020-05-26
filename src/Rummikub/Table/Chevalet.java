@@ -89,7 +89,6 @@ public class Chevalet extends ArrayList<Pion> {
     @Override
     public Object clone() {
         Chevalet chevalet = new Chevalet();
-        chevalet.nbPions = nbPions;
         for(Pion p : this) {
             chevalet.ajouter((Pion)p.clone());
         }

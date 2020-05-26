@@ -9,18 +9,18 @@ import java.util.List;
 
 public class Table extends ArrayList<Combinaison> {
     private Pioche pioche;
-    private List chevaletJoueurHumain;
-    private List chevaletIA;
+    private Chevalet chevaletJoueurHumain;
+    private Chevalet chevaletIA;
 
     public Pioche getPioche(){
         return pioche;
     }
 
-    public void setChevaletJoueurHumain(List chevaletJoueurHumain) {
+    public void setChevaletJoueurHumain(Chevalet chevaletJoueurHumain) {
         this.chevaletJoueurHumain = chevaletJoueurHumain;
     }
 
-    public void setChevaletIA(List chevaletIA) {
+    public void setChevaletIA(Chevalet chevaletIA) {
         this.chevaletIA = chevaletIA;
     }
 
