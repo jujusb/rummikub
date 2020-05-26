@@ -37,7 +37,7 @@ public class Player {
     public Player() {
     }
 
-    public boolean jouer() {
+    public boolean jouer(Player cplayer, Player opponent, Table t) {
         Scanner sc = new Scanner(System.in);
         int compteur = 0;
         while (!isEndOfTurn()) {
@@ -249,7 +249,7 @@ public class Player {
         endOfCombinaison = b;
     }
 
-    public List<Combinaison> jouerdebut() {
+    public List<Combinaison> jouerdebut(Player cplayer, Player opponent, Table t) {
         List<Combinaison> list = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
         System.out.println("Passer tour (0) ?" +

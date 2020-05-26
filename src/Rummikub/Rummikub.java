@@ -40,7 +40,7 @@ public class Rummikub implements Board {
         table = new Table();
         playerHumain = new Player("HUMAIN", table);
         playerHumain.setTable(table);
-        ia = new IA(table,this);
+        ia = new IA(table);
         for (int i = 0; i < 14; i++) {
             playerHumain.getChevalet().ajouter(table.piocherPion());
             ia.getChevalet().ajouter(table.piocherPion());
@@ -48,6 +48,25 @@ public class Rummikub implements Board {
         table.setChevaletJoueurHumain(playerHumain.getChevalet());
         table.setChevaletIA(ia.getChevalet());
         currentPlayer = playerHumain;
+    }
+
+    public Rummikub(Player player, Player opponent, Table t) {
+        this.table = (Table) t.clone();
+        if (player instanceof IA) {
+            playerHumain = (Player) opponent.clone();
+            playerHumain.setTable(table);
+            ia = (IA) player.clone();
+            ia.setTable(table);
+            currentPlayer = playerHumain;
+        } else {
+            playerHumain = (Player) player.clone();
+            playerHumain.setTable(table);
+            ia = (IA) opponent.clone();
+            ia.setTable(table);
+            currentPlayer = opponent;
+        }
+        table.setChevaletIA(ia.getChevalet());
+        table.setChevaletJoueurHumain(playerHumain.getChevalet());
     }
 
     public void changeCurrentPlayer() {
@@ -72,7 +91,7 @@ public class Rummikub implements Board {
                 System.out.println(currentPlayer);
                 List<Combinaison> list = null;
                 try {
-                    list = currentPlayer.jouerdebut();
+                    list = currentPlayer.jouerdebut(currentPlayer, getOpponent(), table);
                 } catch (InputMismatchException e) {
                     e.printStackTrace();
                 }
@@ -103,7 +122,7 @@ public class Rummikub implements Board {
             } else {
                 boolean continueTour = true ;
                 try {
-                    continueTour=currentPlayer.jouer();
+                    continueTour=currentPlayer.jouer(currentPlayer, getOpponent(), table);
                 } catch (InputMismatchException e) {
                     e.printStackTrace();
                 }
@@ -112,7 +131,7 @@ public class Rummikub implements Board {
                 }
                 while (continueTour) {
                     try {
-                        continueTour=currentPlayer.jouer();
+                        continueTour=currentPlayer.jouer(currentPlayer, getOpponent(), table);
                     } catch (InputMismatchException e) {
                         e.printStackTrace();
                     }
@@ -138,6 +157,16 @@ public class Rummikub implements Board {
         if (playerHumain.gagne()) {
             System.out.println("Le joueur humain a gagné !");
         }
+    }
+
+    private Player getOpponent() {
+        Player opponent;
+        if(currentPlayer == playerHumain) {
+            opponent = ia;
+        } else {
+            opponent = playerHumain;
+        }
+        return opponent;
     }
 
     private void backUp() {
@@ -176,19 +205,7 @@ public class Rummikub implements Board {
 
     @Override
     public Rummikub duplicate() {
-        IA ai = (IA) ia.clone();
-        Rummikub rummikub = ai.board;
-        rummikub.table = (Table) table.clone();
-        rummikub.playerHumain = (Player) playerHumain.clone();
-        rummikub.playerHumain.setTable(rummikub.table);
-        rummikub.ia = ai;
-        rummikub.ia.setTable(rummikub.table);
-        if (currentPlayer == playerHumain) {
-            rummikub.currentPlayer = rummikub.playerHumain;
-        } else {
-            rummikub.currentPlayer = rummikub.ia;
-        }
-        return rummikub;
+        return new Rummikub(currentPlayer, getOpponent(), table);
     }
 
     public Board clone() {

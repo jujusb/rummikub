@@ -95,6 +95,23 @@ public class Playout implements PlayoutSelection {
     public static void main(String[] args) {
         Rummikub rummikub = new Rummikub();
         Playout playout = new Playout();
-        playout.Process(rummikub);
+        Rummikub r= rummikub.duplicate();
+        playout.Process(r);
+        System.out.println("Initial");
+        System.out.println(rummikub);
+        System.out.println("Finale");
+        System.out.println(r);
     }
 }
+/*
+*
+* Votre chevalet contient 14 pions : 0:Pion{2 Blu} 1:Pion{4 Blu} 2:Pion{7 Blu}
+                                   3:Pion{2 Red} 4:Pion{3 Red} 5:Pion{4 Red} 6:Pion{7 Red}
+                                   7:Pion{2 Yel} 8:Pion{8 Yel} 9:Pion{13 Yel}
+                                   10:Pion{1 Blk} 11:Pion{9 Blk} 12:Pion{12 Blk} 13:Pion{13 Blk}
+  IA
+Votre chevalet contient 14 pions : 0:Pion{5 Blu} 1:Pion{7 Blu} 2:Pion{8 Blu} 3:Pion{12 Blu}
+                                   4:Pion{1 Red} 5:Pion{13 Red}
+                                   6:Pion{3 Yel} 7:Pion{11 Yel} 8:Pion{11 Yel} 9:Pion{13 Yel}
+                                   10:Pion{4 Blk} 11:Pion{6 Blk} 12:Pion{10 Blk} 13:Pion{13 Blk}
+                                   * */

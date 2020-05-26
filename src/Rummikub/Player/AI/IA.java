@@ -17,11 +17,9 @@ import java.util.List;
 
 public class IA extends Player {
     MCTS mcts;
-    public Rummikub board;
 
     public IA(Table table, Rummikub board) {
         super("IA", table);
-        this.board=board;
         mcts = new MCTS();
         //TODO check alls the values
         mcts.setExplorationConstant(0.2);
@@ -39,7 +37,8 @@ public class IA extends Player {
     }
 
     @Override
-    public boolean jouer(){
+    public boolean jouer(Player currentPlayer, Player opponent, Table table){
+        Rummikub board = new Rummikub(currentPlayer, opponent, table);
         RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,1,true);
         if(move instanceof MovePiocher) {
             return false;
@@ -49,7 +48,8 @@ public class IA extends Player {
     }
 
     @Override
-    public List<Combinaison> jouerdebut() {
+    public List<Combinaison> jouerdebut(Player currentPlayer, Player opponent, Table table) {
+        Rummikub board = new Rummikub(currentPlayer, opponent, table);
         RummikubMove move = (RummikubMove) mcts.runMCTS_UCT(board,1,true);
         List<Combinaison> t;
         if(move instanceof MovePiocher) {
@@ -75,11 +75,6 @@ public class IA extends Player {
         ia.setEndOfTurn(isEndOfTurn());
         ia.setName(getName());
         ia.mcts = mcts;
-        ia.board = (Rummikub) board.clone();
         return ia;
-    }
-
-    public void setboard(Rummikub rummikub) {
-        this.board = board;
     }
 }
