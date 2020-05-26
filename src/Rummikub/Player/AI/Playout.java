@@ -95,8 +95,6 @@ public class Playout implements PlayoutSelection {
     public static void main(String[] args) {
         Rummikub rummikub = new Rummikub();
         Playout playout = new Playout();
-        rummikub.changeCurrentPlayer();
-        rummikub.changeCurrentPlayer();
         System.out.println("Initial 0");
         System.out.println(rummikub);
         Rummikub r= rummikub.duplicate();

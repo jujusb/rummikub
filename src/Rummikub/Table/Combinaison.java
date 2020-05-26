@@ -20,6 +20,20 @@ public class Combinaison extends ArrayList<Pion> {
         serie=false;
     }
 
+    @Override
+    public Object clone(){
+        Combinaison c = new Combinaison();
+        c.suite = suite;
+        c.serie = serie;
+        for(Couleur coul : containsList){
+            c.containsList.add(coul);
+        }
+        for(Pion p : this){
+            c.add((Pion) p.clone());
+        }
+        return c;
+    }
+
     public int score() {
         int score = 0;
         for(Pion p : this) {
