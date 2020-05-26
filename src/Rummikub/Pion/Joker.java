@@ -112,6 +112,8 @@ public class Joker extends Pion {
     @Override
     public Object clone() {
         Joker c = new Joker();
+        c.couleur=couleur;
+        c.num=num;
         c.useSuite=useSuite;
         c.containsList=containsList;
         c.useSerie=useSerie;
