@@ -18,7 +18,7 @@ import java.util.List;
 public class IA extends Player {
     MCTS mcts;
 
-    public IA(Table table, Rummikub board) {
+    public IA(Table table) {
         super("IA", table);
         mcts = new MCTS();
         //TODO check alls the values

@@ -53,10 +53,10 @@ public class Rummikub implements Board {
     public Rummikub(Player player, Player opponent, Table t) {
         this.table = (Table) t.clone();
         if (player instanceof IA) {
-            playerHumain = (Player) opponent.clone();
-            playerHumain.setTable(table);
             ia = (IA) player.clone();
             ia.setTable(table);
+            playerHumain = (Player) opponent.clone();
+            playerHumain.setTable(table);
             currentPlayer = playerHumain;
         } else {
             playerHumain = (Player) player.clone();
