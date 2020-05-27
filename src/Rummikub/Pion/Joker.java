@@ -97,6 +97,7 @@ public class Joker extends Pion {
         if(useSuite) {
             return "Joker{à remplacer par ce " +
                     super.toString()+
+                    ", JColor=" + couleurJoker +
                     '}';
         } else if(useSerie) {
             return "Joker{à remplacer par un pion de num " +

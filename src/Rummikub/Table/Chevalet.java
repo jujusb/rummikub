@@ -95,9 +95,32 @@ public class Chevalet extends ArrayList<Pion> {
         return chevalet;
     }
 
-	public int getIndexJoker() {
+	public int getIndexJokerRouge() {
+		Joker j = new Joker(Couleur.ROUGE);
 		for (int i = 0; i< size(); i++){
-			if (get(i) instanceof Joker) {
+			if (get(i).equals(j)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public int getIndexJokerNoir() {
+		Joker j = new Joker(Couleur.NOIR);
+		for (int i = 0; i< size(); i++){
+			if (get(i).equals(j)) {
+				if(!j.getUseSerie()||j.getUseSuite())
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public int getIndexJoker() {
+		Joker j = new Joker(Couleur.NOIR);
+		Joker j2 = new Joker(Couleur.ROUGE);
+		for (int i = 0; i< size(); i++){
+			if (get(i).equals(j)||get(i).equals(j2)) {
 				return i;
 			}
 		}
