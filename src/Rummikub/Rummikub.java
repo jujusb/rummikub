@@ -20,12 +20,7 @@ import Rummikub.Table.Chevalet;
 import Rummikub.Table.Combinaison;
 import Rummikub.Table.Table;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Rummikub implements Board {
     private Player playerHumain;
@@ -427,6 +422,88 @@ public class Rummikub implements Board {
         }
     }
 
+    public ArrayList<ArrayList<HashMap<Pion,ArrayList<Integer>>>> tabSuiteSerie (){
+        //-1 s'il est dans le chevalet et >0 si le pion est dans la table selon la version
+        ArrayList<HashMap<Pion,ArrayList<Integer>>> pionsUtilisablesSerie = new ArrayList<>();
+        ArrayList<HashMap<Pion,ArrayList<Integer>>> pionsUtilisablesSuite = new ArrayList<>();
+        Chevalet chevalet = (Chevalet) currentPlayer.getChevalet().clone();
+        chevalet.sort();
+        for (int i = 0; i < 13; i++) {
+            pionsUtilisablesSerie.add(i, new HashMap<>());
+        }
+        for (int i = 0; i < 4; i++) {
+            pionsUtilisablesSuite.add(i, new HashMap<>());
+        }
+        for (Pion p : chevalet){
+            if(!(p instanceof Joker)){
+                pionsUtilisablesSerie.get(p.getNum()-1).put(p, new ArrayList<>());
+                pionsUtilisablesSerie.get(p.getNum()-1).get(p).add(-1);
+                pionsUtilisablesSuite.get(p.getCouleur().ordinal()).put(p, new ArrayList<>());
+                pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).add(-1);
+            }
+        }
+        int numCombinaison = 0;
+        for (Combinaison c : table) {
+            if(c.size() > 3){
+                if(c.isSerie()){
+                    int compteurVersion = 1;
+                    for(Pion p : c){
+                        if(!(p instanceof Joker)) {
+                            //Ajout pion d'une série dans la version compteurVersion
+                            pionsUtilisablesSerie.get(p.getNum() - 1).put(p, new ArrayList<>());
+                            pionsUtilisablesSerie.get(p.getNum() - 1).get(p).add(numCombinaison);
+                            pionsUtilisablesSerie.get(p.getNum() - 1).get(p).add(compteurVersion);
+                            //Ajout pion d'une suite dans la version compteurVersion
+                            pionsUtilisablesSuite.get(p.getCouleur().ordinal()).put(p, new ArrayList<>());
+                            pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).add(numCombinaison);
+                            pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).add(compteurVersion);
+                            compteurVersion++;
+                        }
+                    }
+                }else{
+                    int compteurVersion = 1;
+                    int nbPionsUtilisables = c.size()-3;
+                    for(int i=1; i<=nbPionsUtilisables; i++){
+                        int compteurDebut = compteurVersion;
+                        int compteurFin = compteurVersion+1;
+                        for(int j=0; j<=i; j++){
+
+                            Pion pDebut = c.get(j);
+                            Pion pFin = c.get(c.size()-j-1);
+                            if(!(pDebut instanceof Joker)) {
+                                //Serie
+                                pionsUtilisablesSerie.get(pDebut.getNum() - 1).put(pDebut, new ArrayList<>());
+                                pionsUtilisablesSerie.get(pDebut.getNum() - 1).get(pDebut).add(numCombinaison);
+                                pionsUtilisablesSerie.get(pDebut.getNum() - 1).get(pDebut).add(compteurDebut);
+                                //Suite
+                                pionsUtilisablesSuite.get(pDebut.getCouleur().ordinal()).put(pDebut, new ArrayList<>());
+                                pionsUtilisablesSuite.get(pDebut.getCouleur().ordinal()).get(pDebut).add(numCombinaison);
+                                pionsUtilisablesSuite.get(pDebut.getCouleur().ordinal()).get(pDebut).add(compteurDebut);
+                            }
+                            if(!(pFin instanceof Joker)) {
+                                //Serie
+                                pionsUtilisablesSerie.get(pFin.getNum() - 1).put(pFin, new ArrayList<>());
+                                pionsUtilisablesSerie.get(pFin.getNum() - 1).get(pFin).add(numCombinaison);
+                                pionsUtilisablesSerie.get(pFin.getNum() - 1).get(pFin).add(compteurFin);
+                                //Suite
+                                pionsUtilisablesSuite.get(pFin.getCouleur().ordinal()).put(pFin, new ArrayList<>());
+                                pionsUtilisablesSuite.get(pFin.getCouleur().ordinal()).get(pFin).add(numCombinaison);
+                                pionsUtilisablesSuite.get(pFin.getCouleur().ordinal()).get(pFin).add(compteurFin);
+                            }
+
+                        }
+                        compteurVersion++;
+                    }
+                }
+            }
+            numCombinaison++;
+        }
+        ArrayList res = new ArrayList<>();
+        res.add(pionsUtilisablesSerie);
+        res.add(pionsUtilisablesSuite);
+        return res;
+    }
+
     public ArrayList<Move> getAllsMoves() {
         for (Combinaison c : table) {
             c.sort();
@@ -454,6 +531,7 @@ public class Rummikub implements Board {
                 tabSuite.get(p.getCouleur().ordinal()).add(p);
             }
         }
+        ArrayList tabSuiteSerie = tabSuiteSerie();
         //System.out.println(tabSuite);
         //System.out.println(tabSeries);
         moves = new ArrayList<>();
