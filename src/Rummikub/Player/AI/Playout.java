@@ -55,7 +55,7 @@ public class Playout implements PlayoutSelection {
                     }
                     //System.out.println(randomMove);
                     randomMove.makeRummikubMove(game);
-                    System.out.println(game.getTable().toString());
+                    //System.out.println(game.getTable().toString());
                     //System.out.println(game.playerGetCurrentPlayer().toString());
                 } catch (Exception e) {
                     System.out.println(randomMove);
@@ -101,7 +101,7 @@ public class Playout implements PlayoutSelection {
         System.out.println(rummikub);
         long start = System.nanoTime();
         Rummikub r = null;
-        for(int i =0 ; i<1 ; i++) {
+        for(int i =0 ; i<100 ; i++) {
             r= rummikub.duplicate();
             playout.Process(r);
         }
