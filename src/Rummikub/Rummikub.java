@@ -482,33 +482,6 @@ public class Rummikub implements Board {
                 pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).get(pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).size() - 1).add(compteurVersion);
             }
         }
-        try {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(pionsUtilisablesSerie);
-            System.out.println(pionsUtilisablesSuite);
-            System.out.println(p);
-            System.out.println(numCombinaison);
-            System.out.println(compteurVersion);
-        }
     }
 
     public ArrayList<Move> getAllsMoves() {
