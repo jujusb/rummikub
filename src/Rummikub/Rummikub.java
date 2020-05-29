@@ -416,8 +416,12 @@ public class Rummikub implements Board {
         for (int i = 0; i < 4; i++) {
             pionsUtilisablesSuite.add(i, new HashMap<>());
         }
+        //Pion pp=new Pion();
         for (Pion p : chevalet){
-            addPionUtilisableToTabs(pionsUtilisablesSerie, pionsUtilisablesSuite, p, -1, 0);
+            //if(!pp.equals(p)) {
+                addPionUtilisableToTabs(pionsUtilisablesSerie, pionsUtilisablesSuite, p, -1, 0);
+            //}
+            //pp=p;
         }
         int numCombinaison = 0;
         for (Combinaison c : table) {
@@ -434,7 +438,7 @@ public class Rummikub implements Board {
                     for(int i=1; i<=nbPionsUtilisables; i++){
                         int compteurDebut = compteurVersion;
                         int compteurFin = compteurVersion+1;
-                        for(int j=0; j<=i; j++){
+                        for(int j=0; j<i; j++){
                             Pion pDebut = c.get(j);
                             Pion pFin = c.get(c.size()-j-1);
                             addPionUtilisableToTabs(pionsUtilisablesSerie, pionsUtilisablesSuite, pDebut, numCombinaison, compteurDebut);
@@ -456,25 +460,47 @@ public class Rummikub implements Board {
     }
 
     private void addPionUtilisableToTabs(ArrayList<HashMap<Pion,ArrayList<ArrayList<Integer>>>> pionsUtilisablesSerie, ArrayList<HashMap<Pion,ArrayList<ArrayList<Integer>>>> pionsUtilisablesSuite, Pion p, int numCombinaison, int compteurVersion) {
-        try {
-            if (!(p instanceof Joker)) {
-                if (pionsUtilisablesSerie.get(p.getNum() - 1).keySet().stream().noneMatch(p::equals)) {
-                    pionsUtilisablesSerie.get(p.getNum() - 1).put(p, new ArrayList<>());
-                }
+        if (!(p instanceof Joker)) {
+            try {
                 pionsUtilisablesSerie.get(p.getNum() - 1).get(p).add(new ArrayList<>());
-                pionsUtilisablesSerie.get(p.getNum() - 1).get(p).get(pionsUtilisablesSerie.get(p.getNum() - 1).get(p).size() - 1).add(numCombinaison);
-                if (numCombinaison != -1) {
-                    pionsUtilisablesSerie.get(p.getNum() - 1).get(p).get(pionsUtilisablesSerie.get(p.getNum() - 1).get(p).size() - 1).add(compteurVersion);
-                }
-                if (pionsUtilisablesSuite.get(p.getCouleur().ordinal()).keySet().stream().noneMatch(p::equals)) {
-                    pionsUtilisablesSuite.get(p.getCouleur().ordinal()).put(p, new ArrayList<>());
-                }
-                pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).add(new ArrayList<>());
-                pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).get(pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).size() - 1).add(numCombinaison);
-                if (numCombinaison != -1) {
-                    pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).get(pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).size() - 1).add(compteurVersion);
-                }
+            } catch (Exception e) {
+                pionsUtilisablesSerie.get(p.getNum() - 1).put(p, new ArrayList<>());
+                pionsUtilisablesSerie.get(p.getNum() - 1).get(p).add(new ArrayList<>());
             }
+            pionsUtilisablesSerie.get(p.getNum() - 1).get(p).get(pionsUtilisablesSerie.get(p.getNum() - 1).get(p).size() - 1).add(numCombinaison);
+            if (numCombinaison != -1) {
+                pionsUtilisablesSerie.get(p.getNum() - 1).get(p).get(pionsUtilisablesSerie.get(p.getNum() - 1).get(p).size() - 1).add(compteurVersion);
+            }
+            try {
+                pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).add(new ArrayList<>());
+            } catch (Exception e) {
+                pionsUtilisablesSuite.get(p.getCouleur().ordinal()).put(p, new ArrayList<>());
+                pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).add(new ArrayList<>());
+            }
+            pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).get(pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).size() - 1).add(numCombinaison);
+            if (numCombinaison != -1) {
+                pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).get(pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).size() - 1).add(compteurVersion);
+            }
+        }
+        try {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(pionsUtilisablesSerie);
