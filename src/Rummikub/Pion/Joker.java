@@ -103,6 +103,7 @@ public class Joker extends Pion {
             return "Joker{à remplacer par un pion de num " +
                     num+" de couleur"+
                     containsList+
+                    ", JColor=" + couleurJoker +
                     '}';
         } else {
             return "Joker{" +
