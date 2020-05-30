@@ -10,17 +10,24 @@ import Rummikub.Player.AI.MCTS.CallLocation;
 import Rummikub.Player.AI.MCTS.Move;
 import Rummikub.Player.AI.Moves.MoveAddPionToCombinaison;
 import Rummikub.Player.AI.Moves.MoveMakeCombinaison;
-import Rummikub.Player.AI.Moves.MoveSetMoves;
 import Rummikub.Player.AI.Moves.MovePiocher;
 import Rummikub.Player.AI.Moves.MoveRemoveAndAdd;
 import Rummikub.Player.AI.Moves.MoveReplaceByJoker;
+import Rummikub.Player.AI.Moves.MoveSetMoves;
 import Rummikub.Player.AI.Moves.RummikubMove;
 import Rummikub.Player.Player;
 import Rummikub.Table.Chevalet;
 import Rummikub.Table.Combinaison;
 import Rummikub.Table.Table;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class Rummikub implements Board {
     private Player playerHumain;
@@ -397,10 +404,10 @@ public class Rummikub implements Board {
         }
     }
 
-    public ArrayList<ArrayList<HashMap<Pion,ArrayList<Integer>>>> tabSuiteSerie (){
+    public ArrayList<ArrayList<TreeMap<Pion,ArrayList<ArrayList<Integer>>>>> tabSuiteSerie () {
         //-1 s'il est dans le chevalet et >0 si le pion est dans la table selon la version
-        ArrayList<HashMap<Pion,ArrayList<Integer>>> pionsUtilisablesSerie = new ArrayList<>();
-        ArrayList<HashMap<Pion,ArrayList<Integer>>> pionsUtilisablesSuite = new ArrayList<>();
+        ArrayList<HashMap<Pion,ArrayList<ArrayList<Integer>>>> pionsUtilisablesSerie = new ArrayList<>();
+        ArrayList<HashMap<Pion,ArrayList<ArrayList<Integer>>>> pionsUtilisablesSuite = new ArrayList<>();
         Chevalet chevalet = (Chevalet) currentPlayer.getChevalet().clone();
         chevalet.sort();
         for (int i = 0; i < 13; i++) {
@@ -410,12 +417,7 @@ public class Rummikub implements Board {
             pionsUtilisablesSuite.add(i, new HashMap<>());
         }
         for (Pion p : chevalet){
-            if(!(p instanceof Joker)){
-                pionsUtilisablesSerie.get(p.getNum()-1).put(p, new ArrayList<>());
-                pionsUtilisablesSerie.get(p.getNum()-1).get(p).add(-1);
-                pionsUtilisablesSuite.get(p.getCouleur().ordinal()).put(p, new ArrayList<>());
-                pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).add(-1);
-            }
+                addPionUtilisableToTabs(pionsUtilisablesSerie, pionsUtilisablesSuite, p, -1, 0);
         }
         int numCombinaison = 0;
         for (Combinaison c : table) {
@@ -423,17 +425,8 @@ public class Rummikub implements Board {
                 if(c.isSerie()){
                     int compteurVersion = 1;
                     for(Pion p : c){
-                        if(!(p instanceof Joker)) {
-                            //Ajout pion d'une série dans la version compteurVersion
-                            pionsUtilisablesSerie.get(p.getNum() - 1).put(p, new ArrayList<>());
-                            pionsUtilisablesSerie.get(p.getNum() - 1).get(p).add(numCombinaison);
-                            pionsUtilisablesSerie.get(p.getNum() - 1).get(p).add(compteurVersion);
-                            //Ajout pion d'une suite dans la version compteurVersion
-                            pionsUtilisablesSuite.get(p.getCouleur().ordinal()).put(p, new ArrayList<>());
-                            pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).add(numCombinaison);
-                            pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).add(compteurVersion);
-                            compteurVersion++;
-                        }
+                        addPionUtilisableToTabs(pionsUtilisablesSerie, pionsUtilisablesSuite, p, numCombinaison, compteurVersion);
+                        compteurVersion++;
                     }
                 }else{
                     int compteurVersion = 1;
@@ -441,31 +434,11 @@ public class Rummikub implements Board {
                     for(int i=1; i<=nbPionsUtilisables; i++){
                         int compteurDebut = compteurVersion;
                         int compteurFin = compteurVersion+1;
-                        for(int j=0; j<=i; j++){
-
+                        for(int j=0; j<i; j++){
                             Pion pDebut = c.get(j);
                             Pion pFin = c.get(c.size()-j-1);
-                            if(!(pDebut instanceof Joker)) {
-                                //Serie
-                                pionsUtilisablesSerie.get(pDebut.getNum() - 1).put(pDebut, new ArrayList<>());
-                                pionsUtilisablesSerie.get(pDebut.getNum() - 1).get(pDebut).add(numCombinaison);
-                                pionsUtilisablesSerie.get(pDebut.getNum() - 1).get(pDebut).add(compteurDebut);
-                                //Suite
-                                pionsUtilisablesSuite.get(pDebut.getCouleur().ordinal()).put(pDebut, new ArrayList<>());
-                                pionsUtilisablesSuite.get(pDebut.getCouleur().ordinal()).get(pDebut).add(numCombinaison);
-                                pionsUtilisablesSuite.get(pDebut.getCouleur().ordinal()).get(pDebut).add(compteurDebut);
-                            }
-                            if(!(pFin instanceof Joker)) {
-                                //Serie
-                                pionsUtilisablesSerie.get(pFin.getNum() - 1).put(pFin, new ArrayList<>());
-                                pionsUtilisablesSerie.get(pFin.getNum() - 1).get(pFin).add(numCombinaison);
-                                pionsUtilisablesSerie.get(pFin.getNum() - 1).get(pFin).add(compteurFin);
-                                //Suite
-                                pionsUtilisablesSuite.get(pFin.getCouleur().ordinal()).put(pFin, new ArrayList<>());
-                                pionsUtilisablesSuite.get(pFin.getCouleur().ordinal()).get(pFin).add(numCombinaison);
-                                pionsUtilisablesSuite.get(pFin.getCouleur().ordinal()).get(pFin).add(compteurFin);
-                            }
-
+                            addPionUtilisableToTabs(pionsUtilisablesSerie, pionsUtilisablesSuite, pDebut, numCombinaison, compteurDebut);
+                            addPionUtilisableToTabs(pionsUtilisablesSerie, pionsUtilisablesSuite, pFin, numCombinaison, compteurFin);
                         }
                         compteurVersion++;
                     }
@@ -473,10 +446,38 @@ public class Rummikub implements Board {
             }
             numCombinaison++;
         }
-        ArrayList res = new ArrayList<>();
-        res.add(pionsUtilisablesSerie);
-        res.add(pionsUtilisablesSuite);
+        ArrayList<ArrayList<TreeMap<Pion,ArrayList<ArrayList<Integer>>>>> res = new ArrayList<>();
+        res.add(new ArrayList<>());
+        //Dans une TreeMap pour trier les pions et en garder qu'un exemplaire de chaque si jamais il y en a plusieurs
+        pionsUtilisablesSerie.stream().map(TreeMap::new).forEach(t -> res.get(0).add(t));
+        res.add(new ArrayList<>());
+        pionsUtilisablesSuite.stream().map(TreeMap::new).forEach(t -> res.get(1).add(t));
         return res;
+    }
+
+    private void addPionUtilisableToTabs(ArrayList<HashMap<Pion,ArrayList<ArrayList<Integer>>>> pionsUtilisablesSerie, ArrayList<HashMap<Pion,ArrayList<ArrayList<Integer>>>> pionsUtilisablesSuite, Pion p, int numCombinaison, int compteurVersion) {
+        if (!(p instanceof Joker)) {
+            try {
+                pionsUtilisablesSerie.get(p.getNum() - 1).get(p).add(new ArrayList<>());
+            } catch (Exception e) {
+                pionsUtilisablesSerie.get(p.getNum() - 1).put(p, new ArrayList<>());
+                pionsUtilisablesSerie.get(p.getNum() - 1).get(p).add(new ArrayList<>());
+            }
+            pionsUtilisablesSerie.get(p.getNum() - 1).get(p).get(pionsUtilisablesSerie.get(p.getNum() - 1).get(p).size() - 1).add(numCombinaison);
+            if (numCombinaison != -1) {
+                pionsUtilisablesSerie.get(p.getNum() - 1).get(p).get(pionsUtilisablesSerie.get(p.getNum() - 1).get(p).size() - 1).add(compteurVersion);
+            }
+            try {
+                pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).add(new ArrayList<>());
+            } catch (Exception e) {
+                pionsUtilisablesSuite.get(p.getCouleur().ordinal()).put(p, new ArrayList<>());
+                pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).add(new ArrayList<>());
+            }
+            pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).get(pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).size() - 1).add(numCombinaison);
+            if (numCombinaison != -1) {
+                pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).get(pionsUtilisablesSuite.get(p.getCouleur().ordinal()).get(p).size() - 1).add(compteurVersion);
+            }
+        }
     }
 
     public ArrayList<Move> getAllsMoves() {
@@ -506,7 +507,9 @@ public class Rummikub implements Board {
                 tabSuite.get(p.getCouleur().ordinal()).add(p);
             }
         }
-        ArrayList tabSuiteSerie = tabSuiteSerie();
+        ArrayList<ArrayList<TreeMap<Pion, ArrayList<ArrayList<Integer>>>>> tabSuiteSerie = tabSuiteSerie();
+        ArrayList<TreeMap<Pion, ArrayList<ArrayList<Integer>>>> tabSuit = tabSuiteSerie.get(0);
+        ArrayList<TreeMap<Pion, ArrayList<ArrayList<Integer>>>> tabSeri = tabSuiteSerie.get(1);
         //System.out.println(tabSuite);
         //System.out.println(tabSeries);
         moves = new ArrayList<>();
