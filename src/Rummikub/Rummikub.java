@@ -416,12 +416,8 @@ public class Rummikub implements Board {
         for (int i = 0; i < 4; i++) {
             pionsUtilisablesSuite.add(i, new HashMap<>());
         }
-        //Pion pp=new Pion();
         for (Pion p : chevalet){
-            //if(!pp.equals(p)) {
                 addPionUtilisableToTabs(pionsUtilisablesSerie, pionsUtilisablesSuite, p, -1, 0);
-            //}
-            //pp=p;
         }
         int numCombinaison = 0;
         for (Combinaison c : table) {
