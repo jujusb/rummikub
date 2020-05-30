@@ -1,5 +1,7 @@
 package Rummikub.Pion;
 
+import java.util.Objects;
+
 public class Pion implements Comparable<Pion> {
     int num;
     Couleur couleur;
@@ -84,6 +86,11 @@ public class Pion implements Comparable<Pion> {
         p.couleur = couleur;
         p.select = select;
         return p;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(num, couleur);
     }
 
     public boolean equals(Object o) {
