@@ -37,7 +37,7 @@ public class Playout implements PlayoutSelection {
                     movesPioche.add(move);
                 } else {
                     movesSansPioche.add(move);
-                    //System.out.println(move);
+                    System.out.println(move);
                 }
             }
             piochepossible=this.piochepossible(movesPioche);
@@ -53,7 +53,7 @@ public class Playout implements PlayoutSelection {
                             game.playerGetCurrentPlayer().setDebutFait();
                         }
                     }
-                    //System.out.println(randomMove);
+                    System.out.println("Move choisi" + randomMove);
                     randomMove.makeRummikubMove(game);
                     //System.out.println(game.getTable().toString());
                     //System.out.println(game.playerGetCurrentPlayer().toString());
@@ -63,6 +63,7 @@ public class Playout implements PlayoutSelection {
                     e.printStackTrace();
                 }
                 game.changeCurrentPlayer();
+                System.out.println(game);
                 listMoves = game.getAllsMoves();
                 etape++;
             }
@@ -94,6 +95,7 @@ public class Playout implements PlayoutSelection {
         }
         return false;
     }
+
     public static void main(String[] args) {
         Rummikub rummikub = new Rummikub();
         Playout playout = new Playout();
@@ -102,13 +104,14 @@ public class Playout implements PlayoutSelection {
         long start = System.nanoTime();
         Rummikub r = null;
         for(int i =0 ; i<1 ; i++) {
-            r= rummikub.duplicate();
+            r = rummikub.duplicate();
             playout.Process(r);
         }
-        System.out.println((System.nanoTime()-start)/1000000.0);
         //System.out.println("Initial 1");
         //System.out.println(rummikub);
         System.out.println("Finale");
         System.out.println(r);
+        System.out.println("Temps final pour une partie (en ms) :");
+        System.out.println((System.nanoTime()-start)/1000000.0);
     }
 }
